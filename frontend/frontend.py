@@ -27,38 +27,55 @@ from python_speech_features import logfbank
 def getVoiceInput(timespan, samplerate, number, name):
     # samplerate = 44100
     # seconds = 5
-    makeFolder(name)
+    parent_path = get_parent_path(name)
+    wav_path = get_subfolder_path(parent_path, 'wav')
     filename = create_file_name(name, number)
-    print(filename)
     recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=2)
     sd.wait()
-    path = makeFolder(name)
-    wav.write(path + '\\' + filename, samplerate, recording)
-    os.startfile(path)
+    wav.write(wav_path + '\\' + filename, samplerate, recording)
+    os.startfile(wav_path)
 
 
 def create_file_name(name, number):
     return name + '-' + str(number) + '.wav'
 
 
-def makeFolder(name):
-    parent_path = os.path.join(os.getcwd(), "data")
-    if not os.path.exists(parent_path):
-        os.mkdir(parent_path)
-    path = os.path.join(parent_path, name)
-    try:
-        if not os.path.exists(path):
+def get_parent_path(name):
+    parent_path = make_dir(os.path.join(os.getcwd(), "data"))
+    return make_dir(os.path.join(parent_path, name))
+
+
+def sub_folder_switch(x):
+    return {
+        'csv': 1,
+        'wav': 2
+    }.get(x, 9)
+
+
+def get_subfolder_path(parent_path, sub_folder):
+    folder_layer = sub_folder_switch(sub_folder)
+    if folder_layer == 9:
+        return
+    elif folder_layer == 1:
+        return make_dir(os.path.join(parent_path, "csv"))
+    elif folder_layer == 2:
+        return make_dir(os.path.join(parent_path, "wav"))
+
+
+def make_dir(path):
+    if not os.path.exists(path):
+        try:
             os.mkdir(path)
-    except OSError as error:
-        print("Creating directory %s has failed. Error %s" % (path, error))
+        except OSError as error:
+            print("Creating directory %s has failed. Error %s" % (path, error))
     return path
 
 
 def getFileName(name, number):
-    parent_path = os.path.join(os.getcwd(), "data")
-    path = os.path.join(parent_path, name)
+    parent_path = get_parent_path(name)
+    wav_path = get_subfolder_path(parent_path, 'wav')
     file_name = create_file_name(name, number)
-    return pjoin(path, file_name)
+    return pjoin(wav_path, file_name)
 
 
 def extractFeatures(name, number):
