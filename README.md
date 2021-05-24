@@ -6,3 +6,4 @@ Anaconda Environment:
 - pip install sounddevice
 - pip install playsound
 - pip install python_speech_features
+- pip install matplotlib
