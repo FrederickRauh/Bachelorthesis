@@ -9,6 +9,7 @@ from python_speech_features import mfcc
 from python_speech_features import logfbank
 
 from utils import directoryManager as dm
+from utils import csvMaker as cm
 
 
 # getSpeechInput()
@@ -35,7 +36,7 @@ def get_voice_input(timespan, samplerate, number, name):
     # seconds = 5
     parent_path = dm.get_parent_path(name)
     wav_path = dm.get_subfolder_path(parent_path, 'wav')
-    filename = dm.create_file_name(name, number)
+    filename = dm.create_wav_file_name(name, number)
     recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=2)
     sd.wait()
     wav.write(wav_path + '\\' + filename, samplerate, recording)
@@ -43,9 +44,16 @@ def get_voice_input(timespan, samplerate, number, name):
 
 
 def extract_features(name, number):
-    filepath = dm.getFileName(name, number)
+    filepath = dm.get_file_name(name, number)
     (rate, sig) = wav.read(filepath)
     mfcc_feat = mfcc(sig, rate)
     fbank_feat = logfbank(sig, rate)
-
     return fbank_feat
+
+
+def process_features(name):
+    amount = dm.get_file_amount(name)
+    if amount > 0:
+        for x in range(amount):
+            fbank_feat = extract_features(name, x)
+            cm.edit_csv(name, x, fbank_feat)
