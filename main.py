@@ -2,7 +2,7 @@ from backend import trainer
 from backend.trainer import Trainer
 from frontend import frontend
 from utils import directoryManager as dm
-from utils import grabber as gb
+from utils import csvManager as cm
 
 print("starting...")
 speaker_id = 'id00001'
@@ -10,10 +10,9 @@ speaker_id = 'id00001'
 # frontend.get_voice_input_stream(4, 44100, 1, speaker_id)
 #
 #
-# frontend.process_features(speaker_id)
-# trainer.get_features_from_data(speaker_id)
+frontend.process_features(speaker_id)
 #
-# gb.create_overall_csv()
+# cm.create_overall_csv()
 #
 
 trainer = Trainer()

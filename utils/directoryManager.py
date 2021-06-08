@@ -57,14 +57,13 @@ def get_file_name(speaker_id, number):
     return pjoin(wav_path, file_name)
 
 
-def get_file_amount(speaker_id):
+def get_wav_files(speaker_id):
     parent_path = get_parent_path(speaker_id)
     folder_path = get_subfolder_path(parent_path, 'wav')
-    total = 0
-    for base, dirs, files in os.walk(folder_path):
-        print(len(files))
-        total = len(files)
-    return total
+    files = 0
+    for base, dirs, Files in os.walk(folder_path):
+        files = Files
+    return files
 
 
 def get_all_data_path():

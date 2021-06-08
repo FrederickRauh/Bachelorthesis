@@ -7,4 +7,5 @@ Anaconda Environment:
 - pip install playsound
 - pip install python_speech_features
 - pip install matplotlib
-- pip install pyannote.db.voxceleb
+
+[comment]: <> (- pip install pyannote.db.voxceleb)
