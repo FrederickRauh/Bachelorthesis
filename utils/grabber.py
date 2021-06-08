@@ -6,6 +6,7 @@ from utils import directoryManager as dm
 
 def create_overall_csv():
     ids = dm.get_all_data_names()
+    ids.remove('pairs.csv')
 
     rows = []
 

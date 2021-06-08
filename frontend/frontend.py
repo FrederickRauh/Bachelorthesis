@@ -25,35 +25,35 @@ from utils import csvMaker as cm
 #         pass
 
 
-def get_voice_input_stream(timespan, samplerate, number, name):
+def get_voice_input_stream(timespan, samplerate, number, speaker_id):
     for x in range(timespan//number):
-        get_voice_input(timespan, samplerate, x, name)
+        get_voice_input(timespan, samplerate, x, speaker_id)
 
 
 # getVoiceInput(30, 44100, 1)
-def get_voice_input(timespan, samplerate, number, name):
+def get_voice_input(timespan, samplerate, number, speaker_id):
     # samplerate = 44100
     # seconds = 5
-    parent_path = dm.get_parent_path(name)
+    parent_path = dm.get_parent_path(speaker_id)
     wav_path = dm.get_subfolder_path(parent_path, 'wav')
-    filename = dm.create_wav_file_name(name, number)
+    filename = dm.create_wav_file_name(speaker_id, number)
     recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=2)
     sd.wait()
     wav.write(wav_path + '\\' + filename, samplerate, recording)
     os.startfile(wav_path)
 
 
-def extract_features(name, number):
-    filepath = dm.get_file_name(name, number)
+def extract_features(speaker_id, number):
+    filepath = dm.get_file_name(speaker_id, number)
     (rate, sig) = wav.read(filepath)
     mfcc_feat = mfcc(sig, rate)
     fbank_feat = logfbank(sig, rate)
     return fbank_feat
 
 
-def process_features(name):
-    amount = dm.get_file_amount(name)
+def process_features(speaker_id):
+    amount = dm.get_file_amount(speaker_id)
     if amount > 0:
         for x in range(amount):
-            fbank_feat = extract_features(name, x)
-            cm.edit_csv(name, x, fbank_feat)
+            fbank_feat = extract_features(speaker_id, x)
+            cm.edit_csv(speaker_id, x, fbank_feat)
