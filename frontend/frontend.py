@@ -43,24 +43,24 @@ def get_voice_input(timespan, samplerate, number, speaker_id):
     os.startfile(wav_path)
 
 
-def extract_features_from_file(file_path):
+def extract_filterbank_energies_from_file(file_path):
+    # print('extracting filterbank energies from file : ', file_path)
     (rate, sig) = wav.read(file_path)
-    mfcc_feat = mfcc(sig, rate)
     fbank_feat = logfbank(sig, rate)
     return fbank_feat
 
 
-def extract_features(speaker_id, number):
-    filepath = dm.get_file_name(speaker_id, number)
-    (rate, sig) = wav.read(filepath)
-    mfcc_feat = mfcc(sig, rate)
-    fbank_feat = logfbank(sig, rate)
-    return fbank_feat
+def extract_mfcc_from_file(file_path):
+    # print('extracting mfcc from file : ', file_path)
+    (rate, sig) = wav.read(file_path)
+    mfcc_feat = mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None, preemph=0.97, ceplifter=22, appendEnergy=True)
+    return mfcc_feat
 
 
 def process_features(speaker_id):
     files = dm.get_wav_files(speaker_id)
     if len(files) > 0:
-        for x in range(len(files)):
-            fbank_feat = extract_features(speaker_id, x)
-            cm.edit_csv(speaker_id, files[x], fbank_feat)
+        for file in files:
+            file_path = dm.get_parent_path(speaker_id) + '\\' + file
+            features = extract_mfcc_from_file(file_path)
+            cm.edit_csv(speaker_id, file, features)

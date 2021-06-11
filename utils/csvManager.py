@@ -73,10 +73,10 @@ def create_overall_csv():
 
     for x in range(len(ids)):
         name_x = ids[x]
-        wav_files_x = dm.get_all_wav_names(name_x)
+        wav_files_x = dm.get_wav_files(name_x)
         for y in range(len(ids)):
             name_y = ids[y]
-            wav_files_y = dm.get_all_wav_names(name_y)
+            wav_files_y = dm.get_wav_files(name_y)
             identical = 0
             if name_x == name_y:
                 identical = 1
@@ -84,7 +84,7 @@ def create_overall_csv():
             for x_wav in range(len(wav_files_x)):
                 for y_wav in range(len(wav_files_y)):
                     if not wav_files_x[x_wav] == wav_files_y[y_wav]:
-                        rows.append([identical, name_x + folder_struc + wav_files_x[x_wav], name_y+ folder_struc + wav_files_y[y_wav]])
+                        rows.append([identical, name_x + '\\' + wav_files_x[x_wav], name_y + '\\' + wav_files_y[y_wav]])
     write_overall_csv(rows)
 
 
