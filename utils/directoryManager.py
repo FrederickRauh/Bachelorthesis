@@ -135,3 +135,12 @@ def get_project_path():
 
 def get_my_path():
     return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
+
+
+def get_voxceleb_path():
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_dev_wav' + '\\' + 'wav'
+
+
+def get_voxceleb_subfolders(speaker_id):
+    path = get_voxceleb_path() + '\\' + speaker_id
+    return os.listdir(path)

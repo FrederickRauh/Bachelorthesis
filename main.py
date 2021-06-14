@@ -38,13 +38,23 @@ trainer = Trainer()
 
 
 predictor = Predictor()
-speaker_id = 'id10001'
-test_path = dm.get_my_path()
-files_path = 'id10002' + '\\' + 'Y2Gr1I2DO7M'
-path = test_path + '\\' + files_path
-test_files = dm.get_wav_files_in_folder(path)
-for file in test_files:
-    score = predictor.predict_svm(speaker_id, file)
-    print('score : ', score)
+for speaker_id in speaker_ids:
+    dir = dm.get_voxceleb_subfolders(speaker_id)
+    dir_path = dir[len(dir) - 1]
+    files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
+    # print(files_path)
+    test_files = dm.get_wav_files_in_folder(files_path)
+    for file in test_files:
+        score = predictor.predict_svm(speaker_id, file)
+        if score == 1:
+            print('ITS HIM ::::: ', speaker_id, ', ', files_path, ',', score)
+        else:
+            print(score)
+
+
+# files_path = 'id10002' + '\\' + 'Y2Gr1I2DO7M'
+# path = test_path + '\\' + files_path
+# test_files = dm.get_wav_files_in_folder(path)
+
 
 
