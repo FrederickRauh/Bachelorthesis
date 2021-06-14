@@ -57,6 +57,13 @@ def extract_mfcc_from_file(file_path):
     return mfcc_feat
 
 
+def extract_mfcc_from_file_to_csv(file_path):
+    (rate, sig) = wav.read(file_path)
+    mfcc_feat = mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None,preemph=0.97, ceplifter=22, appendEnergy=True)
+    features = mfcc_feat[1: 3, :]
+    cm.write_features_to_file(file_path, features)
+
+
 def process_features(speaker_id):
     files = dm.get_wav_files(speaker_id)
     if len(files) > 0:

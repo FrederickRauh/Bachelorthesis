@@ -31,7 +31,6 @@ class Trainer(object):
         same = all_data_csv.same
         files_1 = all_data_csv.file_1
         files_2 = all_data_csv.file_2
-
         filter_arr = []
         i = 0;
         for element in files_1:
@@ -43,7 +42,12 @@ class Trainer(object):
         files_1 = files_1[filter_arr]
         files_2 = files_2[filter_arr]
 
-        m.create_svm_model(speaker_id, files_2, y)
+        files = []
+        for file in files_2:
+            file = file.replace('.wav', '.csv')
+            files.append(file)
+
+        m.create_svm_model(speaker_id, files, y)
 
         # x = []
         # data_path = dm.get_all_data_path()
@@ -59,9 +63,6 @@ class Trainer(object):
 
         # print("same: ", same)
         # print("file_2: ", x)
-
-
-
 
     def train(self):
         tf.reset_default_graph()

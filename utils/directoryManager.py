@@ -14,7 +14,7 @@ def create_csv_file_name(speaker_id):
 
 
 def get_parent_path(speaker_id):
-    parent_path = make_dir(os.path.join(os.getcwd(), "data"))
+    parent_path = make_dir(get_data_path())
     return make_dir(os.path.join(parent_path, speaker_id))
 
 
@@ -69,6 +69,19 @@ def make_dir(path):
 #     return pjoin(wav_path, file_name)
 
 
+def get_wav_files_in_folder(path):
+    files = []
+    wav_files = []
+    dir_path = path
+    for base, dirs2, Files in os.walk(dir_path):
+        files = Files
+    for file in files:
+        if file.endswith('.wav'):
+            wav_files.append(dir_path + '\\' + file)
+        files = []
+    return wav_files
+
+
 def get_wav_files(speaker_id):
     parent_path = get_parent_path(speaker_id)
     directories = list_sub_folders(parent_path)
@@ -94,7 +107,7 @@ def get_model_path(speaker_id, type):
 
 
 def get_all_data_path():
-    return os.path.join(os.getcwd(), "data")
+    return get_data_path()
 
 
 def get_all_ids():
@@ -104,10 +117,21 @@ def get_all_ids():
 
 
 def get_all_data_csv_file_path():
-    path = os.path.join(os.getcwd(), "data") + '\\' + 'pairs.csv'
+    path = get_data_path() + '\\' + 'pairs.csv'
     return path
 
 
 def get_all_data_names():
-    return os.listdir(os.path.join(os.getcwd(), "data"))
+    return os.listdir(get_data_path())
 
+
+def get_data_path():
+    # return os.path.join(get_project_path(), "data")
+    return get_my_path()
+
+
+def get_project_path():
+    return os.getcwd()
+
+def get_my_path():
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
