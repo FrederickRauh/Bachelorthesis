@@ -5,8 +5,7 @@ import speech_recognition as sr
 import sounddevice as sd
 import scipy.io.wavfile as wav
 
-from python_speech_features import mfcc
-from python_speech_features import logfbank
+from frontend import featureExtractor as fe
 
 from utils import directoryManager as dm
 from utils import csvManager as cm
@@ -43,31 +42,10 @@ def get_voice_input(timespan, samplerate, number, speaker_id):
     os.startfile(wav_path)
 
 
-def extract_filterbank_energies_from_file(file_path):
-    # print('extracting filterbank energies from file : ', file_path)
-    (rate, sig) = wav.read(file_path)
-    fbank_feat = logfbank(sig, rate)
-    return fbank_feat
-
-
-def extract_mfcc_from_file(file_path):
-    # print('extracting mfcc from file : ', file_path)
-    (rate, sig) = wav.read(file_path)
-    mfcc_feat = mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None, preemph=0.97, ceplifter=22, appendEnergy=True)
-    return mfcc_feat
-
-
-def extract_mfcc_from_file_to_csv(file_path):
-    (rate, sig) = wav.read(file_path)
-    mfcc_feat = mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None,preemph=0.97, ceplifter=22, appendEnergy=True)
-    features = mfcc_feat[1: 3, :]
-    cm.write_features_to_file(file_path, features)
-
-
 def process_features(speaker_id):
     files = dm.get_wav_files(speaker_id)
     if len(files) > 0:
         for file in files:
             file_path = dm.get_parent_path(speaker_id) + '\\' + file
-            features = extract_mfcc_from_file(file_path)
+            features = fe.extract_mfcc_from_file(file_path)
             cm.edit_csv(speaker_id, file, features)

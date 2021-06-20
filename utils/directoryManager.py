@@ -106,6 +106,14 @@ def get_model_path(speaker_id, type):
     return model_folder_path + '\\' + file_name
 
 
+def get_id_of_path(path):
+    sub_paths = path.split('\\')
+    for sub_path in sub_paths:
+        if sub_path.__contains__('id'):
+            return sub_path
+    return "no id in path"
+
+
 def get_all_data_path():
     return get_data_path()
 
@@ -125,9 +133,10 @@ def get_all_data_names():
     return os.listdir(get_data_path())
 
 
+# used to switch between
 def get_data_path():
-    # return os.path.join(get_project_path(), "data")
-    return get_my_path()
+    return os.path.join(get_project_path(), "data")
+    # return get_my_path()
 
 
 def get_project_path():

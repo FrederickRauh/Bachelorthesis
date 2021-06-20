@@ -1,10 +1,6 @@
 import pickle
 import csv
-import json
-import ast
-import tensorflow
 import numpy as np
-import pandas as pd
 from datetime import datetime
 
 import sklearn
@@ -13,7 +9,6 @@ from sklearn import metrics
 
 from frontend import frontend as fr
 
-from utils import csvManager as cm
 from utils import directoryManager as dm
 
 
@@ -34,17 +29,28 @@ def get_correct_array_form(array):
     return x.reshape((nsamples, nx * ny))
 
 
+def turn_list_to_array(list_array):
+    array = []
+    for entries in list_array:
+        under_array = []
+        for entry in entries:
+            under_array.append(np.asarray(entry))
+        array.append(under_array)
+    return array
+
+
 def get_correct_feature_array(files):
-    # data_path = dm.get_all_data_path()
     x = []
     for file in files:
-        # file_path = data_path + '\\' + file
         file_path = file
         wav_path = file_path.replace('.csv', '.wav')
         features = fr.extract_mfcc_from_file(wav_path)
+        # decide which feature array to use
         features_small = features[1: 3, :]
-        x.append(features_small)
-    return get_correct_array_form(x)
+        feature_array = features_small
+        x.append(feature_array)
+    return x
+    # return get_correct_array_form(x)
 
 
 def get_features_out_of_csv(files):
@@ -53,7 +59,8 @@ def get_features_out_of_csv(files):
     for file in files:
         file_path = data_path + '\\' + file
         x.append(get_features_from_csv(file_path))
-    return get_correct_array_form(x)
+    return x
+    # return get_correct_array_form(x)
 
 
 def get_features_from_csv(file):
@@ -69,24 +76,27 @@ def get_features_from_csv(file):
         return data
 
 
-
 def create_svm_model(speaker_id, files, is_speaker):
-    # data_path = dm.get_all_data_path()
     best = 0
     model_to_save = 0
     training_cycles = 2
-    print('files : ', len(files))
     for i in range(training_cycles):
         dateTimeObj = datetime.now()
-        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, " at: ", dateTimeObj)
+        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", dateTimeObj)
         files_train, files_test, speaker_train, speaker_test = sklearn.model_selection.train_test_split(files, is_speaker, test_size=0.2)
+
+        # print(get_features_out_of_csv(files_train)[0][0])
 
         x_train = get_features_out_of_csv(files_train)
         x_test = get_features_out_of_csv(files_test)
         y_train = np.array(speaker_train)
         y_test = np.array(speaker_test)
 
+        print(x_train)
+
         svm_model = svm.SVC(kernel='rbf', gamma='scale')
+        print("x_train : ", len(x_train))
+        print("y_train : ", len(y_train))
         svm_model.fit(x_train, y_train)
 
         y_pred_svm = svm_model.predict(x_test)

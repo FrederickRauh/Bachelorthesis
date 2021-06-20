@@ -1,15 +1,4 @@
-import pickle
-
-import tensorflow
-import numpy as np
-
-import sklearn
-from sklearn import svm
-from sklearn import metrics
-
-from frontend import frontend as fr
-from backend import model as m
-
+from backend import svm_model as m
 from utils import directoryManager as dm
 
 
@@ -19,10 +8,30 @@ class Predictor(object):
         pass
 
     def predict_svm(self, speaker_id, file_path):
-        prediction_array = []
-        prediction_array.append(file_path)
-        x = m.get_correct_feature_array(prediction_array)
+        x = m.get_correct_feature_array([file_path])
         svm_model = m.load_model(speaker_id, 'svm')
         y = x
         score = svm_model.predict(y)
         return score
+
+    def predict(self, speaker_id, model, test_files):
+        accepted = 0
+        miss = 0
+        denied = 0
+        false = 0
+        if model == 'svm':
+            for file in test_files:
+                score = self.predict_svm(speaker_id, file)
+                id_of_test_path = dm.get_id_of_path(file)
+
+                if speaker_id == id_of_test_path:
+                    if score == 1:
+                        accepted += 1
+                    else:
+                        miss += 1
+                else:
+                    if score == 1:
+                        false += 1
+                    else:
+                        denied += 1
+            print("Hits: ", accepted, " , missed:", miss, " , fails:", false, " , denied:", denied)

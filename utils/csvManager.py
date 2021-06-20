@@ -1,11 +1,8 @@
-import sys
 import csv
 import os
 
 import pandas as pd
-import numpy as np
 
-from frontend import frontend as fr
 from utils import directoryManager as dm
 
 
@@ -75,13 +72,17 @@ def edit_csv(speaker_id, file_name, features):
 
 def write_features_to_file(file_path, features):
     csv_path = file_path.replace('.wav', '.csv')
-    # feature_array = get_feature_array_for_csv(features)
-    #
-    # df = pd.DataFrame({'file_name': [file_path], 'features': [np.array(features)]})
-    # df.to_csv(csv_path, index=False)
     with open(csv_path, 'w') as file:
         writer = csv.writer(file)
         writer.writerows(features)
+
+
+def write_features_to_librosa_csv_file(file_path, features):
+    csv_path = file_path.replace('.wav', '.csv')
+    with open(csv_path, 'w') as file:
+        writer = csv.writer(file)
+        for feature in features:
+            writer.writerow(feature)
 
 
 def get_feature_array_for_csv(features):
