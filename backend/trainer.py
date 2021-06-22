@@ -6,6 +6,7 @@ from frontend import frontend as fr
 
 from backend import svm_model as m
 
+from utils import dataframeManager as dam
 from utils import directoryManager as dm
 from utils import csvManager as cm
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ class Trainer(object):
     def __init__(self):
         print()
 
-    def train_svm(self, speaker_id):
+    def train_svm(self, dataframe, speaker_id):
         all_data_csv = pd.read_csv(dm.get_all_data_csv_file_path())
 
         same = all_data_csv.same
@@ -40,12 +41,23 @@ class Trainer(object):
         files_1 = files_1[filter_arr]
         files_2 = files_2[filter_arr]
 
-        files = []
-        for file in files_2:
-            file = file.replace('.wav', '.csv')
-            files.append(file)
+        feature_data = dataframe
+        features = feature_data.feature
+        file_name = feature_data.file_name
 
-        m.create_svm_model(speaker_id, files, y)
+        training_files = []
+        for element in files_2:
+            # i = [x for x in file_name if x == element]
+            for x in range(len(file_name)):
+                if element == file_name[x]:
+                    training_files.append(features[x])
 
-    def train(self):
+        # files = []
+        # for file in files_2:
+        #     file = file.replace('.wav', '.csv')
+        #     files.append(file)
+
+        m.create_svm_model(speaker_id, training_files, y)
+
+    def train_gmm(self):
         tf.reset_default_graph()

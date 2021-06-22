@@ -6,24 +6,44 @@ import pandas as pd
 from utils import directoryManager as dm
 
 
-# def set_max_size():
-#     maxInt = sys.maxsize
-#     while True:
-#         try:
-#             csv.field_size_limit(maxInt)
-#             break
-#         except OverflowError:
-#             maxInt = int(maxInt/10)
+# Overall CSV (pairs.csv)
+def create_overall_csv():
+    ids = dm.get_all_data_names()
+    if ids.__contains__('pairs.csv'):
+        ids.remove('pairs.csv')
+    if ids.__contains__('dataframe.csv'):
+        ids.remove('dataframe.csv')
+
+    folder_struc = '\\' + "wav" + '\\'
+
+    rows = []
+
+    for x in range(len(ids)):
+        name_x = ids[x]
+        wav_files_x = dm.get_wav_files(name_x)
+        for y in range(len(ids)):
+            name_y = ids[y]
+            wav_files_y = dm.get_wav_files(name_y)
+            identical = 0
+            if name_x == name_y:
+                identical = 1
+
+            for x_wav in range(len(wav_files_x)):
+                for y_wav in range(len(wav_files_y)):
+                    if not wav_files_x[x_wav] == wav_files_y[y_wav]:
+                        rows.append([identical, name_x + '\\' + wav_files_x[x_wav], name_y + '\\' + wav_files_y[y_wav]])
+    write_overall_csv(rows)
+
 
 def write_overall_csv(rows):
     csv_path = dm.get_all_data_path() + '\\' + "pairs.csv"
-
     with open(csv_path, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["same", "file_1", "file_2"])
         writer.writerows(rows)
 
 
+# CSV for each user(user_path + '\\' + csv)
 def create_csv(speaker_id):
     csv_path = dm.get_csv_path(speaker_id)
     with open(csv_path, 'w', newline='') as file:
@@ -38,7 +58,9 @@ def find_csv(speaker_id):
     return csv_path
 
 
+# CSV file that contains the features of a single wav file
 def create_feature_csv(csv_path, rows):
+    dm.create_feature_csv_dir(csv_path)
     with open(csv_path, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["file_name", "features"])
@@ -47,12 +69,12 @@ def create_feature_csv(csv_path, rows):
 
 def find_feature_csv(csv_path):
     if not os.path.isfile(csv_path):
-        create_feature_csv(csv_path)
+        create_feature_csv(csv_path, [])
     return csv_path
 
 
 def edit_csv(speaker_id, file_name, features):
-    name = 'frederick'
+    name = speaker_id
     gender = 'm'
 
     feature_array = get_feature_array_for_csv(features)
@@ -77,12 +99,35 @@ def write_features_to_file(file_path, features):
         writer.writerows(features)
 
 
-def write_features_to_librosa_csv_file(file_path, features):
-    csv_path = file_path.replace('.wav', '.csv')
-    with open(csv_path, 'w') as file:
-        writer = csv.writer(file)
-        for feature in features:
-            writer.writerow(feature)
+def write_features_to_librosa_csv_file(csv_path, wav_path, features):
+    csv_path = csv_path.replace('.wav', '.csv')
+    find_feature_csv(csv_path)
+    entry = []
+    for feature in features:
+        entry.append([wav_path, feature])
+    csv_file = pd.DataFrame(entry, columns=['wav_path', 'features'])
+    dm.check_if_file_exists_then_remove(csv_path)
+    csv_file.to_csv(csv_path)
+    # with open(csv_path, 'w') as file:
+    #     writer = csv.writer(file)
+    #     writer.writerow(features)
+    #     # for feature in features:
+    #     #     writer.writerow(feature)
+
+
+def write_features_to_psf_csv_file(csv_path, wav_path, features):
+    csv_path = csv_path.replace('.wav', '.csv')
+    find_feature_csv(csv_path)
+    entry = []
+    for feature in features:
+        entry.append([wav_path, feature])
+    csv_file = pd.DataFrame(entry, columns=['wav_path', 'features'])
+    dm.check_if_file_exists_then_remove(csv_path)
+    csv_file.to_csv(csv_path)
+    # with open(csv_path, 'w') as file:
+    #     writer = csv.writer(file)
+    #     for feature in features:
+    #         writer.writerow(feature)
 
 
 def get_feature_array_for_csv(features):
@@ -99,29 +144,3 @@ def read_csv(csv_file_path):
         for row in reader:
             rows.append(row)
     return rows
-
-
-def create_overall_csv():
-    ids = dm.get_all_data_names()
-    if ids.__contains__('pairs.csv'):
-        ids.remove('pairs.csv')
-
-    folder_struc = '\\' + "wav" + '\\'
-
-    rows = []
-
-    for x in range(len(ids)):
-        name_x = ids[x]
-        wav_files_x = dm.get_wav_files(name_x)
-        for y in range(len(ids)):
-            name_y = ids[y]
-            wav_files_y = dm.get_wav_files(name_y)
-            identical = 0
-            if name_x == name_y:
-                identical = 1
-
-            for x_wav in range(len(wav_files_x)):
-                for y_wav in range(len(wav_files_y)):
-                    if not wav_files_x[x_wav] == wav_files_y[y_wav]:
-                        rows.append([identical, name_x + '\\' + wav_files_x[x_wav], name_y + '\\' + wav_files_y[y_wav]])
-    write_overall_csv(rows)

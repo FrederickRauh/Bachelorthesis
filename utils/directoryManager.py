@@ -48,6 +48,26 @@ def get_csv_path(speaker_id):
     return csv_path + '\\' + filename
 
 
+def create_feature_csv_dir(file_path):
+    sub_path = file_path.split('\\')
+    new_dir_path = ''
+    for x in range(len(sub_path)):
+        if not x == (len(sub_path) - 1):
+            new_dir_path = new_dir_path + sub_path[x] + '\\'
+    make_dir(new_dir_path)
+
+
+def get_feature_csv_path(file_path, feature_version):
+    sub_path = file_path.split('\\')
+    new_file_path = ''
+    for x in range(len(sub_path)):
+        if x == (len(sub_path) - 1):
+            new_file_path = new_file_path + feature_version + '\\' + sub_path[x]
+        else:
+            new_file_path = new_file_path + sub_path[x] + '\\'
+    return new_file_path
+
+
 def get_wav_folder_path(speaker_id):
     parent_path = get_parent_path(speaker_id)
     return get_sub_folder_path(parent_path, 'wav')
@@ -74,7 +94,8 @@ def get_wav_files_in_folder(path):
     wav_files = []
     dir_path = path
     for base, dirs2, Files in os.walk(dir_path):
-        files = Files
+        if not base.endswith('\librosa') and not base.endswith('\psf'):
+            files = Files
     for file in files:
         if file.endswith('.wav'):
             wav_files.append(dir_path + '\\' + file)
@@ -88,10 +109,11 @@ def get_wav_files(speaker_id):
     files = []
     wav_files = []
     for directory in directories:
-        if not directory == 'csv' and not directory == 'model':
+        if not directory.__contains__('csv') and not directory == 'model':
             dir_path = parent_path + '\\' + directory
             for base, dirs2, Files in os.walk(dir_path):
-                files = Files
+                if not base.endswith('\librosa') and not base.endswith('\psf'):
+                    files = Files
             for file in files:
                 if file.endswith('.wav'):
                     wav_files.append(directory + '\\' + file)
@@ -114,13 +136,21 @@ def get_id_of_path(path):
     return "no id in path"
 
 
+def check_if_file_exists_then_remove(file_path):
+    if not os.path.exists(file_path):
+        os.remove(file_path)
+
+
 def get_all_data_path():
     return get_data_path()
 
 
 def get_all_ids():
     ids = get_all_data_names()
-    ids.remove('pairs.csv')
+    if ids.__contains__('pairs.csv'):
+        ids.remove('pairs.csv')
+    if ids.__contains__('dataframe.csv'):
+        ids.remove('dataframe.csv')
     return ids
 
 
@@ -142,8 +172,9 @@ def get_data_path():
 def get_project_path():
     return os.getcwd()
 
+
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'librosa' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
 
 
 def get_voxceleb_path():
