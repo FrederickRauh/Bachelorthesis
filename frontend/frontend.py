@@ -8,7 +8,7 @@ import scipy.io.wavfile as wav
 from frontend import featureExtractorPSF as fe
 
 from utils import directoryManager as dm
-from utils import csvManager as cm
+from utils import fileManager as fm
 
 
 # getSpeechInput()
@@ -24,22 +24,25 @@ from utils import csvManager as cm
 #         pass
 
 
-def get_voice_input_stream(timespan, samplerate, number, speaker_id):
+def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
     print("collecting voice samples....")
     for x in range(number):
-        get_voice_input(timespan, samplerate, x, speaker_id)
+        get_voice_input(timespan, samplerate, x, speaker_id, test)
 
 
 # getVoiceInput(30, 44100, 1)
-def get_voice_input(timespan, samplerate, number, speaker_id):
+def get_voice_input(timespan, samplerate, number, speaker_id, test):
     # samplerate = 44100
     # seconds = 5
-    parent_path = dm.get_parent_path(speaker_id)
-    wav_path = dm.get_sub_folder_path(parent_path, 'wav')
-    filename = number
+    # parent_path = dm.get_parent_path(speaker_id)
+    # wav_path = dm.get_sub_folder_path(parent_path, 'wav')
+    wav_path = dm.get_file_name(speaker_id, number)
+    if test:
+        wav_path = wav_path.replace('data', 'test')
+    filename = str(number)
     recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=2)
     sd.wait()
-    wav.write(wav_path + '\\' + filename, samplerate, recording)
+    wav.write(wav_path, samplerate, recording)
     os.startfile(wav_path)
 
 
@@ -49,7 +52,7 @@ def process_features_with_psf(speaker_id):
         for file in files:
             file_path = dm.get_parent_path(speaker_id) + '\\' + file
             features = fe.extract_mfcc_from_file_psf(file_path)
-            cm.edit_csv(speaker_id, file, features)
+            fm.edit_csv(speaker_id, file, features)
 
 
 def process_features_with_librosa(speaker_id):
@@ -58,5 +61,5 @@ def process_features_with_librosa(speaker_id):
         for file in files:
             file_path = dm.get_parent_path(speaker_id) + '\\' + file
             features = fe.extract_mfcc_from_file_librosa(file_path)
-            cm.edit_csv(speaker_id, file, features)
+            fm.edit_csv(speaker_id, file, features)
 

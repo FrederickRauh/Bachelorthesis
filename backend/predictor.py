@@ -1,7 +1,10 @@
 from backend import svm_model as m
 
-from frontend import featureExtractorPSF as fe
+from frontend import featureExtractorLibrosa as flib
+from frontend import featureExtractorPSF as fpsf
+
 from utils import directoryManager as dm
+from utils import util
 
 
 class Predictor(object):
@@ -12,9 +15,9 @@ class Predictor(object):
     def predict_svm(self, speaker_id, file_path):
         # x = m.get_correct_feature_array([file_path])
 
-        x = fe.extract_processed_features_librosa(file_path)
+        x = fpsf.extract_processed_mfcc_from_file(file_path)
         svm_model = m.load_model(speaker_id, 'svm')
-        y = [x]
+        y = util.get_correct_array_form([x])
         score = svm_model.predict(y)
         return score
 

@@ -6,7 +6,10 @@ from os.path import dirname, join as pjoin
 
 def create_wav_file_name(speaker_id, number):
     number = f"{number:05}"
-    return speaker_id + '-' + str(number) + '.wav'
+    if speaker_id == '':
+        return str(number) + '.wav'
+    else:
+        return speaker_id + '\\' + str(number) + '.wav'
 
 
 def create_csv_file_name(speaker_id):
@@ -34,7 +37,6 @@ def get_sub_folder_path(parent_path, sub_folder):
     if not os.path.exists(path):
         make_dir(path)
     return path
-    print("Sub folder: " + sub_folder + " does not exist")
 
 
 def create_sub_folder(parent_path, sub_folder_name):
@@ -57,15 +59,44 @@ def create_feature_csv_dir(file_path):
     make_dir(new_dir_path)
 
 
-def get_feature_csv_path(file_path, feature_version):
-    sub_path = file_path.split('\\')
-    new_file_path = ''
+def get_feature_path(wav_path, version):
+    sub_path = wav_path.split('\\')
+    feature_path = ''
     for x in range(len(sub_path)):
         if x == (len(sub_path) - 1):
-            new_file_path = new_file_path + feature_version + '\\' + sub_path[x]
+            feature_path = feature_path + '\\' + version + '\\' + sub_path[x]
         else:
-            new_file_path = new_file_path + sub_path[x] + '\\'
-    return new_file_path
+            feature_path = feature_path + sub_path[x] + '\\'
+    return feature_path
+
+
+def get_feature_librosa_csv_path(wav_path):
+    json_path = get_feature_path(wav_path, 'librosa')
+    return json_path.replace('.wav', '.csv')
+
+
+def get_feature_librosa_json_path(wav_path):
+    json_path = get_feature_path(wav_path, 'librosa')
+    return json_path.replace('.wav', '.json')
+
+
+def get_feature_psf_csv_path(wav_path):
+    json_path = get_feature_path(wav_path, 'psf')
+    return json_path.replace('.wav', '.csv')
+
+
+def get_feature_psf_json_path(wav_path):
+    json_path = get_feature_path(wav_path, 'psf')
+    return json_path.replace('.wav', '.json')
+
+
+def create_feature_json_dir(file_path):
+    sub_path = file_path.split('\\')
+    new_dir_path = ''
+    for x in range(len(sub_path)):
+        if not x == (len(sub_path) - 1):
+            new_dir_path = new_dir_path + sub_path[x] + '\\'
+    make_dir(new_dir_path)
 
 
 def get_wav_folder_path(speaker_id):
@@ -82,11 +113,11 @@ def make_dir(path):
     return path
 
 
-# def get_file_name(speaker_id, number):
-#     parent_path = get_parent_path(speaker_id)
-#     wav_path = get_subfolder_path(parent_path, 'wav')
-#     file_name = create_wav_file_name(speaker_id, number)
-#     return pjoin(wav_path, file_name)
+def get_file_name(speaker_id, number):
+    parent_path = get_parent_path(speaker_id)
+    wav_path = get_sub_folder_path(parent_path, 'wav')
+    file_name = create_wav_file_name('', number)
+    return pjoin(wav_path, file_name)
 
 
 def get_wav_files_in_folder(path):
@@ -137,7 +168,7 @@ def get_id_of_path(path):
 
 
 def check_if_file_exists_then_remove(file_path):
-    if not os.path.exists(file_path):
+    if os.path.exists(file_path):
         os.remove(file_path)
 
 
@@ -151,6 +182,10 @@ def get_all_ids():
         ids.remove('pairs.csv')
     if ids.__contains__('dataframe.csv'):
         ids.remove('dataframe.csv')
+    if ids.__contains__('librosa-dataframe.json'):
+        ids.remove('librosa-dataframe.json')
+    if ids.__contains__('psf-dataframe.json'):
+        ids.remove('psf-dataframe.json')
     return ids
 
 
@@ -174,7 +209,16 @@ def get_project_path():
 
 
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'librosa' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
+
+
+def get_test_path():
+    return os.path.join(get_project_path(), "test")
+
+
+def get_test_subfolders(speaker_id):
+    path = get_test_path() + '\\' + speaker_id
+    return os.listdir(path)
 
 
 def get_voxceleb_path():

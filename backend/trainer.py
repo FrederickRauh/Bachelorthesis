@@ -8,7 +8,8 @@ from backend import svm_model as m
 
 from utils import dataframeManager as dam
 from utils import directoryManager as dm
-from utils import csvManager as cm
+from utils import fileManager as fm
+from utils import util
 import matplotlib.pyplot as plt
 
 import pickle
@@ -50,13 +51,15 @@ class Trainer(object):
             # i = [x for x in file_name if x == element]
             for x in range(len(file_name)):
                 if element == file_name[x]:
-                    training_files.append(features[x])
+                    # print("ELEMENT:", element, "features:", features[x])
+                    training_features = features[x]['0']
+                    training_files.append(training_features)
 
         # files = []
         # for file in files_2:
         #     file = file.replace('.wav', '.csv')
         #     files.append(file)
-
+        training_files = util.get_correct_array_form(training_files)
         m.create_svm_model(speaker_id, training_files, y)
 
     def train_gmm(self):

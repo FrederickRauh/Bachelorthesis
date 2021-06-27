@@ -26,11 +26,11 @@ def load_model(speaker_id, type):
 def create_svm_model(speaker_id, files, is_speaker):
     best = 0
     model_to_save = 0
-    training_cycles = 2
+    training_cycles = 4
     for i in range(training_cycles):
         dateTimeObj = datetime.now()
         print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", dateTimeObj)
-        files_train, files_test, speaker_train, speaker_test = sklearn.model_selection.train_test_split(files, is_speaker, test_size=0.2)
+        files_train, files_test, speaker_train, speaker_test = sklearn.model_selection.train_test_split(files, is_speaker, test_size=0.1)
 
         # print(get_features_out_of_csv(files_train)[0][0])
 

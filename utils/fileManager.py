@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 
 import pandas as pd
@@ -8,12 +9,8 @@ from utils import directoryManager as dm
 
 # Overall CSV (pairs.csv)
 def create_overall_csv():
-    ids = dm.get_all_data_names()
-    if ids.__contains__('pairs.csv'):
-        ids.remove('pairs.csv')
-    if ids.__contains__('dataframe.csv'):
-        ids.remove('dataframe.csv')
-
+    ids = dm.get_all_ids()
+    print(ids)
     folder_struc = '\\' + "wav" + '\\'
 
     rows = []
@@ -144,3 +141,31 @@ def read_csv(csv_file_path):
         for row in reader:
             rows.append(row)
     return rows
+
+
+# JSON PART
+def create_feature_json(json_path, rows):
+    dm.create_feature_json_dir(json_path)
+    with open(json_path, 'w', newline='') as file:
+        writer = json.writer(file)
+        writer.writerow(["file_name", "features"])
+        writer.writerows(rows)
+
+
+def find_feature_json(json_path):
+    if not os.path.isfile(json_path):
+        create_feature_csv(json_path, [])
+    return json_path
+
+
+def write_features_to_librosa_json_file(json_path, wav_path, features):
+    json_path = json_path.replace('.wav', '.json')
+    # find_feature_csv(csv_path)
+    find_feature_json(json_path)
+    entry = []
+    entry.append([wav_path, features])
+    # for feature in features:
+    #     entry.append([wav_path, feature])
+    json_file = pd.DataFrame(entry, columns=['wav_path', 'features'])
+    dm.check_if_file_exists_then_remove(json_path)
+    json_file.to_json(json_path)
