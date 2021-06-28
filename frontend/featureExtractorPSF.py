@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 
 import scipy.io.wavfile as wav
+from scipy.signal.windows import hann
 
+from utils import util
 from utils import directoryManager as dm
 from utils import fileManager as fm
 
@@ -18,20 +20,31 @@ def extract_filterbank_energies_from_file(file_path):
 
 def extract_mfcc_from_file(file_path):
     # print('extracting mfcc from file : ', file_path)
-    (rate, sig) = wav.read(file_path)
-    return psf.mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None,
-                    preemph=0.97, ceplifter=22, appendEnergy=True)
+    sr, signal = util.get_four_seconde_frame_of_wav_file(file_path)
+    n_mfcc = 13
+    n_mels = 40  # prev: 26
+    n_fft = 2048  # prev: 0.025 and 2048(duo to error message)
+    hop_length = 160  # prev: 0.01
+    fmin = 0
+    fmax = None
+    preemph = 0.0  # prev: 0.07
+    ceplifter = 0  # prev: 22
+    appendEnergy = False # prev: True
+    winlen = 0.064  # prev n_fft / sr
+    winstep = 0.036  # prev: hop_length / sr (default 0.01 (10ms))
+    # sr = 16000 # to get a uniform samplerate
+    # todo 16-64ms frames(winlen and winstep), maybe 4 seconds frames maybe add padding
+    return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels, nfft=n_fft, lowfreq=fmin, highfreq=fmax,
+                    preemph=preemph, ceplifter=ceplifter, appendEnergy=appendEnergy, winfunc=hann)
 
 
 def extract_processed_mfcc_from_file(file_path):
     mfcc = extract_mfcc_from_file(file_path)
-    return mfcc[1:3, :]
+    return mfcc[0:40, :]
 
 
 def extract_mfcc_from_file_to_csv(file_path):
-    (rate, sig) = wav.read(file_path)
-    mfcc_feat = psf.mfcc(sig, rate, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0, highfreq=None,
-                preemph=0.97, ceplifter=22, appendEnergy=True)
+    mfcc_feat = extract_mfcc_from_file(file_path)
     new_file_path = dm.get_feature_psf_csv_path(file_path)
     features = mfcc_feat
     fm.write_features_to_psf_csv_file(new_file_path, file_path, features)

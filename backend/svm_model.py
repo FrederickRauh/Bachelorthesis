@@ -28,8 +28,8 @@ def create_svm_model(speaker_id, files, is_speaker):
     model_to_save = 0
     training_cycles = 4
     for i in range(training_cycles):
-        dateTimeObj = datetime.now()
-        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", dateTimeObj)
+        start_time = datetime.now()
+        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", start_time)
         files_train, files_test, speaker_train, speaker_test = sklearn.model_selection.train_test_split(files, is_speaker, test_size=0.1)
 
         # print(get_features_out_of_csv(files_train)[0][0])
@@ -49,10 +49,15 @@ def create_svm_model(speaker_id, files, is_speaker):
         y_pred_svm = svm_model.predict(x_test)
         accuracy = metrics.accuracy_score(y_test, y_pred_svm)
 
-        print("current accuracy : ", accuracy)
+        after_time = datetime.now()
+        duration = after_time - start_time
+
+        print("amount of time:", duration
+              , "current accuracy : ", accuracy)
         if accuracy > best:
             best = accuracy
             model_to_save = svm_model
+        start_time = datetime.now()
 
     print('model accuracy: ', best)
     save_model(speaker_id, 'svm', model_to_save)

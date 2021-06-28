@@ -1,6 +1,22 @@
 import numpy as np
 
+import scipy.io.wavfile as wav
+
 # util part
+def get_four_seconde_frame_of_wav_file(file_path):
+    sr, signal = wav.read(file_path)
+    # four seconds of data from .wav
+    duration = len(signal) // float(sr)
+    if duration >= 4:
+        length_in_seconds = duration
+        # middle = i  # (len(signal) // 2) - 1
+        signal_per_second = sr
+        middle = (len(signal) // 2)
+        left_side = int(middle - (2 * sr))
+        right_side = int(middle + (2 * sr))
+        signal = signal[left_side:right_side]
+    return sr, signal
+
 def get_correct_array_form(array):
     x = np.array(array)
     nsamples, nx, ny = x.shape

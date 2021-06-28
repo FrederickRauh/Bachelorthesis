@@ -26,6 +26,7 @@ class Trainer(object):
         print()
 
     def train_svm(self, dataframe, speaker_id):
+        print("started training: ", speaker_id)
         all_data_csv = pd.read_csv(dm.get_all_data_csv_file_path())
 
         same = all_data_csv.same
@@ -54,7 +55,6 @@ class Trainer(object):
                     # print("ELEMENT:", element, "features:", features[x])
                     training_features = features[x]['0']
                     training_files.append(training_features)
-
         # files = []
         # for file in files_2:
         #     file = file.replace('.wav', '.csv')
