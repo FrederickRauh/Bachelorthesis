@@ -2,7 +2,15 @@ import numpy as np
 
 import scipy.io.wavfile as wav
 
+
 # util part
+def remove_finished_ids(ids, finished_ids):
+    for id in finished_ids:
+        if ids.__contains__(id):
+            ids.remove(id)
+    return ids
+
+
 def get_four_seconde_frame_of_wav_file(file_path):
     sr, signal = wav.read(file_path)
     # four seconds of data from .wav

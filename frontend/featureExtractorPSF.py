@@ -82,7 +82,7 @@ def extract_mfcc_from_file_to_json(file_path):
     mfcc_feat = extract_processed_mfcc_from_file(file_path)
     new_file_path = dm.get_feature_psf_json_path(file_path)
     features = mfcc_feat
-    fm.write_features_to_librosa_json_file(new_file_path, file_path, features)
+    fm.write_features_to_json_file(new_file_path, file_path, features)
 
 
 def load_features_from_json(file_path):

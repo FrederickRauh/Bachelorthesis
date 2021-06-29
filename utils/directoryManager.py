@@ -200,8 +200,8 @@ def get_all_data_names():
 
 # used to switch between
 def get_data_path():
-    return os.path.join(get_project_path(), "data")
-    # return get_my_path()
+    # return os.path.join(get_project_path(), "data")
+    return get_my_path()
 
 
 def get_project_path():

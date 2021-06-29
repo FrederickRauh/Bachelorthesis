@@ -2,6 +2,8 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 
+from datetime import datetime
+
 from frontend import frontend as fr
 
 from backend import svm_model as m
@@ -33,34 +35,29 @@ class Trainer(object):
         files_1 = all_data_csv.file_1
         files_2 = all_data_csv.file_2
         filter_arr = []
-        i = 0
         for element in files_1:
             if speaker_id in element:
                 filter_arr.append(True)
             else:
                 filter_arr.append(False)
         y = same[filter_arr]
-        files_1 = files_1[filter_arr]
+        # files_1 = files_1[filter_arr]
         files_2 = files_2[filter_arr]
-
         feature_data = dataframe
         features = feature_data.feature
         file_name = feature_data.file_name
-
+        # TODO improve time is lost here!
         training_files = []
         for element in files_2:
-            # i = [x for x in file_name if x == element]
-            for x in range(len(file_name)):
-                if element == file_name[x]:
-                    # print("ELEMENT:", element, "features:", features[x])
-                    training_features = features[x]['0']
-                    training_files.append(training_features)
-        # files = []
-        # for file in files_2:
-        #     file = file.replace('.wav', '.csv')
-        #     files.append(file)
+            training_features = dataframe.loc[dataframe['file_name'] == element].feature.array[0]['0']
+            training_files.append(training_features)
+            # for x in range(len(file_name)):
+            #     if element == file_name[x]:
+            #         # print("ELEMENT:", element, "features:", features[x])
+            #         training_features = features[x]['0']
+            #         training_files.append(training_features)
         training_files = util.get_correct_array_form(training_files)
-        m.create_svm_model(speaker_id, training_files, y)
+        m.create_model(speaker_id, training_files, y)
 
     def train_gmm(self):
         tf.reset_default_graph()

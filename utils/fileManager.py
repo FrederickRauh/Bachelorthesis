@@ -158,7 +158,7 @@ def find_feature_json(json_path):
     return json_path
 
 
-def write_features_to_librosa_json_file(json_path, wav_path, features):
+def write_features_to_json_file(json_path, wav_path, features):
     json_path = json_path.replace('.wav', '.json')
     # find_feature_csv(csv_path)
     find_feature_json(json_path)
@@ -169,3 +169,10 @@ def write_features_to_librosa_json_file(json_path, wav_path, features):
     json_file = pd.DataFrame(entry, columns=['wav_path', 'features'])
     dm.check_if_file_exists_then_remove(json_path)
     json_file.to_json(json_path)
+
+
+def load_features_from_json_of_wav_file(wav_path, version):
+    json_path = dm.get_all_data_path() + '\\' + dm.get_feature_path(wav_path, version)
+    json_path = json_path.replace('.wav', '.json')
+    dataframe = pd.read_json(json_path)
+    return dataframe.features[0]

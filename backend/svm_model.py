@@ -23,7 +23,7 @@ def load_model(speaker_id, type):
     return pickle.load(open(model_path, 'rb'))
 
 
-def create_svm_model(speaker_id, files, is_speaker):
+def create_model(speaker_id, files, is_speaker):
     best = 0
     model_to_save = 0
     training_cycles = 4
@@ -52,7 +52,7 @@ def create_svm_model(speaker_id, files, is_speaker):
         after_time = datetime.now()
         duration = after_time - start_time
 
-        print("amount of time:", duration
+        print("model training took:", duration.total_seconds() // 60, "minutes;"
               , "current accuracy : ", accuracy)
         if accuracy > best:
             best = accuracy
