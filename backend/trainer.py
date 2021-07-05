@@ -6,7 +6,8 @@ from datetime import datetime
 
 from frontend import frontend as fr
 
-from backend import svm_model as m
+from backend import svm_model as svm
+from backend import gmm_model as gmm
 
 from utils import dataframeManager as dam
 from utils import directoryManager as dm
@@ -27,37 +28,39 @@ class Trainer(object):
     def __init__(self):
         print()
 
-    def train_svm(self, dataframe, speaker_id):
-        print("started training: ", speaker_id)
+    def get_data_for_training(self, speaker_id, dataframe):
         all_data_csv = pd.read_csv(dm.get_all_data_csv_file_path())
-
         same = all_data_csv.same
         files_1 = all_data_csv.file_1
         files_2 = all_data_csv.file_2
+
         filter_arr = []
         for element in files_1:
             if speaker_id in element:
                 filter_arr.append(True)
             else:
                 filter_arr.append(False)
+
         y = same[filter_arr]
-        # files_1 = files_1[filter_arr]
         files_2 = files_2[filter_arr]
-        feature_data = dataframe
-        features = feature_data.feature
-        file_name = feature_data.file_name
-        # TODO improve time is lost here!
+
+        training_files = self.get_training_files(dataframe, files_2)
+
+        return training_files, y
+
+    def get_training_files(self, dataframe, files):
         training_files = []
-        for element in files_2:
+        for element in files:
             training_features = dataframe.loc[dataframe['file_name'] == element].feature.array[0]['0']
             training_files.append(training_features)
-            # for x in range(len(file_name)):
-            #     if element == file_name[x]:
-            #         # print("ELEMENT:", element, "features:", features[x])
-            #         training_features = features[x]['0']
-            #         training_files.append(training_features)
-        training_files = util.get_correct_array_form(training_files)
-        m.create_model(speaker_id, training_files, y)
+        return util.get_correct_array_form(training_files)
 
-    def train_gmm(self):
-        tf.reset_default_graph()
+    def train_svm(self, dataframe, speaker_id):
+        print("started training svm_model for: ", speaker_id)
+        training_files, y = self.get_data_for_training(speaker_id, dataframe)
+        svm.create_model(speaker_id, training_files, y)
+
+    def train_gmm(self, dataframe, speaker_id):
+        print("started training gmm_model for:", speaker_id)
+        training_files, y = self.get_data_for_training(speaker_id, dataframe)
+        gmm.create_model(speaker_id, training_files, y)

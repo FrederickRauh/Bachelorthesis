@@ -31,7 +31,7 @@ def extract_mfcc_from_file(file_path):
     ceplifter = 0  # prev: 22
     appendEnergy = False # prev: True
     winlen = 0.064  # prev n_fft / sr
-    winstep = 0.036  # prev: hop_length / sr (default 0.01 (10ms))
+    winstep = 0.01  # prev: 0.036, hop_length / sr (default 0.01 (10ms))
     # sr = 16000 # to get a uniform samplerate
     # todo 16-64ms frames(winlen and winstep), maybe 4 seconds frames maybe add padding
     return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels, nfft=n_fft, lowfreq=fmin, highfreq=fmax,

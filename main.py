@@ -1,6 +1,7 @@
+import json
+
 import numpy as np
 import pandas as pd
-
 
 from backend import trainer
 from backend.trainer import Trainer
@@ -16,9 +17,13 @@ from utils import directoryManager as dm
 from utils import fileManager as cm
 from utils import util
 
-
+#
+# finished_ids = ['id10001', 'id10002', 'id10003', 'id10004', 'id10005',
+#                 'id10006', 'id10007', 'id10008', 'id10009', 'id10010',
+#                 'id10011', 'id10012', 'id10013', 'id10014', 'id10015',
+#                 'id10016', 'id10017']
 finished_ids = []
-
+# id00001 Start at:  2021-06-29 00:26:27.136246, id10017 Start at:  2021-07-01 04:09:48.288758
 print("starting...")
 speaker_ids = dm.get_all_ids()
 
@@ -27,19 +32,19 @@ speaker_ids = dm.get_all_ids()
 # fr.get_voice_input_stream(4, 16000, 100, speaker_id, False)
 
 
-# # # preparation phase
-print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
-cm.create_overall_csv()
-for speaker_id in speaker_ids:
-    files = dm.get_wav_files(speaker_id)
-    for file in files:
-        file_path = dm.get_parent_path(speaker_id) + '\\' + file
-        # flib.extract_mfcc_from_file_to_json(file_path)
-        fpsf.extract_mfcc_from_file_to_json(file_path)
-# dam.create_librosa_dataframe(speaker_ids)
-dam.create_psf_dataframe(speaker_ids)
+# # preparation phase
+# print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
+# cm.create_overall_csv()
+# for speaker_id in speaker_ids:
+#     files = dm.get_wav_files(speaker_id)
+#     for file in files:
+#         file_path = dm.get_parent_path(speaker_id) + '\\' + file
+#         # flib.extract_mfcc_from_file_to_json(file_path)
+#         fpsf.extract_mfcc_from_file_to_json(file_path)
+# # dam.create_librosa_dataframe(speaker_ids)
+# dam.create_psf_dataframe(speaker_ids)
 #
-# # # Training phase
+# # Training phase
 print("training phase...")
 ids = util.remove_finished_ids(speaker_ids, finished_ids)
 trainer = Trainer()
@@ -48,28 +53,7 @@ dataframe = dam.load_dataframe_from_path(dataframe_path)
 for speaker_id in speaker_ids:
     trainer.train_svm(dataframe, speaker_id)
 
-
-
-# # #Prediction phase
+# #Prediction phase
 print("prediction phase...")
 predictor = Predictor()
-overall_test_files = []
-for speaker_id in speaker_ids:
-    # dir = dm.get_test_subfolders(speaker_id)
-    dir = dm.get_voxceleb_subfolders(speaker_id)
-    dir_path = dir[len(dir) - 1]
-    # files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
-    files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
-    test_files = dm.get_wav_files_in_folder(files_path)
-    for x in range(len(test_files)):
-        overall_test_files.append(test_files[x])
-
-print("overall_test_files length: ", len(overall_test_files))
-
-for speaker_id in speaker_ids:
-    speaker_report = []
-    predictor.predict_speaker(speaker_id, 'svm', overall_test_files)
-
-
-
-
+predictor.predict_multiple_speakers(speaker_ids)

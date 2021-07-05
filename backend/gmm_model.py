@@ -42,6 +42,7 @@ def create_model(speaker_id, files, is_speaker):
         print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", start_time)
         x_train, x_test, y_train, y_test = train_test_split(files, is_speaker)
         train_data = [x_train, y_train]
+        # why did i do  this?!
         gmm_model = gmm(n_components=19, covariance_type='diag').fit(train_data)
 
         y_pred_svm = gmm.predict(x_test)
@@ -55,7 +56,6 @@ def create_model(speaker_id, files, is_speaker):
         if accuracy > best:
             best = accuracy
             model_to_save = gmm_model
-        start_time = datetime.now()
 
     print('model accuracy: ', best)
     save_model(speaker_id, 'svm', model_to_save)

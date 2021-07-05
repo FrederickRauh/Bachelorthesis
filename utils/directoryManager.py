@@ -186,6 +186,8 @@ def get_all_ids():
         ids.remove('librosa-dataframe.json')
     if ids.__contains__('psf-dataframe.json'):
         ids.remove('psf-dataframe.json')
+    if ids.__contains__('result.json'):
+        ids.remove('result.json')
     return ids
 
 
