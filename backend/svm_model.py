@@ -4,8 +4,10 @@ import numpy as np
 from datetime import datetime
 
 import sklearn
+from matplotlib import pyplot as plt
 from sklearn import svm
 from sklearn import metrics
+from sklearn import model_selection
 
 from frontend import featureExtractorPSF as fe
 
@@ -13,7 +15,6 @@ from utils import directoryManager as dm
 
 
 # def custom_kernel(X, Y):
-
 
 
 def save_model(speaker_id, type, model):
@@ -28,45 +29,87 @@ def load_model(speaker_id, type):
 
 
 def create_model(speaker_id, files, is_speaker):
-    best = 0
-    model_to_save = 0
-    training_cycles = 4
-    # assure to always use the same data for training, to avoid claims like: that data was better for training...
-    files_train, files_test, speaker_train, speaker_test = sklearn.model_selection.train_test_split(files, is_speaker,
-                                                                                                    test_size=0.1)
-    for i in range(training_cycles):
-        start_time = datetime.now()
-        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", start_time)
+    start_time = datetime.now()
+    print("Training svm_model :: There are:", len(files),
+          "trainingfiles. Start at: ", start_time)
 
-        # print(get_features_out_of_csv(files_train)[0][0])
+    # which kernel should be used and why? (Same for gamma)
+    # write method to get best c(0.019 vs 2), kernel, etc.
+    # choosen after reading paper: Evaluation of kernel methods for speaker verification and identification(2002)
+    # and Kernel combination for SVM speaker verification(2008)
+    # svm_model = svm.SVC(kernel='poly', gamma='scale', C=2, degree=3)
 
-        # x_train = get_features_out_of_csv(files_train)
-        # x_test = get_features_out_of_csv(files_test)
-        x_train = np.array(files_train)
-        x_test = np.array(files_test)
-        y_train = np.array(speaker_train)
-        y_test = np.array(speaker_test)
+    kernels = ['rbf', 'linear', 'poly']
+    # C = np.arange(0.019, 5.001, 0.001)
+    C = [1, 2, 5]
+    gamma = ['scale', 'auto']
+    total_score_rbf_auto = []
+    total_score_rbf_scale = []
 
-        # print(x_train)
-        # which kernel should be used and why? Same for gamma
-        svm_model = svm.SVC(kernel='linear', gamma='scale')
-        svm_model.fit(x_train, y_train)
+    total_score_linear_auto = []
+    total_score_linear_scale = []
 
-        y_pred_svm = svm_model.predict(x_test)
-        accuracy = metrics.accuracy_score(y_test, y_pred_svm)
-
-        after_time = datetime.now()
-        duration = after_time - start_time
-
-        print("model training took:", duration.total_seconds() // 60, "minutes;"
-              , "current accuracy : ", accuracy)
-        if accuracy > best:
-            best = accuracy
-            model_to_save = svm_model
-
-    print('model accuracy: ', best)
-    save_model(speaker_id, 'svm', model_to_save)
+    total_score_poly_auto = []
+    total_score_poly_scale = []
 
 
+
+    for kernel in kernels:
+        for g in gamma:
+            for c in C:
+                svm_model = svm.SVC(kernel=kernel, gamma=g, C=c)
+                score = model_selection.cross_val_score(svm_model, files, is_speaker, cv=5, scoring='accuracy')
+                print("Kernel:", kernel, "gamma:", g, "C=%f; accuracy: %f; standard deviation of %f" % (c, score.mean(), score.std()))
+                if kernel=='rbf':
+                    if g == 'auto':
+                        total_score_rbf_auto.append(score.mean())
+                    if g == 'scale':
+                        total_score_rbf_scale.append(score.mean())
+                if kernel=='linear':
+                    if g == 'auto':
+                        total_score_linear_auto.append(score.mean())
+                    if g == 'scale':
+                        total_score_linear_scale.append(score.mean())
+                if kernel=='poly':
+                    if g == 'auto':
+                        total_score_poly_auto.append(score.mean())
+                    if g == 'scale':
+                        total_score_poly_scale.append(score.mean())
+
+    x = C
+    plt.figure()
+    plt.plot(x, total_score_rbf_auto, 'tab:red', x, total_score_rbf_scale, 'tab:purple',
+             x, total_score_linear_auto, 'tab:cyan', x, total_score_linear_scale, 'tab:blue',
+             x, total_score_poly_auto, 'tab:green', x, total_score_poly_scale, 'tab:orange')
+    plt.xlabel('C')
+    plt.ylabel('accuracy')
+    plt.show()
+
+    svm_model_rbf = svm.SVC(kernel='rbf', gamma='scale', C=2)
+    svm_model_rbf.fit(files, is_speaker)
+    score = model_selection.cross_val_score(svm_model_rbf, files, is_speaker, cv=5, scoring='accuracy')
+    print("RBF: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+    save_model(speaker_id, 'svm_rbf', svm_model_rbf)
+    #
+    # svm_model_linear = svm.SVC(kernel='linear', gamma='scale', C=2)
+    # svm_model_linear.fit(files, is_speaker)
+    # score = model_selection.cross_val_score(svm_model_linear, files, is_speaker, cv=5, scoring='accuracy')
+    # print("LINEAR: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+    # save_model(speaker_id, 'svm_linear', svm_model_linear)
+    #
+    # svm_model_poly = svm.SVC(kernel='poly', gamma='scale', C=2, degree=3)
+    # svm_model_poly.fit(files, is_speaker)
+    # score = model_selection.cross_val_score(svm_model_poly, files, is_speaker, cv=5, scoring='accuracy')
+    # print("POLY: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+    # save_model(speaker_id, 'svm_poly', svm_model_poly)
+
+    after_time = datetime.now()
+    duration = after_time - start_time
+    hours = duration.total_seconds() // 3600
+    minutes = duration.total_seconds() // 60
+    seconds = duration.total_seconds() - (duration.total_seconds() // 60)
+    print("duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds))
+
+    # save_model(speaker_id, 'svm', svm_model)
 
 

@@ -29,22 +29,20 @@ class Trainer(object):
         print()
 
     def get_data_for_training(self, speaker_id, dataframe):
-        all_data_csv = pd.read_csv(dm.get_all_data_csv_file_path())
-        same = all_data_csv.same
-        files_1 = all_data_csv.file_1
-        files_2 = all_data_csv.file_2
+        t = []
+        y = []
+        speaker_ids = dm.get_all_ids()
+        for id in speaker_ids:
+            wav_files = dm.get_wav_files(id)
+            for wav_file in wav_files:
+                file = id + '\\' + wav_file
+                t.append(file)
+                is_speaker = 0
+                if id == speaker_id:
+                    is_speaker = 1
+                y.append(is_speaker)
 
-        filter_arr = []
-        for element in files_1:
-            if speaker_id in element:
-                filter_arr.append(True)
-            else:
-                filter_arr.append(False)
-
-        y = same[filter_arr]
-        files_2 = files_2[filter_arr]
-
-        training_files = self.get_training_files(dataframe, files_2)
+        training_files = self.get_training_files(dataframe, t)
 
         return training_files, y
 

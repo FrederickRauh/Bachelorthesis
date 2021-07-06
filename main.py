@@ -5,7 +5,8 @@ import pandas as pd
 
 from backend import trainer
 from backend.trainer import Trainer
-from backend.predictor import Predictor
+from backend.svm_predictor import Predictor as svm_pred
+from backend.gmm_predictor import Predictor as gmm_pred
 from backend import svm_model as m
 
 from frontend import featureExtractorLibrosa as flib
@@ -26,15 +27,15 @@ finished_ids = []
 # id00001 Start at:  2021-06-29 00:26:27.136246, id10017 Start at:  2021-07-01 04:09:48.288758
 print("starting...")
 speaker_ids = dm.get_all_ids()
-
+speaker_ids = util.remove_finished_ids(speaker_ids, finished_ids)
 # speaker_id = 'id00001'
 # # # # timespan(sec), samplerate, amount, speaker_id, (test file?)
 # fr.get_voice_input_stream(4, 16000, 100, speaker_id, False)
 
 
 # # preparation phase
-# print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
-# cm.create_overall_csv()
+print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
+# # cm.create_overall_csv()
 # for speaker_id in speaker_ids:
 #     files = dm.get_wav_files(speaker_id)
 #     for file in files:
@@ -46,7 +47,6 @@ speaker_ids = dm.get_all_ids()
 #
 # # Training phase
 print("training phase...")
-ids = util.remove_finished_ids(speaker_ids, finished_ids)
 trainer = Trainer()
 dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
 dataframe = dam.load_dataframe_from_path(dataframe_path)
@@ -55,5 +55,7 @@ for speaker_id in speaker_ids:
 
 # #Prediction phase
 print("prediction phase...")
-predictor = Predictor()
-predictor.predict_multiple_speakers(speaker_ids)
+svm_pred = svm_pred()
+svm_pred.predict_multiple_speakers_svm(speaker_ids)
+# gmm_pred = gmm_pred()
+# gmm_pred.predict_multiple_speakers_gmm(speaker_ids)

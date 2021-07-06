@@ -37,6 +37,7 @@ def create_psf_dataframe(speaker_ids):
             features = fpsf.load_features_from_json(file_path)
             file_name = speaker_id + '\\' + file
             all_features.append([features, speaker_id, file_name])
+
     features_dataframe = pd.DataFrame(all_features, columns=['feature', 'speaker_id', 'file_name'])
     dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
     save_dataframe_to_json_file(features_dataframe, dataframe_path)

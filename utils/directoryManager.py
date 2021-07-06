@@ -202,8 +202,8 @@ def get_all_data_names():
 
 # used to switch between
 def get_data_path():
-    # return os.path.join(get_project_path(), "data")
-    return get_my_path()
+    return os.path.join(get_project_path(), "data")
+    # return get_my_path()
 
 
 def get_project_path():
@@ -211,7 +211,7 @@ def get_project_path():
 
 
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav' + '\\' + 'wav'
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav' + '\\' + 'wav'
 
 
 def get_test_path():

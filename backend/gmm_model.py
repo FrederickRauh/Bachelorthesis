@@ -4,8 +4,11 @@ import numpy as np
 from datetime import datetime
 
 import sklearn
+from matplotlib import pyplot as plt
+from sklearn.metrics import silhouette_score
 from sklearn.mixture import GaussianMixture as gmm
-from sklearn import gaussian_process, metrics
+from sklearn import gaussian_process, metrics, model_selection
+from sklearn.preprocessing import StandardScaler
 
 from frontend import featureExtractorPSF as fe
 
@@ -34,31 +37,32 @@ def train_test_split(features, is_speaker, test_size=0.1):
 
 
 def create_model(speaker_id, files, is_speaker):
-    best = 0
-    model_to_save = 0
-    training_cycles = 4
-    for i in range(training_cycles):
-        start_time = datetime.now()
-        print("Training svm_model ::: run : ", i+1, " of ", training_cycles, "; There are:", len(files), "trainingfiles. Start at: ", start_time)
-        x_train, x_test, y_train, y_test = train_test_split(files, is_speaker)
-        train_data = [x_train, y_train]
-        # why did i do  this?!
-        gmm_model = gmm(n_components=19, covariance_type='diag').fit(train_data)
+    pass
+    # X, y_true = files, is_speaker
+    #
+    # X = X[:, ::-1]
+    # gmm_model = gmm(n_components=16)
+    #
+    # labels = gmm_model.fit(X).predict(X)
+    #
+    # plt.scatter(X[:, 0], X[:, 1], c=labels, s=40, cmap='viridis')
+    #
+    # plt.show()
 
-        y_pred_svm = gmm.predict(x_test)
-        accuracy = metrics.accuracy_score(y_test, y_pred_svm)
-
-        after_time = datetime.now()
-        duration = after_time - start_time
-
-        print("model training took:", duration.total_seconds() // 60, "minutes;"
-              , "current accuracy : ", accuracy)
-        if accuracy > best:
-            best = accuracy
-            model_to_save = gmm_model
-
-    print('model accuracy: ', best)
-    save_model(speaker_id, 'svm', model_to_save)
+    # start_time = datetime.now()
+    # print("Training gmm_model :: There are:", len(files),
+    #       "trainingfiles. Start at: ", start_time)
+    # gmm_model = gmm(n_components=16, max_iter=200, covariance_type='diag', n_init=3).fit(files)
+    # score = model_selection.cross_val_score(gmm_model, files, is_speaker, cv=5, scoring='accuracy')
+    #
+    # after_time = datetime.now()
+    # duration = after_time - start_time
+    # hours = duration.total_seconds() // 3600
+    # minutes = duration.total_seconds() // 60
+    # seconds = duration.total_seconds() - (duration.total_seconds() // 60)
+    # print("duration: %0.0fh:%0.0fmin:%0.2fsec; accuracy: %f; standard deviation of %f" % (hours, minutes, seconds, score.mean(), score.std()))
+    #
+    # save_model(speaker_id, 'gmm', gmm_model)
 
 
 def train_model():
