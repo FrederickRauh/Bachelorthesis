@@ -1,0 +1,17 @@
+# svm_model_rbf = svm.SVC(kernel='rbf', gamma='scale', C=2)
+# svm_model_rbf.fit(files, is_speaker)
+# score = model_selection.cross_val_score(svm_model_rbf, files, is_speaker, cv=5, scoring='accuracy')
+# print("RBF: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+# save_model(speaker_id, 'svm_rbf', svm_model_rbf)
+    #
+# svm_model_linear = svm.SVC(kernel='linear', gamma='scale', C=2)
+# svm_model_linear.fit(files, is_speaker)
+# score = model_selection.cross_val_score(svm_model_linear, files, is_speaker, cv=5, scoring='accuracy')
+# print("LINEAR: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+# save_model(speaker_id, 'svm_linear', svm_model_linear)
+    #
+# svm_model_poly = svm.SVC(kernel='poly', gamma='auto', C=0.19, degree=3)
+# svm_model_poly.fit(files, is_speaker)
+# score = model_selection.cross_val_score(svm_model_poly, files, is_speaker, cv=5, scoring='accuracy')
+# print("POLY: accuracy: %f; standard deviation of %f" % (score.mean(), score.std()))
+# save_model(speaker_id, 'svm_poly', svm_model_poly)

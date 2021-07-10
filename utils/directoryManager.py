@@ -137,6 +137,7 @@ def get_wav_files_in_folder(path):
 def get_wav_files(speaker_id):
     parent_path = get_parent_path(speaker_id)
     directories = list_sub_folders(parent_path)
+    directories.pop()  # -------------------------------------------------
     files = []
     wav_files = []
     for directory in directories:
@@ -155,7 +156,7 @@ def get_wav_files(speaker_id):
 def get_model_path(speaker_id, type):
     parent_path = get_parent_path(speaker_id)
     model_folder_path = get_sub_folder_path(parent_path, 'model')
-    file_name = speaker_id + "_"+ type + "_model.pickel"
+    file_name = speaker_id + "_" + type + "_model.pickel"
     return model_folder_path + '\\' + file_name
 
 
@@ -186,8 +187,10 @@ def get_all_ids():
         ids.remove('librosa-dataframe.json')
     if ids.__contains__('psf-dataframe.json'):
         ids.remove('psf-dataframe.json')
-    if ids.__contains__('result.json'):
-        ids.remove('result.json')
+    if ids.__contains__('result-svm.json'):
+        ids.remove('result-svm.json')
+    if ids.__contains__('result-gmm.json'):
+        ids.remove('result-gmm.json')
     return ids
 
 
@@ -202,8 +205,8 @@ def get_all_data_names():
 
 # used to switch between
 def get_data_path():
-    return os.path.join(get_project_path(), "data")
-    # return get_my_path()
+    # return os.path.join(get_project_path(), "data")
+    return get_my_path()
 
 
 def get_project_path():
