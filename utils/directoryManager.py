@@ -134,10 +134,32 @@ def get_wav_files_in_folder(path):
     return wav_files
 
 
+def remove_wav_files_if_voxceleb(directories, parent_path):
+    if directories.__contains__("model"):
+        directories.remove('model')
+    last_dir = directories.pop()
+    if last_dir.__contains__("psf"):
+        last_dir.remove('psf')
+    if last_dir.__contains__('librosa'):
+        last_dir.remove('librosa')
+    last_dir_path = parent_path + '\\' + last_dir
+    i = 0
+    for base, dirs2, Files in os.walk(last_dir_path):
+        for file in Files:
+            if file.endswith(".wav"):
+                i += 1
+    if i < 10:
+        directories.pop()
+    return directories
+
+
 def get_wav_files(speaker_id):
     parent_path = get_parent_path(speaker_id)
     directories = list_sub_folders(parent_path)
-    directories.pop()  # -------------------------------------------------
+    # -------------------------------------------------
+    # done in order to keep unseen data for testing afterwards
+    if get_data_path().__contains__('voxceleb'):
+        directories = remove_wav_files_if_voxceleb(directories, parent_path)
     files = []
     wav_files = []
     for directory in directories:

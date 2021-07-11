@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 
 import scipy.io.wavfile as wav
@@ -45,17 +47,34 @@ def split_array_for_multiprocess(array, num):
     return output
 
 
+def adjust_file_amount_for_voxceleb(dir, speaker_id):
+    parent_path = dm.get_voxceleb_path() + '\\' + speaker_id
+    path = parent_path + '\\' + dir[0]
+    i = 0
+    for base, dirs2, Files in os.walk(path):
+        for file in Files:
+            if file.endswith(".wav"):
+                i += 1
+    if i < 10:
+        next_dir = dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 2]
+        if next_dir.__contains__('model'):
+            next_dir = dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 3]
+        dir.append(next_dir)
+    return dir
+
 def load_test_files(speaker_ids):
     files = []
     for speaker_id in speaker_ids:
-
-        # dir = dm.get_test_subfolders(speaker_id)
-        dir = dm.get_voxceleb_subfolders(speaker_id)
-
+        if dm.get_data_path().__contains__('voxceleb'):
+            dir = [dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 1]]
+            dir = adjust_file_amount_for_voxceleb(dir, speaker_id)
+        else:
+            dir = dm.get_test_subfolders(speaker_id)
         for dir_path in dir:
-
-            # files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
-            files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
+            if dm.get_all_data_path().__contains__('voxceleb'):
+                files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
+            else:
+                files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
 
             f = dm.get_wav_files_in_folder(files_path)
             for x in range(len(f)):
