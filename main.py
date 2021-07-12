@@ -1,27 +1,10 @@
-import json
-import os
-from multiprocessing import Process
+from backend.gmm.gmm_predictor import Predictor as gmm_pred
+from backend.svm.svm_predictor import Predictor as svm_pred
 
-import numpy as np
-import pandas as pd
-
-from backend import trainer
-from backend.mult_trainer import Mult_Trainer
-from backend.trainer import Trainer
-from backend.svm_predictor import Predictor as svm_pred
-from backend.gmm_predictor import Predictor as gmm_pred
-from backend import svm_model as m
-
-from frontend import featureExtractorLibrosa as flib
-from frontend import featureExtractorPSF as fpsf
-from frontend import frontend as fr
-
-from utils import dataframeManager as dam
 from utils import directoryManager as dm
-from utils import fileManager as cm
-from utils import util
 
-
+print("starting...")
+speaker_ids = dm.get_all_ids()
 # finished_ids = ['id10001', 'id10002', 'id10003', 'id10004', 'id10005',
 #                 'id10006', 'id10007', 'id10008', 'id10009', 'id10010',
 #                 'id10011', 'id10012', 'id10013', 'id10014', 'id10015',
@@ -31,18 +14,15 @@ from utils import util
 #                 'id10031', 'id10032', 'id10033', 'id10034', 'id10035',
 #                 'id10036', 'id10037', 'id10038', 'id10039', 'id10040',
 #                 'id10041', 'id10042', 'id10043', 'id10044']
-finished_ids = ['id10001', 'id10002']
-# id00001 Start at:  2021-06-29 00:26:27.136246, id10017 Start at:  2021-07-01 04:09:48.288758
-print("starting...")
-# speaker_ids = dm.get_all_ids()
-speaker_ids = finished_ids
-# speaker_ids = util.remove_finished_ids(speaker_ids, finished_ids)
 # speaker_ids = [speaker_ids[0]]
+# speaker_ids = util.remove_finished_ids(speaker_ids, finished_ids)
+# speaker_ids = finished_ids
 
 
 # speaker_id = 'id00001'
 # # # # timespan(sec), samplerate, amount, speaker_id, (test file?)
 # fr.get_voice_input_stream(4, 16000, 100, speaker_id, False)
+
 
 # # preparation phase
 print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
@@ -55,7 +35,8 @@ print("prep phase...")  # create the overall csv, extract mfcc from files and cr
 #         fpsf.extract_mfcc_from_file_to_json(file_path)
 # # dam.create_librosa_dataframe(speaker_ids)
 # dam.create_psf_dataframe(speaker_ids)
-#
+
+
 # # Training phase
 print("training phase...")
 # # # # # # # # # # Multi Process # # # # # # # # # #
@@ -76,7 +57,7 @@ print("training phase...")
 print("prediction phase...")
 svm_pred = svm_pred()
 svm_pred.predict_multiple_speakers_svm(speaker_ids)
-gmm_pred = gmm_pred()
-gmm_pred.predict_multiple_speakers_gmm(speaker_ids)
+# gmm_pred = gmm_pred()
+# gmm_pred.predict_multiple_speakers_gmm(speaker_ids)
 
 

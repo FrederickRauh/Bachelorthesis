@@ -1,11 +1,9 @@
 import pandas as pd
 
-from backend import svm_model as svm
-from backend import gmm_model as gmm
+from backend.svm import svm_model as svm
+from backend.gmm import gmm_model as gmm
 
 from utils import directoryManager as dm
-from utils import util
-
 
 
 def get_dataset(speaker_id):
