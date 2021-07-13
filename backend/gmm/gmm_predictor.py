@@ -7,9 +7,7 @@ from backend.gmm import gmm_model as m
 
 from frontend import featureExtractorPSF as fpsf
 
-from utils import directoryManager as dm
-from utils import resultManager as rm
-from utils import util
+from utils import directoryManager as dm, resultManager as rm, util
 
 
 class Predictor(object):

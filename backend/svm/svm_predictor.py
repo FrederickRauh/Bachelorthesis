@@ -6,9 +6,7 @@ from backend.svm import svm_model as m
 
 from frontend import featureExtractorPSF as fpsf
 
-from utils import directoryManager as dm
-from utils import resultManager as rm
-from utils import util
+from utils import directoryManager as dm, resultManager as rm, util
 
 
 class Predictor(object):
@@ -28,6 +26,8 @@ class Predictor(object):
         types = ['svm_custom']
         speaker_object_result = {}
         for t in types:
+
+            print(m.load_model(speaker_id, t)['gridsearchcv'].best_params_)
 
             true_positive = []
             accepted_ids = []

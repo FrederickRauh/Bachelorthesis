@@ -175,11 +175,31 @@ def get_wav_files(speaker_id):
     return wav_files
 
 
-def get_model_path(speaker_id, type):
-    parent_path = get_parent_path(speaker_id)
-    model_folder_path = get_sub_folder_path(parent_path, 'model')
-    file_name = speaker_id + "_" + type + "_model.pickel"
-    return model_folder_path + '\\' + file_name
+def get_model_path(speaker_id, t):
+    path = get_all_models_path()
+    if t.__contains__('svm'):
+        path = path + '\\' + "svm"
+    if t.__contains__('gmm'):
+        path = path + '\\' + "gmm"
+
+    if not os.path.exists(path):
+        make_dir(path)
+
+    for base, dirs2, Files in os.walk(path):
+        models = Files
+    for model in models:
+        if model.__contains__(speaker_id) and model.__contains__(t):
+            print(path)
+            return path + '\\' + model
+
+    file_name = speaker_id + "_" + t + "_model.pickel"
+    path = path + '\\' + file_name
+    print("no models found, creating path:", path)
+    return path
+    
+    # model_folder_path = get_sub_folder_path(parent_path, 'model')
+    #
+    # return model_folder_path + '\\' + file_name
 
 
 def get_id_of_path(path):
@@ -225,10 +245,16 @@ def get_all_data_names():
     return os.listdir(get_data_path())
 
 
+def get_all_models_path():
+    path = get_data_path().replace('wav', 'models')
+    if not os.path.exists(path):
+        make_dir(path)
+    return path
+
 # used to switch between
 def get_data_path():
-    # return os.path.join(get_project_path(), "data")
-    return get_my_path()
+    return os.path.join(get_project_path(), "data" + '\\' + "wav")
+    # return get_my_path()
 
 
 def get_project_path():

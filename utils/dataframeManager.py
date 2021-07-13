@@ -9,6 +9,7 @@ from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
 
 from utils import directoryManager as dm
+from utils import util
 
 
 def create_librosa_dataframe(speaker_ids):
@@ -61,4 +62,33 @@ def load_dataframe():
 
 
 def load_dataframe_from_path(path):
-    return pd.read_json(path)
+    return pd.read_json(path.replace('\\wav', ''))
+
+
+def get_data_for_training_from_dataframe(type, speaker_id, dataframe):
+    t = []
+    y = []
+    speaker_ids = [speaker_id]
+    if type == 'svm':
+        speaker_ids = dm.get_all_ids()
+    for id in speaker_ids:
+        wav_files = dm.get_wav_files(id)
+        for wav_file in wav_files:
+            file = id + '\\' + wav_file
+            t.append(file)
+            if type == 'svm':
+                is_speaker = 0
+                if id == speaker_id:
+                    is_speaker = 1
+                y.append(is_speaker)
+    if type == 'svm':
+        return get_training_files(dataframe, t), y
+    return get_training_files(dataframe, t)
+
+
+def get_training_files(dataframe, t):
+    training_files = []
+    for element in t:
+        training_features = dataframe.loc[dataframe['file_name'] == element].feature.array[0]['0']
+        training_files.append(training_features)
+    return util.get_correct_array_form(training_files)

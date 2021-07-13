@@ -4,6 +4,8 @@ import numpy as np
 
 import scipy.io.wavfile as wav
 
+from datetime import datetime
+
 from utils import directoryManager as dm
 
 
@@ -81,3 +83,13 @@ def load_test_files(speaker_ids):
                 files.append(f[x])
 
     return files
+
+
+def get_duration(start_time):
+    after_time = datetime.now()
+    duration = after_time - start_time
+    hours = duration.total_seconds() // 3600
+    minutes = (duration.total_seconds() // 60) - (hours * 60)
+    seconds = duration.total_seconds() - (hours * 3600) - (minutes * 60)
+    return "--> duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds)
+          # "----- Model: accuracy: %f; standard deviation of %f" % (score.mean(), score.std())

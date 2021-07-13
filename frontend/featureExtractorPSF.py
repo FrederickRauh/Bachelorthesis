@@ -7,9 +7,8 @@ import pandas as pd
 import scipy.io.wavfile as wav
 from scipy.signal.windows import hann
 
-from utils import util
-from utils import directoryManager as dm
-from utils import fileManager as fm
+from utils import directoryManager as dm, fileManager as fm, util
+
 
 
 def extract_filterbank_energies_from_file(file_path):
