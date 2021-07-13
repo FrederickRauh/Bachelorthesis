@@ -169,7 +169,7 @@ def write_features_to_json_file(json_path, wav_path, features):
 
 
 def load_features_from_json_of_wav_file(wav_path, version):
-    json_path = dm.get_all_data_path() + '\\' + dm.get_feature_path(wav_path, version)
+    json_path = dm.get_all_wav_path() + '\\' + dm.get_feature_path(wav_path, version)
     json_path = json_path.replace('.wav', '.json')
     dataframe = pd.read_json(json_path)
     return dataframe.features[0]

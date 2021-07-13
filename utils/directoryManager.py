@@ -17,7 +17,7 @@ def create_csv_file_name(speaker_id):
 
 
 def get_parent_path(speaker_id):
-    parent_path = make_dir(get_data_path())
+    parent_path = make_dir(get_all_wav_path())
     return make_dir(os.path.join(parent_path, speaker_id))
 
 
@@ -130,7 +130,7 @@ def get_wav_files_in_folder(path):
     for file in files:
         if file.endswith('.wav'):
             wav_files.append(dir_path + '\\' + file)
-        files = []
+        # files = []
     return wav_files
 
 
@@ -158,7 +158,7 @@ def get_wav_files(speaker_id):
     directories = list_sub_folders(parent_path)
     # -------------------------------------------------
     # done in order to keep unseen data for testing afterwards
-    if get_data_path().__contains__('voxceleb'):
+    if is_large_data_set():
         directories = remove_wav_files_if_voxceleb(directories, parent_path)
     files = []
     wav_files = []
@@ -175,6 +175,13 @@ def get_wav_files(speaker_id):
     return wav_files
 
 
+def get_all_models_path():
+    path = get_all_data_path() + '\\' + 'models'
+    if not os.path.exists(path):
+        make_dir(path)
+    return path
+
+
 def get_model_path(speaker_id, t):
     path = get_all_models_path()
     if t.__contains__('svm'):
@@ -189,12 +196,10 @@ def get_model_path(speaker_id, t):
         models = Files
     for model in models:
         if model.__contains__(speaker_id) and model.__contains__(t):
-            print(path)
             return path + '\\' + model
 
     file_name = speaker_id + "_" + t + "_model.pickel"
     path = path + '\\' + file_name
-    print("no models found, creating path:", path)
     return path
     
     # model_folder_path = get_sub_folder_path(parent_path, 'model')
@@ -215,54 +220,54 @@ def check_if_file_exists_then_remove(file_path):
         os.remove(file_path)
 
 
-def get_all_data_path():
-    return get_data_path()
+def get_all_wav_path():
+    return get_all_data_path() + '\\' + "wav"
+
 
 
 def get_all_ids():
-    ids = get_all_data_names()
-    if ids.__contains__('pairs.csv'):
-        ids.remove('pairs.csv')
-    if ids.__contains__('dataframe.csv'):
-        ids.remove('dataframe.csv')
-    if ids.__contains__('librosa-dataframe.json'):
-        ids.remove('librosa-dataframe.json')
-    if ids.__contains__('psf-dataframe.json'):
-        ids.remove('psf-dataframe.json')
-    if ids.__contains__('result-svm.json'):
-        ids.remove('result-svm.json')
-    if ids.__contains__('result-gmm.json'):
-        ids.remove('result-gmm.json')
+    ids = get_all_wav_names()
+    # if ids.__contains__('pairs.csv'):
+    #     ids.remove('pairs.csv')
+    # if ids.__contains__('dataframe.csv'):
+    #     ids.remove('dataframe.csv')
+    # if ids.__contains__('librosa-dataframe.json'):
+    #     ids.remove('librosa-dataframe.json')
+    # if ids.__contains__('psf-dataframe.json'):
+    #     ids.remove('psf-dataframe.json')
+    # if ids.__contains__('result-svm.json'):
+    #     ids.remove('result-svm.json')
+    # if ids.__contains__('result-gmm.json'):
+    #     ids.remove('result-gmm.json')
     return ids
 
 
 def get_all_data_csv_file_path():
-    path = get_data_path() + '\\' + 'pairs.csv'
+    path = get_all_data_path() + '\\' + 'pairs.csv'
     return path
 
 
-def get_all_data_names():
-    return os.listdir(get_data_path())
+def get_all_wav_names():
+    return os.listdir(get_all_wav_path())
 
-
-def get_all_models_path():
-    path = get_data_path().replace('wav', 'models')
-    if not os.path.exists(path):
-        make_dir(path)
-    return path
 
 # used to switch between
-def get_data_path():
-    return os.path.join(get_project_path(), "data" + '\\' + "wav")
-    # return get_my_path()
+def get_all_data_path():
+    # return os.path.join(get_project_path(), "data")
+    return get_my_path()
 
+
+def is_large_data_set():
+    if get_all_data_path().__contains__('voxceleb'):
+        return True
+    return False
 
 def get_project_path():
     return os.getcwd()
 
 
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav' + '\\' + 'wav'
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav'
 
 
 def get_test_path():

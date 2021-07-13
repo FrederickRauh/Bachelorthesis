@@ -62,7 +62,7 @@ def load_dataframe():
 
 
 def load_dataframe_from_path(path):
-    return pd.read_json(path.replace('\\wav', ''))
+    return pd.read_json(path)
 
 
 def get_data_for_training_from_dataframe(type, speaker_id, dataframe):

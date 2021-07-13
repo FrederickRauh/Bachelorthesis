@@ -47,7 +47,7 @@ def create_model(speaker_id, dataframe):
     # )
     # --------------------------------
     kernels = ['rbf', 'poly']
-    C = np.arange(0.1, 5.1, 0.1)
+    C = np.arange(0.1, 0.2, 0.1)
     C = [round(x, 2) for x in C]
     # gamma = np.arange(0.1, 1.1, 0.1)
     gamma = ['auto']
@@ -59,23 +59,27 @@ def create_model(speaker_id, dataframe):
         'gamma': gamma
         # 'degree': degree
     }]
-    # ---------------------
-
-    scaler = StandardScaler()
+    # --------------------- GridSearch ------------------------
+    cv = KFold(n_splits=4)
+    # helpful with large datasets to keep an overview
+    verbose=0
+    if dm.is_large_data_set():
+        verbose=10
 
     svm_pipe = make_pipeline(StandardScaler(), SVC( kernel='rbf', gamma=0.01, C=10, probability=True))
-
-    cv = KFold(n_splits=4)
 
     svm_model = make_pipeline(StandardScaler(),
                     GridSearchCV(SVC(),
                                  param_grid=param_grid,
                                  cv=10,
                                  refit=True,
-                                 n_jobs=-1, verbose=10))
+                                 n_jobs=-1, verbose=verbose))
 
     svm_model.fit(training_features, is_speaker)
-    print(svm_model['gridsearchcv'].best_params_)
+
+    # helpful with large datasets to keep an overview
+    if dm.is_large_data_set():
+        print(svm_model['gridsearchcv'].best_params_)
     # scaled_training_features = scaler.fit_transform(training_features)
     #
     # svm_model_custom.fit(scaled_training_features, is_speaker)

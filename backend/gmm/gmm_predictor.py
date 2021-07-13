@@ -63,8 +63,8 @@ class Predictor(object):
                     if winner == id_of_file:
                         true_positive.append(file)
                         accepted_ids.append(dm.get_id_of_path(file))
+                    # imposter file
                     else:
-                        print("Winner_model_id:", winner, "id of file:", id_of_file, "testing_id:", speaker_id)
                         false_positiv.append(file)
                         imposter_ids.append(dm.get_id_of_path(file))
                 else:

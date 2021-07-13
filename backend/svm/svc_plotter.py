@@ -18,7 +18,6 @@ def create_svc_plot(files, is_speaker):
             key = "kernel=" + kernel, "gamma=" + str(g)
             results = []
             for c in C:
-                print(c)
                 svm_model = svm.SVC(kernel=kernel, gamma=g, C=c)
                 score = model_selection.cross_val_score(svm_model, files, is_speaker, cv=5, scoring='accuracy')
                 results.append(score.mean())
@@ -27,7 +26,6 @@ def create_svc_plot(files, is_speaker):
             key = "kernel=" + kernel, "gamma=" + str(g)
             results = []
             for c in C:
-                print(c)
                 svm_model = svm.SVC(kernel=kernel, gamma=g, C=c)
                 score = model_selection.cross_val_score(svm_model, files, is_speaker, cv=5, scoring='accuracy')
                 results.append(score.mean())

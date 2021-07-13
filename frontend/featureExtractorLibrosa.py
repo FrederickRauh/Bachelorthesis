@@ -39,7 +39,7 @@ def get_feature_csv_path(wav_path):
 
 
 def get_features_out_of_csv(files):
-    data_path = dm.get_all_data_path()
+    data_path = dm.get_all_wav_path()
     x = []
     for file in files:
         file_path = data_path + '\\' + file

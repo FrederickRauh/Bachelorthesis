@@ -39,6 +39,6 @@ class Mult_Trainer(object):
 if __name__ == '__main__':
     mult_trainer = Mult_Trainer()
     speaker_ids = dm.get_all_ids()
-    dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
+    dataframe_path = dm.get_data_path() + '\\' + 'psf-dataframe.json'
     dataframe = dam.load_dataframe_from_path(dataframe_path)
     mult_trainer.train_multi()

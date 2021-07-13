@@ -2,8 +2,9 @@ from backend.gmm.gmm_predictor import Predictor as gmm_pred
 from backend.svm.svm_predictor import Predictor as svm_pred
 from backend.trainer import Trainer
 
-from utils import dataframeManager as dam
-from utils import directoryManager as dm
+from frontend import featureExtractorPSF as fpsf
+
+from utils import dataframeManager as dam, directoryManager as dm, util
 
 print("starting...")
 speaker_ids = dm.get_all_ids()
@@ -21,7 +22,7 @@ finished_ids = ['id10001', 'id10002', 'id10003', 'id10004', 'id10005',
 #                 'id10041', 'id10042', 'id10043', 'id10044']
 # speaker_ids = [speaker_ids[0]]
 # speaker_ids = util.remove_finished_ids(speaker_ids, finished_ids)
-# speaker_ids = finished_ids
+speaker_ids = finished_ids
 
 
 # speaker_id = 'id00001'
@@ -31,7 +32,7 @@ finished_ids = ['id10001', 'id10002', 'id10003', 'id10004', 'id10005',
 
 # # preparation phase
 print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
-# # cm.create_overall_csv()
+# cm.create_overall_csv()
 # for speaker_id in speaker_ids:
 #     files = dm.get_wav_files(speaker_id)
 #     for file in files:
@@ -51,10 +52,10 @@ print("training phase...")
 # trainer.train_multi(speaker_ids, dataframe)
 
 # # # # # # # # # # # Single Process # # # # # # # # # #
-trainer = Trainer()
-dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
-dataframe = dam.load_dataframe_from_path(dataframe_path)
-trainer.train_multi_svm(speaker_ids, dataframe)
+# trainer = Trainer()
+# dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
+# dataframe = dam.load_dataframe_from_path(dataframe_path)
+# trainer.train_multi_svm(speaker_ids, dataframe)
 # trainer.train_multi_gmm(speaker_ids, dataframe)
 
 

@@ -11,7 +11,6 @@ def create_speaker_object_with_confusion_mat(results):
     # # sub_keys = ['svm_rbf', 'svm_linear', 'svm_poly']
     keys = list(results[0][0].keys())
     sub_keys = list(results[0][0][keys[0]].keys())
-    print(keys, sub_keys)
     for sub_key in sub_keys:
         tp = 0
         tn = 0
@@ -25,6 +24,7 @@ def create_speaker_object_with_confusion_mat(results):
             fn += int(result[0][key][sub_key]["Missed"]['amount'])
             speaker_object.update({key: result[0][key]})
             # speaker_object[key][sub_key] = result[0][key][sub_key]
+
 
         accuracy = ((tp + tn) / (tp + tn + fp + fn))
         recall = (tp / (tp + fn))
@@ -56,6 +56,6 @@ def create_result_json(results, type, extra_data_object):
     result_json = [(confusion_mat, [speaker_object], extra_data)]
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
 
-    path = dm.get_all_data_path().replace('\\wav', '') + '\\' + "result-" + type +".json"
+    path = dm.get_all_data_path() + '\\' + "result-" + type +".json"
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

@@ -67,13 +67,13 @@ def adjust_file_amount_for_voxceleb(dir, speaker_id):
 def load_test_files(speaker_ids):
     files = []
     for speaker_id in speaker_ids:
-        if dm.get_data_path().__contains__('voxceleb'):
+        if dm.is_large_data_set():
             dir = [dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 1]]
             dir = adjust_file_amount_for_voxceleb(dir, speaker_id)
         else:
             dir = dm.get_test_subfolders(speaker_id)
         for dir_path in dir:
-            if dm.get_all_data_path().__contains__('voxceleb'):
+            if dm.is_large_data_set():
                 files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
             else:
                 files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
