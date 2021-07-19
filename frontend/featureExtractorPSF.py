@@ -6,15 +6,18 @@ import pandas as pd
 
 import scipy.io.wavfile as wav
 from scipy.signal.windows import hann
+from scipy.stats import skew
+
+from sklearn import preprocessing
 
 from utils import directoryManager as dm, fileManager as fm, util
-
 
 
 def extract_filterbank_energies_from_file(file_path):
     (rate, sig) = wav.read(file_path)
     fbank_feat = psf.logfbank(sig, rate)
     return fbank_feat
+
 
 # Parameters:
 # signal – the audio signal from which to compute features. Should be an N*1 array
@@ -32,34 +35,64 @@ def extract_filterbank_energies_from_file(file_path):
 # winfunc – the analysis window to apply to each frame. By default no window is applied. You can use numpy window functions here e.g. winfunc=numpy.hamming
 # Returns:
 # A numpy array of size (NUMFRAMES by numcep) containing features. Each row holds 1 feature vector.
+def extract_signal_from_file(file_path):
+    sr, signal = wav.read(file_path)
+    sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'psf')
+    # if signal is stereo only take one channel
+    if isinstance(signal[0], np.ndarray):
+        signal = signal[:, 0]
+    return sr, signal
 
-def extract_mfcc_from_file(file_path):
-    # print('extracting mfcc from file : ', file_path)
-    sr, signal = util.get_four_seconde_frame_of_wav_file(file_path)
-    n_mfcc = 13
-    n_mels = 40  # prev: 26
-    n_fft = 2048  # prev: 0.025 and 2048(duo to error message)
-    hop_length = 160  # prev: 0.01
+def extract_mfcc_from_signal(sr, signal):
+    n_mfcc = 13  # 40
+    n_mels = 26  # 40  # prev: 26
+    nfft = 2048  # 2048  # prev: 0.025 and 2048(duo to error message)
+    # hop_length = 160  # prev: 0.01
     fmin = 0
     fmax = None
-    preemph = 0.0  # prev: 0.07
+    preemph = 0.97  # 0.0  #0.97  # prev: 0.07
     ceplifter = 0  # prev: 22
-    appendEnergy = False # prev: True
-    winlen = 0.064  # prev n_fft / sr
+    appendEnergy = True  # prev: True
+    winlen = 0.05  # 0.064  # prev n_fft / sr win length of 16-64ms
     winstep = 0.01  # prev: 0.036, hop_length / sr (default 0.01 (10ms))
-    # sr = 16000 # to get a uniform samplerate
-    # todo 16-64ms frames(winlen and winstep), maybe 4 seconds frames maybe add padding
-    return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels, nfft=n_fft, lowfreq=fmin, highfreq=fmax,
-                    preemph=preemph, ceplifter=ceplifter, appendEnergy=appendEnergy, winfunc=hann)
+    winfunc = lambda x: np.hamming(x)
+    return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, numcep=n_mfcc, nfilt=n_mels, nfft=nfft,
+                    appendEnergy=appendEnergy, winfunc=winfunc)
+    # return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels,
+    #                 nfft=nfft, lowfreq=fmin, highfreq=fmax,
+    #                 preemph=preemph, ceplifter=ceplifter, appendEnergy=appendEnergy, winfunc=winfunc)
 
 
-def extract_processed_mfcc_from_file(file_path):
-    mfcc = extract_mfcc_from_file(file_path)
-    return mfcc[0:40, :]
+def get_delta_delta_from_signal(sr, signal):
+    mfcc = extract_mfcc_from_signal(sr, signal)
+    # Deltas
+    d_mfcc = psf.delta(mfcc, 2)
+    # Deltas-Deltas
+    dd_mfcc = psf.delta(d_mfcc, 2)
+    return np.hstack((mfcc, d_mfcc, dd_mfcc))
+
+
+def extract_filter_banks_and_energies_from_signal(sr, signal):
+    n_mels = 26  # 40  # prev: 26
+    winlen = 0.05  # 0.064  # prev n_fft / sr win length of 16-64ms
+    winstep = 0.01  # prev: 0.036, hop_length / sr (default 0.01 (10ms))
+    winfunc = lambda x: np.hamming(x)
+    return psf.fbank(signal, samplerate=sr, nfilt=n_mels, winlen=winlen, winstep=winstep, winfunc=winfunc)
+
+
+def extract_processed_features_from_file(file_path):
+    sr, signal = extract_signal_from_file(file_path)
+    ft1 = get_delta_delta_from_signal(sr, signal)
+    ft2, ft3 = extract_filter_banks_and_energies_from_signal(sr, signal)
+    return np.vstack((ft1, ft2))
+    # # concat above three features
+
+    # return concat_mfcc_feat
+
 
 
 def extract_mfcc_from_file_to_csv(file_path):
-    mfcc_feat = extract_mfcc_from_file(file_path)
+    mfcc_feat = extract_processed_features_from_file(file_path)
     new_file_path = dm.get_feature_psf_csv_path(file_path)
     features = mfcc_feat
     fm.write_features_to_psf_csv_file(new_file_path, file_path, features)
@@ -92,9 +125,9 @@ def get_features_from_csv(file):
     return pd.read_csv(csv_path).features
 
 
-#json version
+# json version
 def extract_mfcc_from_file_to_json(file_path):
-    mfcc_feat = extract_processed_mfcc_from_file(file_path)
+    mfcc_feat = extract_processed_features_from_file(file_path)
     new_file_path = dm.get_feature_psf_json_path(file_path)
     features = mfcc_feat
     fm.write_features_to_json_file(new_file_path, file_path, features)

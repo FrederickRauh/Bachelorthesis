@@ -40,7 +40,7 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
     if test:
         wav_path = wav_path.replace('data', 'test')
     filename = str(number)
-    recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=2)
+    recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=1)
     sd.wait()
     wav.write(wav_path, samplerate, recording)
     os.startfile(wav_path)

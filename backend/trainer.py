@@ -16,16 +16,16 @@ class Trainer(object):
     def __init__(self):
         pass
 
-    def train_svm(self, dataframe, speaker_id):
-        svm.create_model(speaker_id, dataframe)
+    def train_svm(self, dataframe, speaker_id, feature_type):
+        svm.create_model(speaker_id, dataframe, feature_type)
 
-    def train_multi_svm(self, speaker_ids, dataframe):
+    def train_multi_svm(self, speaker_ids, dataframe, feature_type):
         for speaker_id in speaker_ids:
-            self.train_svm(dataframe, speaker_id)
+            self.train_svm(dataframe, speaker_id, feature_type)
 
-    def train_gmm(self, dataframe, speaker_id):
-        gmm.create_model(speaker_id, dataframe)
+    def train_gmm(self, dataframe, speaker_id, feature_type):
+        gmm.create_model(speaker_id, dataframe, feature_type)
 
-    def train_multi_gmm(self, speaker_ids, dataframe):
+    def train_multi_gmm(self, speaker_ids, dataframe, feature_type):
         for speaker_id in speaker_ids:
-            self.train_gmm(dataframe, speaker_id)
+            self.train_gmm(dataframe, speaker_id, feature_type)

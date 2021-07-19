@@ -5,7 +5,7 @@ from datetime import datetime
 
 from backend.gmm import gmm_model as m
 
-from frontend import featureExtractorPSF as fpsf
+from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
 from utils import directoryManager as dm, resultManager as rm, util
 
@@ -15,8 +15,8 @@ class Predictor(object):
     def __init__(self):
         pass
 
-    def predict_for_all_modesl(self, models, ids, file):
-        x = util.get_correct_array_form([fpsf.extract_processed_mfcc_from_file(file)])
+    def predict_for_all_modesl(self, models, ids, file, feature_type):
+        x = util.get_features_for_prediciton(file, feature_type)
         log_likelihood = np.zeros(len(models))
         for i in range(len(models)):
             gmm_model = models[i]
@@ -26,16 +26,18 @@ class Predictor(object):
         winner_id = ids[winner]
         return winner_id
 
-    def predict_for_one_model(self, model, file):
-        x = util.get_correct_array_form([fpsf.extract_processed_mfcc_from_file(file)])
+    def predict_for_one_model(self, model, file, feature_type):
+        x = util.get_features_for_prediciton(file, feature_type)
         score = model.predict_proba(x)
         return score.sum()
 
-    def predict_speaker_gmm(self, speaker_id, speaker_ids, test_files):
+    def predict_speaker_gmm(self, speaker_id, speaker_ids, test_files, feature_type):
         types = ['gmm']
 
         speaker_object_result = {}
         for t in types:
+            t = t + "_" + feature_type
+            # print(m.load_model(speaker_id, t)['gridsearchcv'].best_params_)
 
             true_positive = []
             accepted_ids = []
@@ -53,10 +55,9 @@ class Predictor(object):
             #     score = self.predict_for_one_model(m.load_model(speaker_id, t), file)
             #     print("predicted for file:", file, "score:", score, )
 
-
             for file in test_files:
                 id_of_file = dm.get_id_of_path(file)
-                winner = self.predict_for_all_modesl(models, ids_of_models, file)
+                winner = self.predict_for_all_modesl(models, ids_of_models, file, feature_type)
 
                 # match is the speaker
                 if winner == speaker_id:
@@ -77,26 +78,26 @@ class Predictor(object):
                         true_negativ.append(file)
                         denied_ids.append(dm.get_id_of_path(file))
 
-
-
-            speaker_object_result.update({t:
-                                              {"Accepted": {"amount": len(true_positive),
-                                                            "ids": accepted_ids,
-                                                            "files": true_positive},
-                                               "Denied": {"amount": len(true_negativ),
-                                                          "ids": denied_ids,
-                                                          "files": true_negativ},
-                                               "Imposter": {"amount": len(false_positiv),
-                                                            "ids": imposter_ids,
-                                                            "files": false_positiv},
-                                               "Missed": {"amount": len(false_negative),
-                                                          "ids": missed_ids,
-                                                          "files": false_negative}
-                                               }})
-
+            # speaker_object_result.update({t:
+            speaker_object_result.update({"Accepted": {"amount": len(true_positive),
+                                                       "ids": accepted_ids,
+                                                       "files": true_positive},
+                                          "Denied": {"amount": len(true_negativ),
+                                                     "ids": denied_ids,
+                                                     "files": true_negativ},
+                                          "Imposter": {"amount": len(false_positiv),
+                                                       "ids": imposter_ids,
+                                                       "files": false_positiv},
+                                          "Missed": {"amount": len(false_negative),
+                                                     "ids": missed_ids,
+                                                     "files": false_negative},
+                                          "extra": {"total_id_files": len(true_positive) + len(false_negative),
+                                                    "total_imposter_files": len(true_negativ) + len(false_positiv),
+                                                    "total_files": len(test_files)}
+                                          })
         return {speaker_id: speaker_object_result}
 
-    def predict_multiple_speakers_gmm(self, speaker_ids):
+    def predict_multiple_speakers_gmm(self, speaker_ids, feature_type):
         test_files = util.load_test_files(speaker_ids)
 
         results = []
@@ -105,16 +106,14 @@ class Predictor(object):
         for speaker_id in speaker_ids:
             start_time = datetime.now()
 
-            print("GMM ::  predicting for:", speaker_id, "files:", len(test_files))
-            results.append([self.predict_speaker_gmm(speaker_id, speaker_ids, test_files)])
+            print("GMM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type)
+            results.append([self.predict_speaker_gmm(speaker_id, speaker_ids, test_files, feature_type)])
 
             after_time = datetime.now()
             duration = after_time - start_time
             hours = duration.total_seconds() // 3600
             minutes = (duration.total_seconds() // 60) - (hours * 60)
             seconds = duration.total_seconds() - (hours * 3600) - (minutes * 60)
-            print("--> duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds),
-                  # "----- Model: accuracy: %f; standard deviation of %f" % (score.mean(), score.std())
-                  )
+            print("--> duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds))
 
-        rm.create_result_json(results, 'gmm', extra_data_object)
+        rm.create_result_json(results, 'gmm-' + feature_type, extra_data_object)

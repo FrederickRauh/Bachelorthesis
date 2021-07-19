@@ -6,6 +6,8 @@ import scipy.io.wavfile as wav
 
 from datetime import datetime
 
+from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
+
 from utils import directoryManager as dm
 
 
@@ -17,10 +19,9 @@ def remove_finished_ids(ids, finished_ids):
     return ids
 
 
-def get_four_seconde_frame_of_wav_file(file_path):
-    sr, signal = wav.read(file_path)
-    # four seconds of data from .wav
-    duration = len(signal) // float(sr)
+def get_four_seconde_frame_of_audio(sr, signal, t):
+    duration = len(signal) / float(sr)
+    # four seconds of data from .wav if > 4sec
     if duration >= 4:
         length_in_seconds = duration
         # middle = i  # (len(signal) // 2) - 1
@@ -29,13 +30,31 @@ def get_four_seconde_frame_of_wav_file(file_path):
         left_side = int(middle - (2 * sr))
         right_side = int(middle + (2 * sr))
         signal = signal[left_side:right_side]
+    # if < 4sec add padding of 0 to the back
+    if duration < 4:
+        missing_time = 4 - duration
+        length_of_padding = missing_time * float(sr)
+        for x in range(int(length_of_padding)):
+            if t == 'psf':
+                signal = np.append(signal, 0)
+            else:
+                signal = np.append(signal, 0)
     return sr, signal
 
-
+# Turn 3Dim Array in 2D
 def get_correct_array_form(array):
     x = np.array(array)
     nsamples, nx, ny = x.shape
     return x.reshape((nsamples, nx * ny))
+
+
+def get_features_for_prediciton(file_path, feature_type):
+    if feature_type == 'psf':
+        return [fpsf.extract_processed_mfcc_from_file(file_path)]
+        # return get_correct_array_form([fpsf.extract_processed_mfcc_from_file(file_path)])
+    else:
+        return [flib.extract_processed_mfcc_from_file(file_path)]
+        # return get_correct_array_form([flib.extract_processed_mfcc_from_file(file_path)])
 
 
 # Response from https://stackoverflow.com/questions/2130016/splitting-a-list-into-n-parts-of-approximately-equal-length

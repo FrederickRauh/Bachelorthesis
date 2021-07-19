@@ -7,26 +7,25 @@ from sklearn.model_selection import KFold, GridSearchCV
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-from sklearn.metrics import mean_squared_error
 
 from utils import dataframeManager as dam, directoryManager as dm, util
 
 
-def save_model(speaker_id, type, model):
-    model_path = dm.get_model_path(speaker_id, type)
+def save_model(speaker_id, t, model):
+    model_path = dm.get_model_path(speaker_id, t)
     with open(model_path, "wb") as file:
         pickle.dump(model, file)
 
 
-def load_model(speaker_id, type):
-    model_path = dm.get_model_path(speaker_id, type)
+def load_model(speaker_id, t):
+    model_path = dm.get_model_path(speaker_id, t)
     return pickle.load(open(model_path, 'rb'))
 
 
-def create_model(speaker_id, dataframe):
-    training_features, is_speaker = dam.get_data_for_training_from_dataframe('svm', speaker_id, dataframe)
+def create_model(speaker_id, dataframe, feature_type):
+    training_features, is_speaker = dam.get_data_for_training_from_dataframe('svm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    print("Training svm_model for:", speaker_id, " :: There are:", len(training_features),
+    print("Training svm_model with", feature_type, "for:", speaker_id, ":: There are:", len(training_features),
           "trainingfiles. Start at: ", start_time)
     # which kernel should be used and why? (Same for gamma)
     # write method to get best c(0.019 vs 2), kernel, etc.
@@ -46,34 +45,36 @@ def create_model(speaker_id, dataframe):
     #     # degree=params.get('degree')
     # )
     # --------------------------------
-    kernels = ['rbf', 'poly']
-    C = np.arange(0.1, 0.2, 0.1)
+    kernels = ['rbf']
+    C = np.arange(0.1, 5.1, 0.1)
     C = [round(x, 2) for x in C]
-    # gamma = np.arange(0.1, 1.1, 0.1)
-    gamma = ['auto']
-    # degree = np.arange(2, 10, 1)
-    # param_grid = dict(kernels=kernels, c=C, gamma=gamma)
+    gamma = ['auto', 'scale']
     param_grid = [{
         'kernel': kernels,
         'C': C,
         'gamma': gamma
-        # 'degree': degree
     }]
     # --------------------- GridSearch ------------------------
     cv = KFold(n_splits=4)
     # helpful with large datasets to keep an overview
-    verbose=0
+    # n_jobs = -1 use all cpus, -2 use all but one
+    verbose = 0
+    n_jobs = -2
     if dm.is_large_data_set():
-        verbose=10
+        verbose = 3
+        n_jobs = -1
 
-    svm_pipe = make_pipeline(StandardScaler(), SVC( kernel='rbf', gamma=0.01, C=10, probability=True))
+    # svm_pipe = make_pipeline(StandardScaler(), SVC( kernel='rbf', gamma=0.01, C=10, probability=True))
 
-    svm_model = make_pipeline(StandardScaler(),
-                    GridSearchCV(SVC(),
-                                 param_grid=param_grid,
-                                 cv=10,
-                                 refit=True,
-                                 n_jobs=-1, verbose=verbose))
+    svm_model = make_pipeline(
+        StandardScaler(),
+        GridSearchCV(SVC(),
+                     param_grid=param_grid,
+                     cv=10,
+                     refit=True,
+                     n_jobs=n_jobs,
+                     verbose=verbose)
+    )
 
     svm_model.fit(training_features, is_speaker)
 
@@ -84,6 +85,6 @@ def create_model(speaker_id, dataframe):
     #
     # svm_model_custom.fit(scaled_training_features, is_speaker)
     # score = model_selection.cross_val_score(svm_model_custom, files, is_speaker, cv=10, scoring='accuracy')
-    save_model(speaker_id, 'svm_custom', svm_model)
+    save_model(speaker_id, 'svm_custom_' + feature_type, svm_model)
 
     print(util.get_duration(start_time))

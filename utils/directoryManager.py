@@ -262,6 +262,7 @@ def is_large_data_set():
         return True
     return False
 
+
 def get_project_path():
     return os.getcwd()
 
