@@ -4,8 +4,8 @@ import csv
 import numpy as np
 import pandas as pd
 from scipy.stats import skew
-from sklearn import preprocessing
 
+from utils.config import Features as config
 from utils import directoryManager as dm, fileManager as fm, util
 
 
@@ -13,10 +13,8 @@ def extract_mfcc_from_file(file_path):
     # sr = 16000 to match psf..
     signal, sr = librosa.load(file_path, sr=16000)
     sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'librosa')
-    n_mfcc = 30
-    # winfunc = lambda x: np.hamming(x)
 
-    mfcc = librosa.feature.mfcc(signal, sr=sr, n_mfcc=n_mfcc)
+    mfcc = librosa.feature.mfcc(signal, sr=sr, n_mfcc=config.N_MFCC)
     # return mfcc
     d_mfcc = librosa.feature.delta(mfcc, order=1)
     dd_mfcc = librosa.feature.delta(d_mfcc, order=2)

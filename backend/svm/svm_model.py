@@ -25,7 +25,7 @@ def load_model(speaker_id, t):
 def create_model(speaker_id, dataframe, feature_type):
     training_features, is_speaker = dam.get_data_for_training_from_dataframe('svm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    print("Training svm_model with", feature_type, "for:", speaker_id, ":: There are:", len(training_features),
+    print("Training svm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
           "trainingfiles. Start at: ", start_time)
     # which kernel should be used and why? (Same for gamma)
     # write method to get best c(0.019 vs 2), kernel, etc.
@@ -61,10 +61,8 @@ def create_model(speaker_id, dataframe, feature_type):
     verbose = 0
     n_jobs = -2
     if dm.is_large_data_set():
-        verbose = 3
+        verbose = 0
         n_jobs = -1
-
-    # svm_pipe = make_pipeline(StandardScaler(), SVC( kernel='rbf', gamma=0.01, C=10, probability=True))
 
     svm_model = make_pipeline(
         StandardScaler(),
@@ -78,13 +76,10 @@ def create_model(speaker_id, dataframe, feature_type):
 
     svm_model.fit(training_features, is_speaker)
 
-    # helpful with large datasets to keep an overview
+    # helpful with large datasets to keep an overview in console
     if dm.is_large_data_set():
         print(svm_model['gridsearchcv'].best_params_)
-    # scaled_training_features = scaler.fit_transform(training_features)
-    #
-    # svm_model_custom.fit(scaled_training_features, is_speaker)
-    # score = model_selection.cross_val_score(svm_model_custom, files, is_speaker, cv=10, scoring='accuracy')
+
     save_model(speaker_id, 'svm_custom_' + feature_type, svm_model)
 
     print(util.get_duration(start_time))

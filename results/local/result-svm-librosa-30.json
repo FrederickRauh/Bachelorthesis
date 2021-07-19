@@ -1,0 +1,473 @@
+{
+  "confusion_mat": {
+    "0": {
+      "accuracy": 99.9142857143,
+      "precision": 1.0,
+      "recall": 0.8285714286,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.1714285714,
+      "equal_error_rate": 0.0857142857,
+      "f1_score": 0.90625,
+      "t_p": 29,
+      "t_n": 105,
+      "f_p": 0,
+      "f_n": 6
+    }
+  },
+  "speaker_object": {
+    "0": [
+      {
+        "id00001": {
+          "Accepted": {
+            "amount": 11,
+            "ids": [
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00000.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00010.wav"
+            ]
+          },
+          "Denied": {
+            "amount": 24,
+            "ids": [
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10002",
+              "id10002",
+              "id10002",
+              "id10002",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\Y2Gr1I2DO7M\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00090.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00091.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00092.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00093.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00094.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00095.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00096.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00097.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00098.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00099.wav"
+            ]
+          },
+          "Imposter": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "Missed": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "extra": {
+            "total_id_files": 11,
+            "total_imposter_files": 24,
+            "total_files": 35
+          }
+        },
+        "id10001": {
+          "Accepted": {
+            "amount": 5,
+            "ids": [
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00005.wav"
+            ]
+          },
+          "Denied": {
+            "amount": 25,
+            "ids": [
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id10002",
+              "id10002",
+              "id10002",
+              "id10002",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00000.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\Y2Gr1I2DO7M\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00090.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00091.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00092.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00093.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00094.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00095.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00096.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00097.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00098.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00099.wav"
+            ]
+          },
+          "Imposter": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "Missed": {
+            "amount": 5,
+            "ids": [
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00010.wav"
+            ]
+          },
+          "extra": {
+            "total_id_files": 10,
+            "total_imposter_files": 25,
+            "total_files": 35
+          }
+        },
+        "id10002": {
+          "Accepted": {
+            "amount": 4,
+            "ids": [
+              "id10002",
+              "id10002",
+              "id10002",
+              "id10002"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\Y2Gr1I2DO7M\\00001.wav"
+            ]
+          },
+          "Denied": {
+            "amount": 31,
+            "ids": [
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00000.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00090.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00091.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00092.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00093.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00094.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00095.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00096.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00097.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00098.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00099.wav"
+            ]
+          },
+          "Imposter": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "Missed": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "extra": {
+            "total_id_files": 4,
+            "total_imposter_files": 31,
+            "total_files": 35
+          }
+        },
+        "id99990": {
+          "Accepted": {
+            "amount": 9,
+            "ids": [
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990",
+              "id99990"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00090.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00091.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00093.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00094.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00095.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00096.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00097.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00098.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00099.wav"
+            ]
+          },
+          "Denied": {
+            "amount": 25,
+            "ids": [
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id00001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10002",
+              "id10002",
+              "id10002",
+              "id10002"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00000.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00004.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00005.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00006.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00007.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00008.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00010.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00001.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00002.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00003.wav",
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\Y2Gr1I2DO7M\\00001.wav"
+            ]
+          },
+          "Imposter": {
+            "amount": 0,
+            "ids": [],
+            "files": []
+          },
+          "Missed": {
+            "amount": 1,
+            "ids": [
+              "id99990"
+            ],
+            "files": [
+              "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00092.wav"
+            ]
+          },
+          "extra": {
+            "total_id_files": 10,
+            "total_imposter_files": 25,
+            "total_files": 35
+          }
+        }
+      }
+    ]
+  },
+  "extra_data": {
+    "0": {
+      "test_files_amount": 35,
+      "test_files": [
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00000.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00001.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00002.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00003.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00004.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00005.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00006.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00007.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00008.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00009.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id00001\\wav\\00010.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00001.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00002.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00003.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00004.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00005.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00006.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00007.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00008.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00009.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10001\\Y8hIVOBuels\\00010.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00001.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00002.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\xTV-jFAUKcw\\00003.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id10002\\Y2Gr1I2DO7M\\00001.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00090.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00091.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00092.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00093.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00094.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00095.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00096.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00097.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00098.wav",
+        "E:\\Documents\\PycharmProjects\\BachelorThesis\\local\\test\\id99990\\wav\\00099.wav"
+      ]
+    }
+  }
+}

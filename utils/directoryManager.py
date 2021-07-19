@@ -264,11 +264,11 @@ def is_large_data_set():
 
 
 def get_project_path():
-    return os.getcwd()
+    return os.path.join(os.getcwd(), 'local')
 
 
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav'
+    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
 
 
 def get_test_path():

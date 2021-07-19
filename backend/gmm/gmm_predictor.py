@@ -105,15 +105,10 @@ class Predictor(object):
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
         for speaker_id in speaker_ids:
             start_time = datetime.now()
-
             print("GMM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type)
+
             results.append([self.predict_speaker_gmm(speaker_id, speaker_ids, test_files, feature_type)])
 
-            after_time = datetime.now()
-            duration = after_time - start_time
-            hours = duration.total_seconds() // 3600
-            minutes = (duration.total_seconds() // 60) - (hours * 60)
-            seconds = duration.total_seconds() - (hours * 3600) - (minutes * 60)
-            print("--> duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds))
+            print(util.get_duration(start_time))
 
         rm.create_result_json(results, 'gmm-' + feature_type, extra_data_object)

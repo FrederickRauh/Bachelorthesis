@@ -1,7 +1,7 @@
 import pandas as pd
 
 from utils import directoryManager as dm
-
+from utils.config import Features as config
 
 def create_speaker_object_with_confusion_mat(results):
     speaker_object = {}
@@ -130,6 +130,6 @@ def create_result_json(results, t, extra_data_object):
     result_json = [(confusion_mat, [speaker_object], extra_data)]
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
 
-    path = dm.get_all_data_path() + '\\' + "result-" + t + ".json"
+    path = dm.get_all_data_path() + '\\' + "result-" + t + '-' + str(config.N_MFCC) + ".json"
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

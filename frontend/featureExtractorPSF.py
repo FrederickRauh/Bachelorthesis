@@ -10,6 +10,7 @@ from scipy.stats import skew
 
 from sklearn import preprocessing
 
+from utils.config import Features as config
 from utils import directoryManager as dm, fileManager as fm, util
 
 
@@ -19,22 +20,6 @@ def extract_filterbank_energies_from_file(file_path):
     return fbank_feat
 
 
-# Parameters:
-# signal – the audio signal from which to compute features. Should be an N*1 array
-# samplerate – the samplerate of the signal we are working with.
-# winlen – the length of the analysis window in seconds. Default is 0.025s (25 milliseconds)
-# winstep – the step between successive windows in seconds. Default is 0.01s (10 milliseconds)
-# numcep – the number of cepstrum to return, default 13
-# nfilt – the number of filters in the filterbank, default 26.
-# nfft – the FFT size. Default is 512.
-# lowfreq – lowest band edge of mel filters. In Hz, default is 0.
-# highfreq – highest band edge of mel filters. In Hz, default is samplerate/2
-# preemph – apply preemphasis filter with preemph as coefficient. 0 is no filter. Default is 0.97.
-# ceplifter – apply a lifter to final cepstral coefficients. 0 is no lifter. Default is 22.
-# appendEnergy – if this is true, the zeroth cepstral coefficient is replaced with the log of the total frame energy.
-# winfunc – the analysis window to apply to each frame. By default no window is applied. You can use numpy window functions here e.g. winfunc=numpy.hamming
-# Returns:
-# A numpy array of size (NUMFRAMES by numcep) containing features. Each row holds 1 feature vector.
 def extract_signal_from_file(file_path):
     sr, signal = wav.read(file_path)
     sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'psf')
@@ -44,20 +29,8 @@ def extract_signal_from_file(file_path):
     return sr, signal
 
 def extract_mfcc_from_signal(sr, signal):
-    n_mfcc = 13  # 40
-    n_mels = 26  # 40  # prev: 26
-    nfft = 2048  # 2048  # prev: 0.025 and 2048(duo to error message)
-    # hop_length = 160  # prev: 0.01
-    fmin = 0
-    fmax = None
-    preemph = 0.97  # 0.0  #0.97  # prev: 0.07
-    ceplifter = 0  # prev: 22
-    appendEnergy = True  # prev: True
-    winlen = 0.05  # 0.064  # prev n_fft / sr win length of 16-64ms
-    winstep = 0.01  # prev: 0.036, hop_length / sr (default 0.01 (10ms))
-    winfunc = lambda x: np.hamming(x)
-    return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, numcep=n_mfcc, nfilt=n_mels, nfft=nfft,
-                    appendEnergy=appendEnergy, winfunc=winfunc)
+    return psf.mfcc(signal=signal, samplerate=sr, winlen=config.WINLEN, numcep=config.N_MFCC, nfilt=config.N_MELS, nfft=config.NFFT,
+                    appendEnergy=config.APPENDENERGY, winfunc=config.WINFUNC)
     # return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels,
     #                 nfft=nfft, lowfreq=fmin, highfreq=fmax,
     #                 preemph=preemph, ceplifter=ceplifter, appendEnergy=appendEnergy, winfunc=winfunc)
@@ -73,11 +46,7 @@ def get_delta_delta_from_signal(sr, signal):
 
 
 def extract_filter_banks_and_energies_from_signal(sr, signal):
-    n_mels = 26  # 40  # prev: 26
-    winlen = 0.05  # 0.064  # prev n_fft / sr win length of 16-64ms
-    winstep = 0.01  # prev: 0.036, hop_length / sr (default 0.01 (10ms))
-    winfunc = lambda x: np.hamming(x)
-    return psf.fbank(signal, samplerate=sr, nfilt=n_mels, winlen=winlen, winstep=winstep, winfunc=winfunc)
+    return psf.fbank(signal, samplerate=sr, nfilt=config.N_MELS, winlen=config.WINLEN, winstep=config.WINSTEP, winfunc=config.WINFUNC)
 
 
 def extract_processed_features_from_file(file_path):
@@ -85,9 +54,6 @@ def extract_processed_features_from_file(file_path):
     ft1 = get_delta_delta_from_signal(sr, signal)
     ft2, ft3 = extract_filter_banks_and_energies_from_signal(sr, signal)
     return np.vstack((ft1, ft2))
-    # # concat above three features
-
-    # return concat_mfcc_feat
 
 
 

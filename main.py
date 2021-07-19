@@ -32,14 +32,14 @@ speaker_ids = dm.get_all_ids()
 # # preparation phase
 print("prep phase...")  # create the overall csv, extract mfcc from files and create dataframes(json)
 # cm.create_overall_csv()
-for speaker_id in speaker_ids:
-    print("extracting features for:", speaker_id)
-    files = dm.get_wav_files(speaker_id)
-    for file in files:
-        file_path = dm.get_parent_path(speaker_id) + '\\' + file
-        flib.extract_mfcc_from_file_to_json(file_path)
+# for speaker_id in speaker_ids:
+#     print("extracting features for:", speaker_id)
+#     files = dm.get_wav_files(speaker_id)
+#     for file in files:
+#         file_path = dm.get_parent_path(speaker_id) + '\\' + file
+#         flib.extract_mfcc_from_file_to_json(file_path)
         # fpsf.extract_mfcc_from_file_to_json(file_path)
-dam.create_librosa_dataframe(speaker_ids)
+# dam.create_librosa_dataframe(speaker_ids)
 # dam.create_psf_dataframe(speaker_ids)
 #
 
@@ -60,7 +60,7 @@ trainer = Trainer()
 
 dataframe_librosa_path = dm.get_all_data_path() + '\\' + 'librosa-dataframe.json'
 dataframe_librosa = dam.load_dataframe_from_path(dataframe_librosa_path)
-trainer.train_multi_svm(speaker_ids, dataframe_librosa, feature_type='librosa')
+# trainer.train_multi_svm(speaker_ids, dataframe_librosa, feature_type='librosa')
 trainer.train_multi_gmm(speaker_ids, dataframe_librosa, feature_type='librosa')
 
 
@@ -68,7 +68,7 @@ trainer.train_multi_gmm(speaker_ids, dataframe_librosa, feature_type='librosa')
 print("prediction phase...")
 svm_pred = svm_pred()
 # svm_pred.predict_multiple_speakers_svm(speaker_ids, feature_type='psf')
-svm_pred.predict_multiple_speakers_svm(speaker_ids, feature_type='librosa')
+# svm_pred.predict_multiple_speakers_svm(speaker_ids, feature_type='librosa')
 gmm_pred = gmm_pred()
 # gmm_pred.predict_multiple_speakers_gmm(speaker_ids, feature_type='psf')
 gmm_pred.predict_multiple_speakers_gmm(speaker_ids, feature_type='librosa')

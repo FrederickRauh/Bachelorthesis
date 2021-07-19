@@ -1,18 +1,11 @@
 import pickle
 
-import numpy as np
 from datetime import datetime
 
-import sklearn
-from matplotlib import pyplot as plt
-from sklearn.metrics import silhouette_score
 from sklearn.mixture import GaussianMixture as GMM
-from sklearn import gaussian_process, metrics, model_selection
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-
-from frontend import featureExtractorPSF as fe
 
 from utils import dataframeManager as dam, directoryManager as dm, util
 
@@ -31,7 +24,7 @@ def load_model(speaker_id, t):
 def create_model(speaker_id, dataframe, feature_type):
     training_features = dam.get_data_for_training_from_dataframe('gmm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    print("Training gmm_model with", feature_type, "for:", speaker_id, ":: There are:", len(training_features),
+    print("Training gmm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
           "trainingfiles. Start at: ", start_time)
 
     n_components = [13, 16]
@@ -51,7 +44,7 @@ def create_model(speaker_id, dataframe, feature_type):
     verbose = 0
     n_jobs = -2
     if dm.is_large_data_set():
-        verbose = 3
+        verbose = 0
         n_jobs = -1
 
     gmm_model = make_pipeline(
