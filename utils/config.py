@@ -1,5 +1,7 @@
 import numpy as np
 
+from utils import directoryManager as dm
+
 
 class Features:
     # Parameters:
@@ -18,8 +20,7 @@ class Features:
     # winfunc – the analysis window to apply to each frame. By default no window is applied. You can use numpy window functions here e.g. winfunc=numpy.hamming
     # Returns:
     # A numpy array of size (NUMFRAMES by numcep) containing features. Each row holds 1 feature vector.
-
-    N_MFCC = 23  # 40
+    N_MFCC = 24  # 40
     N_MELS = 26  # 40  # PREV: 26
     NFFT = 2048  # 2048  # PREV: 0.025 AND 2048(DUO TO ERROR MESSAGE)
     # HOP_LENGTH = 160  # PREV: 0.01
@@ -31,3 +32,37 @@ class Features:
     WINLEN = 0.05  # 0.064  # PREV N_FFT / SR WIN LENGTH OF 16-64MS
     WINSTEP = 0.01  # PREV: 0.036, HOP_LENGTH / SR (DEFAULT 0.01 (10MS))
     WINFUNC = lambda x: np.hamming(x)
+
+    def over_write_n_mfcc(self, number):
+        self.N_MFCC = number
+
+
+class Ids:
+    # speaker_ids = dm.get_all_ids()
+
+    # speaker_ids = [speaker_ids[0]]
+    # speaker_ids = util.remove_finished_ids(speaker_ids, finished_ids)
+    # speaker_ids = finished_ids
+
+    # speaker_id = 'id00001'
+
+    speaker_ids = dm.get_all_ids()
+    finished_ids = ['id10001', 'id10002', 'id10003', 'id10004', 'id10005',
+                    'id10006', 'id10007', 'id10008', 'id10009', 'id10010',
+                    'id10011', 'id10012', 'id10013', 'id10014', 'id10015',
+                    'id10016', 'id10017', 'id10018', 'id10019', 'id10020',
+                    #                 ]
+                    #                 ,
+                    'id10021', 'id10022', 'id10023', 'id10024', 'id10025',
+                    'id10026', 'id10027', 'id10028', 'id10029', 'id10030',
+                    'id10031', 'id10032', 'id10033', 'id10034', 'id10035',
+                    'id10036', 'id10037', 'id10038', 'id10039', 'id10040',
+                    'id10041', 'id10042', 'id10043', 'id10044', 'id10045']
+
+    def remove_finished_ids(self, ids=speaker_ids, finished_ids=finished_ids):
+        for id in finished_ids:
+            if ids.__contains__(id):
+                ids.remove(id)
+        self.speaker_ids = ids
+
+

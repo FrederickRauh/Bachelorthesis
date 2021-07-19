@@ -10,7 +10,7 @@ from scipy.stats import skew
 
 from sklearn import preprocessing
 
-from utils.config import Features as config
+from utils.config import Features as config_feature
 from utils import directoryManager as dm, fileManager as fm, util
 
 
@@ -28,9 +28,16 @@ def extract_signal_from_file(file_path):
         signal = signal[:, 0]
     return sr, signal
 
+
 def extract_mfcc_from_signal(sr, signal):
-    return psf.mfcc(signal=signal, samplerate=sr, winlen=config.WINLEN, numcep=config.N_MFCC, nfilt=config.N_MELS, nfft=config.NFFT,
-                    appendEnergy=config.APPENDENERGY, winfunc=config.WINFUNC)
+    return psf.mfcc(signal=signal,
+                    samplerate=sr,
+                    winlen=config_feature.WINLEN,
+                    numcep=config_feature.N_MFCC,
+                    nfilt=config_feature.N_MELS,
+                    nfft=config_feature.NFFT,
+                    appendEnergy=config_feature.APPENDENERGY,
+                    winfunc=config_feature.WINFUNC)
     # return psf.mfcc(signal=signal, samplerate=sr, winlen=winlen, winstep=winstep, numcep=n_mfcc, nfilt=n_mels,
     #                 nfft=nfft, lowfreq=fmin, highfreq=fmax,
     #                 preemph=preemph, ceplifter=ceplifter, appendEnergy=appendEnergy, winfunc=winfunc)
@@ -46,7 +53,12 @@ def get_delta_delta_from_signal(sr, signal):
 
 
 def extract_filter_banks_and_energies_from_signal(sr, signal):
-    return psf.fbank(signal, samplerate=sr, nfilt=config.N_MELS, winlen=config.WINLEN, winstep=config.WINSTEP, winfunc=config.WINFUNC)
+    return psf.fbank(signal, samplerate=sr,
+                     nfilt=config_feature.N_MELS,
+                     winlen=config_feature.WINLEN,
+                     winstep=config_feature.WINSTEP,
+                     winfunc=config_feature.WINFUNC
+                     )
 
 
 def extract_processed_features_from_file(file_path):
@@ -54,7 +66,6 @@ def extract_processed_features_from_file(file_path):
     ft1 = get_delta_delta_from_signal(sr, signal)
     ft2, ft3 = extract_filter_banks_and_energies_from_signal(sr, signal)
     return np.vstack((ft1, ft2))
-
 
 
 def extract_mfcc_from_file_to_csv(file_path):

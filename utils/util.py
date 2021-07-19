@@ -12,11 +12,7 @@ from utils import directoryManager as dm
 
 
 # util part
-def remove_finished_ids(ids, finished_ids):
-    for id in finished_ids:
-        if ids.__contains__(id):
-            ids.remove(id)
-    return ids
+
 
 
 def get_four_seconde_frame_of_audio(sr, signal, t):
@@ -50,10 +46,10 @@ def get_correct_array_form(array):
 
 def get_features_for_prediciton(file_path, feature_type):
     if feature_type == 'psf':
-        return [fpsf.extract_processed_mfcc_from_file(file_path)]
+        return [fpsf.extract_processed_features_from_file(file_path)]
         # return get_correct_array_form([fpsf.extract_processed_mfcc_from_file(file_path)])
     else:
-        return [flib.extract_processed_mfcc_from_file(file_path)]
+        return [flib.extract_processed_features_from_file(file_path)]
         # return get_correct_array_form([flib.extract_processed_mfcc_from_file(file_path)])
 
 
