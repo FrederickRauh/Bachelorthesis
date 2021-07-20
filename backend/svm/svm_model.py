@@ -8,7 +8,7 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 
-from utils import dataframeManager as dam, directoryManager as dm, util
+from utils import dataframeManager as dam, directoryManager as dm, util, debug
 
 
 def save_model(speaker_id, t, model):
@@ -25,8 +25,8 @@ def load_model(speaker_id, t):
 def create_model(speaker_id, dataframe, feature_type):
     training_features, is_speaker = dam.get_data_for_training_from_dataframe('svm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    print("Training svm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
-          "trainingfiles. Start at: ", start_time)
+    debug.log(("Training svm_model with:", feature_type, " features for:", speaker_id, ":: There are:", len(training_features),
+          "trainingfiles. Start at: ", start_time))
     # which kernel should be used and why? (Same for gamma)
     # write method to get best c(0.019 vs 2), kernel, etc.
     # choosen after reading paper: Evaluation of kernel methods for speaker verification and identification(2002)
@@ -78,8 +78,8 @@ def create_model(speaker_id, dataframe, feature_type):
 
     # helpful with large datasets to keep an overview in console
     if dm.is_large_data_set():
-        print(svm_model['gridsearchcv'].best_params_)
+        debug.log((svm_model['gridsearchcv'].best_params_))
 
     save_model(speaker_id, 'svm_custom_' + feature_type, svm_model)
 
-    print(util.get_duration(start_time))
+    debug.log((util.get_duration(start_time)))

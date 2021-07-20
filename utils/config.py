@@ -1,9 +1,20 @@
 import numpy as np
 
-from utils import directoryManager as dm
+
+class DEBUG:
+    LOGLEVEL = 1
+
+    def overwrite_loglevel(self, x):
+        self.LOGLEVEL = x
 
 
-class Features:
+class CONFIG:
+    VERSION = 1
+    def overwrite_version(self, x):
+        self.VERSION = x
+
+
+class FEATURES:
     # Parameters:
     # signal – the audio signal from which to compute features. Should be an N*1 array
     # samplerate – the samplerate of the signal we are working with.
@@ -20,6 +31,7 @@ class Features:
     # winfunc – the analysis window to apply to each frame. By default no window is applied. You can use numpy window functions here e.g. winfunc=numpy.hamming
     # Returns:
     # A numpy array of size (NUMFRAMES by numcep) containing features. Each row holds 1 feature vector.
+    SAMPLE_RATE = 16000
     N_MFCC = 24  # 40
     N_MELS = 26  # 40  # PREV: 26
     NFFT = 2048  # 2048  # PREV: 0.025 AND 2048(DUO TO ERROR MESSAGE)
@@ -33,11 +45,13 @@ class Features:
     WINSTEP = 0.01  # PREV: 0.036, HOP_LENGTH / SR (DEFAULT 0.01 (10MS))
     WINFUNC = lambda x: np.hamming(x)
 
-    def over_write_n_mfcc(self, number):
-        self.N_MFCC = number
+    def overwrite_n_mfcc(self, x):
+        self.N_MFCC = x
 
 
-class Ids:
+from utils import directoryManager as dm
+
+class IDS:
     # speaker_ids = dm.get_all_ids()
 
     # speaker_ids = [speaker_ids[0]]
@@ -64,5 +78,3 @@ class Ids:
             if ids.__contains__(id):
                 ids.remove(id)
         self.speaker_ids = ids
-
-

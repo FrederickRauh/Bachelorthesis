@@ -7,7 +7,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from utils import dataframeManager as dam, directoryManager as dm, util
+from utils import dataframeManager as dam, directoryManager as dm, util, debug
 
 
 def save_model(speaker_id, t, model):
@@ -24,8 +24,8 @@ def load_model(speaker_id, t):
 def create_model(speaker_id, dataframe, feature_type):
     training_features = dam.get_data_for_training_from_dataframe('gmm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    print("Training gmm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
-          "trainingfiles. Start at: ", start_time)
+    debug.log(("Training gmm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
+          "trainingfiles. Start at: ", start_time))
 
     n_components = [13, 16]
     max_iter = [200]
@@ -59,8 +59,8 @@ def create_model(speaker_id, dataframe, feature_type):
     )
     gmm_model.fit(training_features)
     if dm.is_large_data_set():
-        print(gmm_model['gridsearchcv'].best_params_)
+        debug.log((gmm_model['gridsearchcv'].best_params_))
     # gmm_model = gmm(n_components=16, max_iter=200, covariance_type='diag', n_init=3).fit(training_features)
     save_model(speaker_id, 'gmm_' + feature_type, gmm_model)
 
-    print(util.get_duration(start_time))
+    debug.log(util.get_duration(start_time))

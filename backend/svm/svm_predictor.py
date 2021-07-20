@@ -6,7 +6,7 @@ from backend.svm import svm_model as m
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils import directoryManager as dm, resultManager as rm, util
+from utils import directoryManager as dm, resultManager as rm, util, debug
 
 
 class Predictor(object):
@@ -21,13 +21,10 @@ class Predictor(object):
         return score
 
     def predict_speaker_svm(self, speaker_id, test_files, feature_type):
-        # types = ['svm_rbf', 'svm_linear', 'svm_poly', 'svm_custom']
-        # types = ['svm_rbf', 'svm_linear', 'svm_poly']
         types = ['svm_custom']
         speaker_object_result = {}
         for t in types:
             t = t + "_" + feature_type
-            # print(m.load_model(speaker_id, t)['gridsearchcv'].best_params_)
 
             true_positive = []
             accepted_ids = []
@@ -72,7 +69,8 @@ class Predictor(object):
                                                      "files": false_negative},
                                           "extra": {"total_id_files": len(true_positive) + len(false_negative),
                                                     "total_imposter_files": len(true_negativ) + len(false_positiv),
-                                                    "total_files": len(test_files)}
+                                                    "total_files": len(test_files),
+                                                    "model_details": m.load_model(speaker_id, t)['gridsearchcv'].best_params_}
                                           })
         return {speaker_id: speaker_object_result}
 
@@ -85,9 +83,9 @@ class Predictor(object):
         for speaker_id in speaker_ids:
             start_time = datetime.now()
 
-            print("SVM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type)
+            debug.log(("SVM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type))
             results.append([self.predict_speaker_svm(speaker_id, test_files, feature_type)])
 
-            print(util.get_duration(start_time))
+            debug.log((util.get_duration(start_time)))
 
         rm.create_result_json(results, 'svm-' + feature_type, extra_data_object)

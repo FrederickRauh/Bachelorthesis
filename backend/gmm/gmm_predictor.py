@@ -7,7 +7,7 @@ from backend.gmm import gmm_model as m
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils import directoryManager as dm, resultManager as rm, util
+from utils import directoryManager as dm, resultManager as rm, util, debug
 
 
 class Predictor(object):
@@ -37,7 +37,6 @@ class Predictor(object):
         speaker_object_result = {}
         for t in types:
             t = t + "_" + feature_type
-            # print(m.load_model(speaker_id, t)['gridsearchcv'].best_params_)
 
             true_positive = []
             accepted_ids = []
@@ -50,10 +49,6 @@ class Predictor(object):
 
             models = [m.load_model(speaker_id, t) for speaker_id in speaker_ids]
             ids_of_models = [id for id in speaker_ids]
-
-            # for file in test_files:
-            #     score = self.predict_for_one_model(m.load_model(speaker_id, t), file)
-            #     print("predicted for file:", file, "score:", score, )
 
             for file in test_files:
                 id_of_file = dm.get_id_of_path(file)
@@ -93,7 +88,8 @@ class Predictor(object):
                                                      "files": false_negative},
                                           "extra": {"total_id_files": len(true_positive) + len(false_negative),
                                                     "total_imposter_files": len(true_negativ) + len(false_positiv),
-                                                    "total_files": len(test_files)}
+                                                    "total_files": len(test_files),
+                                                    "model_details": m.load_model(speaker_id, t)['gridsearchcv'].best_params_}
                                           })
         return {speaker_id: speaker_object_result}
 
@@ -105,10 +101,10 @@ class Predictor(object):
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
         for speaker_id in speaker_ids:
             start_time = datetime.now()
-            print("GMM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type)
+            debug.log(("GMM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type))
 
             results.append([self.predict_speaker_gmm(speaker_id, speaker_ids, test_files, feature_type)])
 
-            print(util.get_duration(start_time))
+            debug.log((util.get_duration(start_time)))
 
         rm.create_result_json(results, 'gmm-' + feature_type, extra_data_object)

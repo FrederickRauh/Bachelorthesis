@@ -2,15 +2,12 @@ import os
 
 from backend.trainer import Trainer
 
-from utils import util
+from utils import util, debug
 
 from multiprocessing import Process, freeze_support
 
 from utils import dataframeManager as dam
 from utils import directoryManager as dm
-
-def test():
-    print("hello")
 
 
 class Mult_Trainer(object):
@@ -25,13 +22,13 @@ class Mult_Trainer(object):
         if not process_count < len(speaker_ids):
             process_count = len(speaker_ids)
         speaker_ids_split = util.split_array_for_multiprocess(speaker_ids, process_count)
-        print("splits: ", len(speaker_ids_split))
+        debug.log(("splits: ", len(speaker_ids_split)))
         processes = []
         for i in range(process_count):
             process = Process(target=trainer.train_multi_svm, args=[speaker_ids_split[i], dataframe])
             processes.append(process)
         for process in processes:
-            print("starting process:", process.name)
+            debug.log(("starting process:", process.name))
             process.start()
         for process in processes:
             process.join()

@@ -9,12 +9,12 @@ import pandas as pd
 from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
 
-from utils import directoryManager as dm
+from utils import directoryManager as dm, debug
 from utils import util
 
 
 def create_librosa_dataframe(speaker_ids):
-    print("creating librosa dataframe... ")
+    debug.log(("creating librosa dataframe... "))
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
@@ -32,7 +32,7 @@ def create_librosa_dataframe(speaker_ids):
 
 
 def create_psf_dataframe(speaker_ids):
-    print("creating psf dataframe... ")
+    debug.log(("creating psf dataframe... "))
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)

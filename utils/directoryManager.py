@@ -3,44 +3,12 @@ import os
 import scipy.io.wavfile as wav
 from os.path import dirname, join as pjoin
 
-
-def create_wav_file_name(speaker_id, number):
-    number = f"{number:05}"
-    if speaker_id == '':
-        return str(number) + '.wav'
-    else:
-        return speaker_id + '\\' + str(number) + '.wav'
+from utils import debug
 
 
+# csv
 def create_csv_file_name(speaker_id):
     return speaker_id + '.csv'
-
-
-def get_parent_path(speaker_id):
-    parent_path = make_dir(get_all_wav_path())
-    return make_dir(os.path.join(parent_path, speaker_id))
-
-
-def sub_folder_switch(x):
-    return {
-        'csv': 1,
-        'wav': 2
-    }.get(x, 9)
-
-
-def list_sub_folders(parent_path):
-    return os.listdir(parent_path)
-
-
-def get_sub_folder_path(parent_path, sub_folder):
-    path = os.path.join(parent_path, sub_folder)
-    if not os.path.exists(path):
-        make_dir(path)
-    return path
-
-
-def create_sub_folder(parent_path, sub_folder_name):
-    make_dir(os.path.join(parent_path, sub_folder_name))
 
 
 def get_csv_path(speaker_id):
@@ -59,6 +27,22 @@ def create_feature_csv_dir(file_path):
     make_dir(new_dir_path)
 
 
+def get_feature_librosa_csv_path(wav_path):
+    json_path = get_feature_path(wav_path, 'librosa')
+    return json_path.replace('.wav', '.csv')
+
+
+def get_feature_psf_csv_path(wav_path):
+    json_path = get_feature_path(wav_path, 'psf')
+    return json_path.replace('.wav', '.csv')
+
+
+def get_all_data_csv_file_path():
+    path = get_all_data_path() + '\\' + 'pairs.csv'
+    return path
+
+
+# features
 def get_feature_path(wav_path, version):
     sub_path = wav_path.split('\\')
     feature_path = ''
@@ -70,19 +54,9 @@ def get_feature_path(wav_path, version):
     return feature_path
 
 
-def get_feature_librosa_csv_path(wav_path):
-    json_path = get_feature_path(wav_path, 'librosa')
-    return json_path.replace('.wav', '.csv')
-
-
 def get_feature_librosa_json_path(wav_path):
     json_path = get_feature_path(wav_path, 'librosa')
     return json_path.replace('.wav', '.json')
-
-
-def get_feature_psf_csv_path(wav_path):
-    json_path = get_feature_path(wav_path, 'psf')
-    return json_path.replace('.wav', '.csv')
 
 
 def get_feature_psf_json_path(wav_path):
@@ -99,9 +73,10 @@ def create_feature_json_dir(file_path):
     make_dir(new_dir_path)
 
 
-def get_wav_folder_path(speaker_id):
-    parent_path = get_parent_path(speaker_id)
-    return get_sub_folder_path(parent_path, 'wav')
+# folder structure
+def get_parent_path(speaker_id):
+    parent_path = make_dir(get_all_wav_path())
+    return make_dir(os.path.join(parent_path, speaker_id))
 
 
 def make_dir(path):
@@ -109,8 +84,45 @@ def make_dir(path):
         try:
             os.mkdir(path)
         except OSError as error:
-            print("Creating directory %s has failed. Error %s" % (path, error))
+            debug.log(("Creating directory %s has failed. Error %s" % (path, error)))
     return path
+
+
+def create_sub_folder(parent_path, sub_folder_name):
+    make_dir(os.path.join(parent_path, sub_folder_name))
+
+
+def list_sub_folders(parent_path):
+    return os.listdir(parent_path)
+
+
+def get_sub_folder_path(parent_path, sub_folder):
+    path = os.path.join(parent_path, sub_folder)
+    if not os.path.exists(path):
+        make_dir(path)
+    return path
+
+
+def sub_folder_switch(x):
+    return {
+        'csv': 1,
+        'wav': 2
+    }.get(x, 9)
+
+
+# results
+def get_results_folder(model_type):
+    data_path = make_dir(get_all_data_path() + '\\' + "result")
+    return make_dir(data_path + '\\' + model_type)
+
+
+# wav
+def create_wav_file_name(speaker_id, number):
+    number = f"{number:05}"
+    if speaker_id == '':
+        return str(number) + '.wav'
+    else:
+        return speaker_id + '\\' + str(number) + '.wav'
 
 
 def get_file_name(speaker_id, number):
@@ -118,6 +130,33 @@ def get_file_name(speaker_id, number):
     wav_path = get_sub_folder_path(parent_path, 'wav')
     file_name = create_wav_file_name('', number)
     return pjoin(wav_path, file_name)
+
+
+def get_wav_files(speaker_id):
+    parent_path = get_parent_path(speaker_id)
+    directories = list_sub_folders(parent_path)
+    # -------------------------------------------------
+    # done in order to keep unseen data for testing afterwards
+    if is_large_data_set():
+        directories = remove_wav_files_if_voxceleb(directories, parent_path)
+    files = []
+    wav_files = []
+    for directory in directories:
+        if not directory.__contains__('csv') and not directory == 'model':
+            dir_path = parent_path + '\\' + directory
+            for base, dirs2, Files in os.walk(dir_path):
+                if not base.endswith('\librosa') and not base.endswith('\psf'):
+                    files = Files
+            for file in files:
+                if file.endswith('.wav'):
+                    wav_files.append(directory + '\\' + file)
+            files = []
+    return wav_files
+
+
+def get_wav_folder_path(speaker_id):
+    parent_path = get_parent_path(speaker_id)
+    return get_sub_folder_path(parent_path, 'wav')
 
 
 def get_wav_files_in_folder(path):
@@ -153,28 +192,6 @@ def remove_wav_files_if_voxceleb(directories, parent_path):
     return directories
 
 
-def get_wav_files(speaker_id):
-    parent_path = get_parent_path(speaker_id)
-    directories = list_sub_folders(parent_path)
-    # -------------------------------------------------
-    # done in order to keep unseen data for testing afterwards
-    if is_large_data_set():
-        directories = remove_wav_files_if_voxceleb(directories, parent_path)
-    files = []
-    wav_files = []
-    for directory in directories:
-        if not directory.__contains__('csv') and not directory == 'model':
-            dir_path = parent_path + '\\' + directory
-            for base, dirs2, Files in os.walk(dir_path):
-                if not base.endswith('\librosa') and not base.endswith('\psf'):
-                    files = Files
-            for file in files:
-                if file.endswith('.wav'):
-                    wav_files.append(directory + '\\' + file)
-            files = []
-    return wav_files
-
-
 def get_all_models_path():
     path = get_all_data_path() + '\\' + 'models'
     if not os.path.exists(path):
@@ -201,7 +218,7 @@ def get_model_path(speaker_id, t):
     file_name = speaker_id + "_" + t + "_model.pickel"
     path = path + '\\' + file_name
     return path
-    
+
     # model_folder_path = get_sub_folder_path(parent_path, 'model')
     #
     # return model_folder_path + '\\' + file_name
@@ -224,6 +241,9 @@ def get_all_wav_path():
     return get_all_data_path() + '\\' + "wav"
 
 
+def get_all_wav_names():
+    return os.listdir(get_all_wav_path())
+
 
 def get_all_ids():
     ids = get_all_wav_names()
@@ -240,15 +260,6 @@ def get_all_ids():
     # if ids.__contains__('result-gmm.json'):
     #     ids.remove('result-gmm.json')
     return ids
-
-
-def get_all_data_csv_file_path():
-    path = get_all_data_path() + '\\' + 'pairs.csv'
-    return path
-
-
-def get_all_wav_names():
-    return os.listdir(get_all_wav_path())
 
 
 # used to switch between

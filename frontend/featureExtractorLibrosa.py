@@ -5,26 +5,26 @@ import numpy as np
 import pandas as pd
 from scipy.stats import skew
 
-from utils.config import Features as config_feature
-from utils import directoryManager as dm, fileManager as fm, util
+from utils.config import FEATURES
+from utils import directoryManager as dm, fileManager as fm, util, debug
 
 
-def extract_mfcc_from_signal(sr, signal):
-    return librosa.feature.mfcc(signal, sr=sr, n_mfcc=config_feature.N_MFCC)
+def extract_mfcc_from_signal(signal):
+    return librosa.feature.mfcc(signal, sr=FEATURES.SAMPLE_RATE, n_mfcc=FEATURES.N_MFCC)
 
 
 def extract_processed_mfcc_from_file(file_path):
-    signal, sr = librosa.load(file_path, sr=16000)
+    signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
     sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'librosa')
-    mfcc = extract_mfcc_from_signal(sr, signal)
+    mfcc = extract_mfcc_from_signal(signal)
     return mfcc
 
 
 def extract_processed_features_from_file(file_path):
     # sr = 16000 to match psf..
-    signal, sr = librosa.load(file_path, sr=16000)
+    signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
     sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'librosa')
-    mfcc = extract_mfcc_from_signal(sr, signal)
+    mfcc = extract_mfcc_from_signal(signal)
     d_mfcc = librosa.feature.delta(mfcc, order=1)
     dd_mfcc = librosa.feature.delta(d_mfcc, order=2)
     ft1 = np.hstack((mfcc, d_mfcc, dd_mfcc))

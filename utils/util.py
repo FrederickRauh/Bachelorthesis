@@ -8,11 +8,8 @@ from datetime import datetime
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils import directoryManager as dm
-
-
-# util part
-
+from utils.config import DEBUG
+from utils import directoryManager as dm, debug
 
 
 def get_four_seconde_frame_of_audio(sr, signal, t):

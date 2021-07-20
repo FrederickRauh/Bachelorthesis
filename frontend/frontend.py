@@ -7,7 +7,7 @@ import scipy.io.wavfile as wav
 
 from frontend import featureExtractorPSF as fe
 
-from utils import directoryManager as dm
+from utils import directoryManager as dm, debug
 from utils import fileManager as fm
 
 
@@ -15,17 +15,17 @@ from utils import fileManager as fm
 # def getSpeechInput():
 #     recognizer = sr.Recognizer()
 #     try:
-#         print("listening...")
+#         debug.print("listening...")
 #         with sr.Microphone() as source:
 #             voice = recognizer.listen(source)
 #             data = recognizer.recognize_google(voice)
-#             print(data)
+#             debug.print(data)
 #     except:
 #         pass
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
-    print("collecting voice samples....")
+    debug.log(("collecting voice samples...."))
     for x in range(number):
         get_voice_input(timespan, samplerate, x, speaker_id, test)
 
