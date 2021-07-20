@@ -8,16 +8,18 @@ from backend.trainer import Trainer
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils.config import IDS, FEATURES, CONFIG
+from utils.config import IDS, FEATURES, CONFIG, MODELCONFIG
 from utils import dataframeManager as dam, debug, directoryManager as dm, util
 
 
 #############Config##############
-version = np.arange(1, 4, 1)
-mfccs = np.arange(13, 41, 1)
+version = np.arange(3, 4, 1)
+mfccs = np.arange(31, 41, 1)
 trainer = Trainer()
 svm_pred = svm_pred()
 gmm_pred = gmm_pred()
+
+MODELCONFIG.overwrite_n_jobs(MODELCONFIG, -2)
 
 debug.log(("starting..."))
 for v in version:

@@ -144,5 +144,3 @@ scripts/extract_bnf.sh
 # intermediate files
 misc/tools/score*
 misc/tuning*
-
-*.png

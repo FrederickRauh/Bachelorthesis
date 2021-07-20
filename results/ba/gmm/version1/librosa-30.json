@@ -1,17 +1,17 @@
 {
   "confusion_mat": {
     "0": {
-      "accuracy": 99.5740514076,
-      "precision": 0.1906976744,
-      "recall": 0.1906976744,
-      "false_accept_rate": 0.0425948592,
-      "false_reject_rate": 0.8093023256,
-      "equal_error_rate": 0.4259485924,
-      "f1_score": 0.1906976744,
-      "t_p": 41,
-      "t_n": 3911,
-      "f_p": 174,
-      "f_n": 174
+      "accuracy": 99.6156670747,
+      "precision": 0.2697674419,
+      "recall": 0.2697674419,
+      "false_accept_rate": 0.0384332925,
+      "false_reject_rate": 0.7302325581,
+      "equal_error_rate": 0.3843329253,
+      "f1_score": 0.2697674419,
+      "t_p": 58,
+      "t_n": 3928,
+      "f_p": 157,
+      "f_n": 157
     }
   },
   "speaker_object": {
@@ -475,7 +475,13 @@
           "extra": {
             "total_id_files": 10,
             "total_imposter_files": 205,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10002": {
@@ -936,23 +942,23 @@
           "extra": {
             "total_id_files": 4,
             "total_imposter_files": 211,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10003": {
           "Accepted": {
-            "amount": 2,
-            "ids": [
-              "id10003",
-              "id10003"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00007.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "Denied": {
-            "amount": 172,
+            "amount": 179,
             "ids": [
               "id10001",
               "id10001",
@@ -963,10 +969,13 @@
               "id10001",
               "id10001",
               "id10001",
+              "id10001",
               "id10002",
               "id10002",
               "id10002",
               "id10002",
+              "id10004",
+              "id10004",
               "id10004",
               "id10004",
               "id10004",
@@ -1061,6 +1070,10 @@
               "id10016",
               "id10016",
               "id10016",
+              "id10016",
+              "id10016",
+              "id10016",
+              "id10017",
               "id10017",
               "id10017",
               "id10017",
@@ -1137,16 +1150,19 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00003.wav",
@@ -1221,8 +1237,10 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00003.wav",
@@ -1233,8 +1251,10 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00013.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav",
@@ -1303,29 +1323,15 @@
             ]
           },
           "Imposter": {
-            "amount": 7,
-            "ids": [
-              "id10001",
-              "id10004",
-              "id10004",
-              "id10016",
-              "id10016",
-              "id10016",
-              "id10017"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00001.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "Missed": {
-            "amount": 34,
+            "amount": 36,
             "ids": [
+              "id10003",
+              "id10003",
               "id10003",
               "id10003",
               "id10003",
@@ -1368,7 +1374,9 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00010.wav",
@@ -1401,21 +1409,23 @@
           "extra": {
             "total_id_files": 36,
             "total_imposter_files": 179,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10004": {
           "Accepted": {
-            "amount": 1,
-            "ids": [
-              "id10004"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "Denied": {
-            "amount": 203,
+            "amount": 204,
             "ids": [
               "id10001",
               "id10001",
@@ -1467,6 +1477,7 @@
               "id10003",
               "id10003",
               "id10003",
+              "id10005",
               "id10005",
               "id10005",
               "id10005",
@@ -1684,6 +1695,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00012.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\_xUsNvG7-Jk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav",
@@ -1828,17 +1840,14 @@
             ]
           },
           "Imposter": {
-            "amount": 1,
-            "ids": [
-              "id10005"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "Missed": {
-            "amount": 10,
+            "amount": 11,
             "ids": [
+              "id10004",
               "id10004",
               "id10004",
               "id10004",
@@ -1852,6 +1861,7 @@
             ],
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00005.wav",
@@ -1866,14 +1876,24 @@
           "extra": {
             "total_id_files": 11,
             "total_imposter_files": 204,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10005": {
           "Accepted": {
-            "amount": 0,
-            "ids": [],
-            "files": []
+            "amount": 1,
+            "ids": [
+              "id10005"
+            ],
+            "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav"
+            ]
           },
           "Denied": {
             "amount": 202,
@@ -2292,9 +2312,8 @@
             "files": []
           },
           "Missed": {
-            "amount": 13,
+            "amount": 12,
             "ids": [
-              "id10005",
               "id10005",
               "id10005",
               "id10005",
@@ -2318,7 +2337,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00009.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav"
@@ -2327,13 +2345,20 @@
           "extra": {
             "total_id_files": 13,
             "total_imposter_files": 202,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10006": {
           "Accepted": {
-            "amount": 3,
+            "amount": 4,
             "ids": [
+              "id10006",
               "id10006",
               "id10006",
               "id10006"
@@ -2341,11 +2366,12 @@
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\_xUsNvG7-Jk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00003.wav"
             ]
           },
           "Denied": {
-            "amount": 195,
+            "amount": 205,
             "ids": [
               "id10001",
               "id10001",
@@ -2355,9 +2381,12 @@
               "id10001",
               "id10001",
               "id10001",
+              "id10001",
+              "id10001",
               "id10002",
               "id10002",
               "id10002",
+              "id10002",
               "id10003",
               "id10003",
               "id10003",
@@ -2394,6 +2423,8 @@
               "id10003",
               "id10003",
               "id10003",
+              "id10004",
+              "id10004",
               "id10004",
               "id10004",
               "id10004",
@@ -2425,6 +2456,8 @@
               "id10008",
               "id10008",
               "id10008",
+              "id10009",
+              "id10009",
               "id10009",
               "id10009",
               "id10009",
@@ -2452,10 +2485,12 @@
               "id10012",
               "id10013",
               "id10013",
-              "id10013",
-              "id10013",
               "id10014",
               "id10014",
+              "id10014",
+              "id10014",
+              "id10015",
+              "id10015",
               "id10016",
               "id10016",
               "id10016",
@@ -2504,6 +2539,7 @@
               "id10017",
               "id10017",
               "id10017",
+              "id10018",
               "id10018",
               "id10018",
               "id10019",
@@ -2546,12 +2582,15 @@
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00003.wav",
@@ -2598,6 +2637,8 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00002.wav",
@@ -2614,8 +2655,8 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\uyOlasN_UhQ\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
@@ -2626,7 +2667,9 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00001.wav",
@@ -2647,12 +2690,14 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zsNhH4wHVdc\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
@@ -2703,6 +2748,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00023.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\ZBioF6ulHg8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00003.wav",
@@ -2742,57 +2788,39 @@
             ]
           },
           "Imposter": {
-            "amount": 16,
+            "amount": 6,
             "ids": [
-              "id10001",
-              "id10001",
-              "id10002",
-              "id10004",
-              "id10004",
               "id10004",
               "id10007",
               "id10007",
-              "id10009",
-              "id10009",
               "id10013",
-              "id10014",
-              "id10014",
-              "id10015",
-              "id10015",
-              "id10018"
+              "id10013",
+              "id10013"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00002.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav"
             ]
           },
           "Missed": {
-            "amount": 1,
-            "ids": [
-              "id10006"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "extra": {
             "total_id_files": 4,
             "total_imposter_files": 211,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10007": {
@@ -2810,7 +2838,7 @@
             ]
           },
           "Denied": {
-            "amount": 208,
+            "amount": 207,
             "ids": [
               "id10001",
               "id10001",
@@ -2890,7 +2918,6 @@
               "id10006",
               "id10006",
               "id10006",
-              "id10008",
               "id10008",
               "id10008",
               "id10008",
@@ -3104,7 +3131,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00001.wav",
@@ -3233,9 +3259,13 @@
             ]
           },
           "Imposter": {
-            "amount": 0,
-            "ids": [],
-            "files": []
+            "amount": 1,
+            "ids": [
+              "id10008"
+            ],
+            "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav"
+            ]
           },
           "Missed": {
             "amount": 4,
@@ -3255,19 +3285,27 @@
           "extra": {
             "total_id_files": 7,
             "total_imposter_files": 208,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10008": {
           "Accepted": {
-            "amount": 2,
+            "amount": 3,
             "ids": [
+              "id10008",
               "id10008",
               "id10008"
             ],
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav"
             ]
           },
           "Denied": {
@@ -3703,22 +3741,26 @@
             "files": []
           },
           "Missed": {
-            "amount": 3,
+            "amount": 2,
             "ids": [
-              "id10008",
               "id10008",
               "id10008"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav"
             ]
           },
           "extra": {
             "total_id_files": 5,
             "total_imposter_files": 210,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10009": {
@@ -4179,23 +4221,33 @@
           "extra": {
             "total_id_files": 9,
             "total_imposter_files": 206,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10010": {
           "Accepted": {
-            "amount": 2,
+            "amount": 4,
             "ids": [
+              "id10010",
+              "id10010",
               "id10010",
               "id10010"
             ],
             "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00010.wav"
             ]
           },
           "Denied": {
-            "amount": 205,
+            "amount": 203,
             "ids": [
               "id10001",
               "id10001",
@@ -4258,8 +4310,6 @@
               "id10004",
               "id10004",
               "id10004",
-              "id10005",
-              "id10005",
               "id10005",
               "id10005",
               "id10005",
@@ -4475,9 +4525,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00012.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\_xUsNvG7-Jk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav",
@@ -4612,15 +4660,19 @@
             ]
           },
           "Imposter": {
-            "amount": 0,
-            "ids": [],
-            "files": []
+            "amount": 2,
+            "ids": [
+              "id10005",
+              "id10005"
+            ],
+            "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav"
+            ]
           },
           "Missed": {
-            "amount": 8,
+            "amount": 6,
             "ids": [
-              "id10010",
-              "id10010",
               "id10010",
               "id10010",
               "id10010",
@@ -4632,17 +4684,21 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00009.wav"
             ]
           },
           "extra": {
             "total_id_files": 10,
             "total_imposter_files": 205,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10011": {
@@ -4714,7 +4770,6 @@
               "id10004",
               "id10004",
               "id10004",
-              "id10004",
               "id10005",
               "id10005",
               "id10005",
@@ -4763,6 +4818,7 @@
               "id10010",
               "id10010",
               "id10010",
+              "id10012",
               "id10012",
               "id10012",
               "id10012",
@@ -4925,7 +4981,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00003.wav",
@@ -4978,6 +5033,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00005.wav",
@@ -5085,10 +5141,10 @@
           "Imposter": {
             "amount": 1,
             "ids": [
-              "id10012"
+              "id10004"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00002.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav"
             ]
           },
           "Missed": {
@@ -5105,7 +5161,13 @@
           "extra": {
             "total_id_files": 2,
             "total_imposter_files": 213,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10012": {
@@ -5566,22 +5628,20 @@
           "extra": {
             "total_id_files": 6,
             "total_imposter_files": 209,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10013": {
           "Accepted": {
-            "amount": 3,
-            "ids": [
-              "id10013",
-              "id10013",
-              "id10013"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "Denied": {
             "amount": 210,
@@ -6016,12 +6076,18 @@
             "files": []
           },
           "Missed": {
-            "amount": 2,
+            "amount": 5,
             "ids": [
+              "id10013",
+              "id10013",
+              "id10013",
               "id10013",
               "id10013"
             ],
             "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00002.wav"
             ]
@@ -6029,21 +6095,31 @@
           "extra": {
             "total_id_files": 5,
             "total_imposter_files": 210,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10014": {
           "Accepted": {
-            "amount": 1,
+            "amount": 3,
             "ids": [
+              "id10014",
+              "id10014",
               "id10014"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav"
             ]
           },
           "Denied": {
-            "amount": 208,
+            "amount": 205,
             "ids": [
               "id10001",
               "id10001",
@@ -6104,8 +6180,6 @@
               "id10004",
               "id10004",
               "id10004",
-              "id10004",
-              "id10004",
               "id10005",
               "id10005",
               "id10005",
@@ -6122,12 +6196,13 @@
               "id10006",
               "id10006",
               "id10006",
+              "id10006",
               "id10007",
               "id10007",
               "id10007",
               "id10007",
               "id10007",
-              "id10007",
+              "id10008",
               "id10008",
               "id10008",
               "id10008",
@@ -6165,7 +6240,6 @@
               "id10013",
               "id10013",
               "id10015",
-              "id10015",
               "id10016",
               "id10016",
               "id10016",
@@ -6187,7 +6261,6 @@
               "id10016",
               "id10016",
               "id10016",
-              "id10017",
               "id10017",
               "id10017",
               "id10017",
@@ -6313,8 +6386,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00002.wav",
@@ -6331,17 +6402,18 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\_xUsNvG7-Jk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\uyOlasN_UhQ\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00001.wav",
@@ -6375,7 +6447,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
@@ -6400,7 +6471,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00003.wav",
@@ -6466,35 +6536,43 @@
             ]
           },
           "Imposter": {
-            "amount": 3,
+            "amount": 6,
             "ids": [
-              "id10006",
+              "id10004",
+              "id10004",
               "id10007",
-              "id10008"
+              "id10007",
+              "id10015",
+              "id10017"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav"
             ]
           },
           "Missed": {
-            "amount": 3,
+            "amount": 1,
             "ids": [
-              "id10014",
-              "id10014",
               "id10014"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav"
             ]
           },
           "extra": {
             "total_id_files": 4,
             "total_imposter_files": 211,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10015": {
@@ -6504,7 +6582,7 @@
             "files": []
           },
           "Denied": {
-            "amount": 213,
+            "amount": 211,
             "ids": [
               "id10001",
               "id10001",
@@ -6595,7 +6673,6 @@
               "id10008",
               "id10008",
               "id10008",
-              "id10008",
               "id10009",
               "id10009",
               "id10009",
@@ -6623,7 +6700,6 @@
               "id10012",
               "id10012",
               "id10012",
-              "id10013",
               "id10013",
               "id10013",
               "id10013",
@@ -6809,7 +6885,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
@@ -6839,7 +6914,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zsNhH4wHVdc\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00002.wav",
@@ -6937,9 +7011,15 @@
             ]
           },
           "Imposter": {
-            "amount": 0,
-            "ids": [],
-            "files": []
+            "amount": 2,
+            "ids": [
+              "id10008",
+              "id10013"
+            ],
+            "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav"
+            ]
           },
           "Missed": {
             "amount": 2,
@@ -6955,13 +7035,21 @@
           "extra": {
             "total_id_files": 2,
             "total_imposter_files": 213,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10016": {
           "Accepted": {
-            "amount": 16,
+            "amount": 18,
             "ids": [
+              "id10016",
+              "id10016",
               "id10016",
               "id10016",
               "id10016",
@@ -6982,9 +7070,12 @@
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00003.wav",
@@ -6992,23 +7083,18 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00013.wav"
             ]
           },
           "Denied": {
-            "amount": 118,
+            "amount": 145,
             "ids": [
               "id10001",
               "id10001",
               "id10001",
               "id10001",
-              "id10001",
-              "id10001",
-              "id10001",
-              "id10001",
               "id10002",
               "id10002",
               "id10002",
@@ -7040,12 +7126,20 @@
               "id10003",
               "id10003",
               "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
               "id10004",
               "id10004",
               "id10004",
               "id10004",
               "id10004",
-              "id10004",
+              "id10005",
+              "id10005",
               "id10005",
               "id10005",
               "id10005",
@@ -7071,13 +7165,15 @@
               "id10008",
               "id10008",
               "id10008",
-              "id10009",
-              "id10009",
+              "id10008",
+              "id10008",
               "id10009",
               "id10009",
               "id10010",
               "id10010",
-              "id10011",
+              "id10010",
+              "id10010",
+              "id10012",
               "id10012",
               "id10012",
               "id10012",
@@ -7090,6 +7186,20 @@
               "id10014",
               "id10015",
               "id10015",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
               "id10017",
               "id10018",
               "id10018",
@@ -7118,17 +7228,20 @@
               "id10020",
               "id10020",
               "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
               "id10020"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00002.wav",
@@ -7137,21 +7250,26 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\_JpHD6VnJ3I\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00014.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00016.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00018.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00019.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00020.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00021.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00022.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00024.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00025.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00026.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00027.wav",
@@ -7160,8 +7278,9 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00030.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00031.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00032.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00033.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00034.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00001.wav",
@@ -7175,6 +7294,8 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\_xUsNvG7-Jk\\00001.wav",
@@ -7189,28 +7310,44 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\ZwprcvqTH3w\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\wbcvg6hIyjs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00008.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00011.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00014.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00017.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00020.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00023.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\ZBioF6ulHg8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00002.wav",
@@ -7225,34 +7362,38 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00011.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00012.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00013.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00014.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00016.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00018.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00019.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00020.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00021.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00025.wav"
             ]
           },
           "Imposter": {
-            "amount": 76,
+            "amount": 49,
             "ids": [
               "id10001",
               "id10001",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
+              "id10001",
+              "id10001",
+              "id10001",
+              "id10001",
               "id10003",
               "id10003",
               "id10004",
@@ -7260,17 +7401,14 @@
               "id10004",
               "id10004",
               "id10004",
-              "id10005",
-              "id10005",
-              "id10008",
-              "id10008",
+              "id10004",
               "id10009",
               "id10009",
               "id10009",
               "id10009",
               "id10009",
-              "id10010",
-              "id10010",
+              "id10009",
+              "id10009",
               "id10010",
               "id10010",
               "id10010",
@@ -7278,7 +7416,7 @@
               "id10010",
               "id10010",
               "id10011",
-              "id10012",
+              "id10011",
               "id10012",
               "id10012",
               "id10013",
@@ -7295,27 +7433,6 @@
               "id10017",
               "id10017",
               "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
               "id10020",
               "id10020",
               "id10020",
@@ -7324,103 +7441,78 @@
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00015.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00020.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00024.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00033.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00034.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00017.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\wQJ3cED8ZSw\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10008\\_rz5gmMFZTo\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\YyB6Rk0bOSg\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\wbcvg6hIyjs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zsNhH4wHVdc\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\J4dr4jUUPWs\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00009.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00013.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00014.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00016.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00018.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00019.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00020.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00021.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00022.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00023.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00009.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00012.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00013.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00014.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00019.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00020.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00021.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav"
             ]
           },
           "Missed": {
-            "amount": 5,
+            "amount": 3,
             "ids": [
-              "id10016",
-              "id10016",
               "id10016",
               "id10016",
               "id10016"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav"
             ]
           },
           "extra": {
             "total_id_files": 21,
             "total_imposter_files": 194,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 16,
+              "n_init": 3
+            }
           }
         },
         "id10017": {
@@ -7430,7 +7522,7 @@
             "files": []
           },
           "Denied": {
-            "amount": 188,
+            "amount": 187,
             "ids": [
               "id10001",
               "id10001",
@@ -7560,7 +7652,6 @@
               "id10014",
               "id10015",
               "id10015",
-              "id10016",
               "id10016",
               "id10016",
               "id10016",
@@ -7769,7 +7860,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\ZBioF6ulHg8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00001.wav",
@@ -7813,9 +7903,13 @@
             ]
           },
           "Imposter": {
-            "amount": 0,
-            "ids": [],
-            "files": []
+            "amount": 1,
+            "ids": [
+              "id10016"
+            ],
+            "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav"
+            ]
           },
           "Missed": {
             "amount": 27,
@@ -7881,42 +7975,40 @@
           "extra": {
             "total_id_files": 27,
             "total_imposter_files": 188,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10018": {
           "Accepted": {
-            "amount": 2,
+            "amount": 3,
             "ids": [
+              "id10018",
               "id10018",
               "id10018"
             ],
             "files": [
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\ZBioF6ulHg8\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00001.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00002.wav"
             ]
           },
           "Denied": {
-            "amount": 144,
+            "amount": 128,
             "ids": [
               "id10001",
               "id10001",
               "id10001",
               "id10001",
               "id10001",
-              "id10002",
+              "id10001",
               "id10003",
               "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10003",
-              "id10004",
               "id10004",
               "id10004",
               "id10004",
@@ -7934,6 +8026,7 @@
               "id10006",
               "id10006",
               "id10006",
+              "id10007",
               "id10007",
               "id10007",
               "id10007",
@@ -7963,8 +8056,7 @@
               "id10010",
               "id10010",
               "id10011",
-              "id10012",
-              "id10012",
+              "id10011",
               "id10012",
               "id10012",
               "id10013",
@@ -7977,7 +8069,6 @@
               "id10014",
               "id10014",
               "id10015",
-              "id10015",
               "id10016",
               "id10016",
               "id10016",
@@ -7997,18 +8088,6 @@
               "id10016",
               "id10016",
               "id10016",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
-              "id10017",
               "id10017",
               "id10017",
               "id10017",
@@ -8026,6 +8105,13 @@
               "id10017",
               "id10019",
               "id10019",
+              "id10019",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
               "id10020",
               "id10020",
               "id10020",
@@ -8049,22 +8135,12 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00015.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00020.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00024.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00033.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00034.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00006.wav",
@@ -8082,6 +8158,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10006\\zQROl4ZsMVA\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\uyOlasN_UhQ\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00005.wav",
@@ -8109,8 +8186,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10010\\zJHub1wydMw\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\YyB6Rk0bOSg\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\wbcvg6hIyjs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zsNhH4wHVdc\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10013\\qJ8keZPNFZ4\\00001.wav",
@@ -8122,10 +8198,10 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\XP0NEmdnh40\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10014\\xbDbdm5iv9Q\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Wr_zcjHCZLk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00006.wav",
@@ -8138,7 +8214,6 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00012.wav",
@@ -8147,38 +8222,30 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xLakEK2bbQw\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00002.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00010.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00013.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00014.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00016.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00018.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00019.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00020.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00021.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00022.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00014.wav",
@@ -8188,20 +8255,23 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00019.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00020.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00021.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00025.wav"
             ]
           },
           "Imposter": {
-            "amount": 68,
+            "amount": 84,
             "ids": [
               "id10001",
               "id10001",
               "id10001",
               "id10001",
-              "id10001",
               "id10002",
               "id10002",
               "id10002",
+              "id10002",
               "id10003",
               "id10003",
               "id10003",
@@ -8227,6 +8297,16 @@
               "id10003",
               "id10003",
               "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10003",
+              "id10004",
               "id10005",
               "id10005",
               "id10005",
@@ -8237,14 +8317,27 @@
               "id10005",
               "id10005",
               "id10005",
-              "id10007",
               "id10009",
               "id10009",
-              "id10011",
               "id10012",
               "id10012",
+              "id10012",
+              "id10012",
+              "id10015",
               "id10016",
               "id10016",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
+              "id10017",
               "id10019",
               "id10019",
               "id10019",
@@ -8253,13 +8346,6 @@
               "id10019",
               "id10019",
               "id10019",
-              "id10019",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
               "id10020",
               "id10020"
             ],
@@ -8268,7 +8354,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00008.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10001\\Y8hIVOBuels\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\Y2Gr1I2DO7M\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10002\\xTV-jFAUKcw\\00003.wav",
@@ -8276,19 +8362,26 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\_JpHD6VnJ3I\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00007.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00013.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00014.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00016.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00017.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00018.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00019.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00020.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00021.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00022.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00024.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00025.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00026.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00027.wav",
@@ -8297,6 +8390,9 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00030.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00031.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00032.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00033.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10003\\yzIXg93UOIM\\00034.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10004\\zcB1pnBt_Tc\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00003.wav",
@@ -8307,14 +8403,27 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10005\\ZZR6EqjbzwI\\00012.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10007\\ny4iV7xwhRM\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\x_HdUZuSusA\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10009\\vy8sQ82o0fM\\00006.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10011\\wbcvg6hIyjs\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10012\\zvZZyolTF4g\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\Zxab80IZxU8\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10015\\Y2FI1LS8lzg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00008.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10016\\ywRolvE7ToY\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00001.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00003.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00004.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00005.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00009.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00011.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00014.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00017.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00020.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00023.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00003.wav",
@@ -8322,31 +8431,26 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00004.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00003.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00018.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00023.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00025.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00018.wav"
             ]
           },
           "Missed": {
-            "amount": 1,
-            "ids": [
-              "id10018"
-            ],
-            "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10018\\YOjilzTiE-Y\\00002.wav"
-            ]
+            "amount": 0,
+            "ids": [],
+            "files": []
           },
           "extra": {
             "total_id_files": 3,
             "total_imposter_files": 212,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10019": {
@@ -8807,13 +8911,32 @@
           "extra": {
             "total_id_files": 11,
             "total_imposter_files": 204,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         },
         "id10020": {
           "Accepted": {
-            "amount": 6,
+            "amount": 19,
             "ids": [
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
+              "id10020",
               "id10020",
               "id10020",
               "id10020",
@@ -8822,16 +8945,29 @@
               "id10020"
             ],
             "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00002.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00004.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00006.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00007.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00008.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00012.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00013.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00014.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00015.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00016.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00017.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00017.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00019.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00020.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00021.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00023.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00025.wav"
             ]
           },
           "Denied": {
-            "amount": 188,
+            "amount": 185,
             "ids": [
               "id10001",
               "id10001",
@@ -9007,12 +9143,9 @@
               "id10017",
               "id10017",
               "id10017",
-              "id10017",
-              "id10017",
               "id10018",
               "id10018",
               "id10018",
-              "id10019",
               "id10019",
               "id10019",
               "id10019",
@@ -9183,9 +9316,7 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00009.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00011.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00012.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00013.wav",
@@ -9209,37 +9340,29 @@
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00005.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00006.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\YLTaZK6x2z8\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00004.wav"
             ]
           },
           "Imposter": {
-            "amount": 2,
+            "amount": 5,
             "ids": [
+              "id10017",
+              "id10017",
+              "id10019",
               "id10019",
               "id10019"
             ],
             "files": [
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00008.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10017\\xH3Pp_5yxOk\\00010.wav",
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00001.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00002.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10019\\XYGmvRZiNNg\\00003.wav"
             ]
           },
           "Missed": {
-            "amount": 19,
+            "amount": 6,
             "ids": [
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
-              "id10020",
               "id10020",
               "id10020",
               "id10020",
@@ -9248,31 +9371,24 @@
               "id10020"
             ],
             "files": [
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00001.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00003.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00005.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00007.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00008.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00009.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00010.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00011.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00012.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00013.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00014.wav",
               "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00018.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00019.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00020.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00021.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00023.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00024.wav",
-              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00025.wav"
+              "E:\\voxceleb\\vox1_dev_wav\\wav\\id10020\\zHAGrIElkDU\\00022.wav"
             ]
           },
           "extra": {
             "total_id_files": 25,
             "total_imposter_files": 190,
-            "total_files": 215
+            "total_files": 215,
+            "model_details": {
+              "covariance_type": "diag",
+              "max_iter": 200,
+              "n_components": 13,
+              "n_init": 3
+            }
           }
         }
       }

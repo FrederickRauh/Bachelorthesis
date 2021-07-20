@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 
 from utils import dataframeManager as dam, directoryManager as dm, util, debug
+from utils.config import MODELCONFIG
 
 
 def save_model(speaker_id, t, model):
@@ -54,15 +55,6 @@ def create_model(speaker_id, dataframe, feature_type):
         'C': C,
         'gamma': gamma
     }]
-    # --------------------- GridSearch ------------------------
-    cv = KFold(n_splits=4)
-    # helpful with large datasets to keep an overview
-    # n_jobs = -1 use all cpus, -2 use all but one
-    verbose = 0
-    n_jobs = -2
-    if dm.is_large_data_set():
-        verbose = 0
-        n_jobs = -1
 
     svm_model = make_pipeline(
         StandardScaler(),
@@ -70,8 +62,8 @@ def create_model(speaker_id, dataframe, feature_type):
                      param_grid=param_grid,
                      cv=10,
                      refit=True,
-                     n_jobs=n_jobs,
-                     verbose=verbose)
+                     n_jobs=MODELCONFIG.N_JOBS,
+                     verbose=MODELCONFIG.VERBOSE)
     )
 
     svm_model.fit(training_features, is_speaker)

@@ -1,17 +1,18 @@
 import numpy as np
 
 
+class CONFIG:
+    VERSION = 1
+
+    def overwrite_version(self, x):
+        self.VERSION = x
+
+
 class DEBUG:
     LOGLEVEL = 1
 
     def overwrite_loglevel(self, x):
         self.LOGLEVEL = x
-
-
-class CONFIG:
-    VERSION = 1
-    def overwrite_version(self, x):
-        self.VERSION = x
 
 
 class FEATURES:
@@ -51,6 +52,7 @@ class FEATURES:
 
 from utils import directoryManager as dm
 
+
 class IDS:
     # speaker_ids = dm.get_all_ids()
 
@@ -78,3 +80,24 @@ class IDS:
             if ids.__contains__(id):
                 ids.remove(id)
         self.speaker_ids = ids
+
+
+from sklearn.model_selection import KFold
+
+
+class MODELCONFIG:
+    # --------------------- GridSearch ------------------------
+    cv = KFold(n_splits=4)
+    # helpful with large datasets to keep an overview
+    # n_jobs = -1 use all cpus, -2 use all but one
+    VERBOSE = 0
+    N_JOBS = -2
+    if dm.is_large_data_set():
+        VERBOSE = 0
+        N_JOBS = -1
+
+    def overwrite_verbose(self, x):
+        self.VERBOSE = x
+
+    def overwrite_n_jobs(self, x):
+        self.N_JOBS = x

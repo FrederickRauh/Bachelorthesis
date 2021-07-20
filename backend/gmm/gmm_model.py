@@ -8,6 +8,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from utils import dataframeManager as dam, directoryManager as dm, util, debug
+from utils.config import MODELCONFIG
 
 
 def save_model(speaker_id, t, model):
@@ -38,14 +39,6 @@ def create_model(speaker_id, dataframe, feature_type):
         'covariance_type': covariance_type,
         'n_init': n_init,
     }]
-    # --------------------- GridSearch ------------------------
-    # helpful with large datasets to keep an overview
-    # n_jobs = -1 use all cpus, -2 use all but one
-    verbose = 0
-    n_jobs = -2
-    if dm.is_large_data_set():
-        verbose = 0
-        n_jobs = -1
 
     gmm_model = make_pipeline(
         StandardScaler(),
@@ -53,8 +46,8 @@ def create_model(speaker_id, dataframe, feature_type):
                      param_grid=param_grid,
                      cv=10,
                      refit=True,
-                     n_jobs=n_jobs,
-                     verbose=verbose
+                     n_jobs=MODELCONFIG.N_JOBS,
+                     verbose=MODELCONFIG.VERBOSE
                      )
     )
     gmm_model.fit(training_features)
