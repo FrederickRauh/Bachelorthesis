@@ -3,7 +3,8 @@ import numpy as np
 
 class CONFIG:
     VERSION = 1
-
+    LOCAL = True
+    DATASETPATH = 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav'
     def overwrite_version(self, x):
         self.VERSION = x
 

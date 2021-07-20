@@ -13,8 +13,9 @@ from utils import dataframeManager as dam, debug, directoryManager as dm, util
 
 
 #############Config##############
-version = np.arange(3, 4, 1)
-mfccs = np.arange(31, 41, 1)
+debug.log(("Working in:", dm.get_all_data_path()))
+version = np.arange(0, 5, 1)
+mfccs = np.arange(13, 41, 1)
 trainer = Trainer()
 svm_pred = svm_pred()
 gmm_pred = gmm_pred()

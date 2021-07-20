@@ -7,6 +7,9 @@ from utils import debug
 
 
 # csv
+from utils.config import CONFIG
+
+
 def create_csv_file_name(speaker_id):
     return speaker_id + '.csv'
 
@@ -264,7 +267,8 @@ def get_all_ids():
 
 # used to switch between
 def get_all_data_path():
-    # return os.path.join(get_project_path(), "data")
+    if CONFIG.LOCAL:
+        return os.path.join(get_project_path(), "data")
     return get_my_path()
 
 
@@ -279,7 +283,8 @@ def get_project_path():
 
 
 def get_my_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
+    return CONFIG.DATASETPATH
+    # return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
 
 
 def get_test_path():
