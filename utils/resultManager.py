@@ -1,8 +1,12 @@
 import pandas as pd
 
-from utils import directoryManager as dm
+from utils import dataframeManager as dam, directoryManager as dm
 from utils.config import FEATURES, CONFIG
 
+
+def load_result(file_path):
+    result_json = dam.load_datafram_from_path(file_path)
+    return result_json.confusion_mat[0]
 
 def create_speaker_object_with_confusion_mat(results):
     speaker_object = {}
@@ -18,13 +22,13 @@ def create_speaker_object_with_confusion_mat(results):
         fp += int(result[0][key]["Imposter"]['amount'])
         fn += int(result[0][key]["Missed"]['amount'])
         speaker_object.update({key: result[0][key]})
-    false_accept_rate = 'nan'
-    false_reject_rate = 'nan'
-    equal_error_rate = 'nan'
-    accuracy = 'nan'
-    recall = 'nan'
-    precision = 'nan'
-    f1_score = 'nan'
+    false_accept_rate = -1
+    false_reject_rate = -1
+    equal_error_rate = -1
+    accuracy = -1
+    recall = -1
+    precision = -1
+    f1_score = -1
 
     if not (fp + tn) == 0:
         false_accept_rate = fp / (fp + tn)

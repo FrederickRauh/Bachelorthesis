@@ -3,14 +3,14 @@ import numpy as np
 
 class CONFIG:
     VERSION = 1
-    LOCAL = True
+    LOCAL = False
     DATASETPATH = 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav'
     def overwrite_version(self, x):
         self.VERSION = x
 
 
 class DEBUG:
-    LOGLEVEL = 1
+    LOGLEVEL = 2
 
     def overwrite_loglevel(self, x):
         self.LOGLEVEL = x
@@ -92,7 +92,7 @@ class MODELCONFIG:
     # helpful with large datasets to keep an overview
     # n_jobs = -1 use all cpus, -2 use all but one
     VERBOSE = 0
-    N_JOBS = -2
+    N_JOBS = -1
     if dm.is_large_data_set():
         VERBOSE = 0
         N_JOBS = -1

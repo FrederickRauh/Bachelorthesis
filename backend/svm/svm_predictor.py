@@ -1,3 +1,5 @@
+import multiprocessing
+
 import pandas as pd
 
 from datetime import datetime
@@ -6,7 +8,8 @@ from backend.svm import svm_model as m
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils import directoryManager as dm, resultManager as rm, util, debug
+from utils import audioManager as am, directoryManager as dm, resultManager as rm, util, debug
+from utils.config import FEATURES
 
 
 class Predictor(object):
@@ -15,7 +18,7 @@ class Predictor(object):
         pass
 
     def predict_svm(self, speaker_id, t, file_path, feature_type):
-        x = util.get_features_for_prediciton(file_path, feature_type)
+        x = am.get_features_for_prediction(file_path, feature_type)
         svm_model = m.load_model(speaker_id, t)
         score = svm_model.predict(x)
         return score
@@ -70,22 +73,39 @@ class Predictor(object):
                                           "extra": {"total_id_files": len(true_positive) + len(false_negative),
                                                     "total_imposter_files": len(true_negativ) + len(false_positiv),
                                                     "total_files": len(test_files),
-                                                    "model_details": m.load_model(speaker_id, t)['gridsearchcv'].best_params_}
+                                                    "model_details": m.load_model(speaker_id, t)[
+                                                        'gridsearchcv'].best_params_}
                                           })
         return {speaker_id: speaker_object_result}
 
-    def predict_multiple_speakers_svm(self, speaker_ids, feature_type):
+    def predict_multiple_speakers_svm(self, speaker_ids, feature_type, mfcc):
         test_files = util.load_test_files(speaker_ids)
-
-        results = []
         extra_data = [[test_files]]
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
+        if True:
+            PROCESSES = 4
+            split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
+            debug.log(("starting mult process:", len(split_speaker_ids)))
+            pool = multiprocessing.Pool(processes=PROCESSES)
+            data = []
+            for x in range(PROCESSES):
+                data.append((split_speaker_ids[x], test_files, feature_type, mfcc))
+            results = pool.starmap(self.predict_mult, data)
+            pool.close()
+            pool.join()
+        overall_results = []
+        for result in results:
+            overall_results += result
+        rm.create_result_json(overall_results, 'svm-' + feature_type, extra_data_object)
+
+    def predict_mult(self, speaker_ids, test_files, feature_type, mfcc):
+        FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
+        part_results = []
         for speaker_id in speaker_ids:
             start_time = datetime.now()
-
-            debug.log(("SVM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type))
-            results.append([self.predict_speaker_svm(speaker_id, test_files, feature_type)])
+            debug.log(
+                ("SVM ::  predicting for:", speaker_id, "files:", len(test_files), " feature_type: ", feature_type))
+            part_results.append([self.predict_speaker_svm(speaker_id, test_files, feature_type)])
 
             debug.log((util.get_duration(start_time)))
-
-        rm.create_result_json(results, 'svm-' + feature_type, extra_data_object)
+        return part_results

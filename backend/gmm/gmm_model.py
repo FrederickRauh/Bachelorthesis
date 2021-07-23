@@ -25,7 +25,7 @@ def load_model(speaker_id, t):
 def create_model(speaker_id, dataframe, feature_type):
     training_features = dam.get_data_for_training_from_dataframe('gmm', speaker_id, dataframe, feature_type)
     start_time = datetime.now()
-    debug.log(("Training gmm_model with", feature_type, "features for:", speaker_id, ":: There are:", len(training_features),
+    debug.log(("Training gmm_model with ", feature_type, " features for:", speaker_id, ":: There are:", len(training_features),
           "trainingfiles. Start at: ", start_time))
 
     n_components = [13, 16]
