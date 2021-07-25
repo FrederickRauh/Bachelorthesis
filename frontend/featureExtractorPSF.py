@@ -11,7 +11,7 @@ from scipy.stats import skew
 from sklearn import preprocessing
 
 from utils.config import FEATURES
-from utils import directoryManager as dm, fileManager as fm, util
+from utils import audioManager as am, directoryManager as dm, fileManager as fm, util
 
 
 def extract_filterbank_energies_from_file(file_path):
@@ -22,7 +22,7 @@ def extract_filterbank_energies_from_file(file_path):
 
 def extract_signal_from_file(file_path):
     sr, signal = wav.read(file_path)
-    sr, signal = util.get_four_seconde_frame_of_audio(sr, signal, 'psf')
+    sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'psf')
     # if signal is stereo only take one channel
     if isinstance(signal[0], np.ndarray):
         signal = signal[:, 0]

@@ -70,7 +70,7 @@ def create_model(speaker_id, dataframe, feature_type):
 
     # helpful with large datasets to keep an overview in console
     if dm.is_large_data_set():
-        debug.log((svm_model['gridsearchcv'].best_params_))
+        debug.log(((svm_model['gridsearchcv'].best_params_)))
 
     save_model(speaker_id, 'svm_custom_' + feature_type, svm_model)
 
