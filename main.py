@@ -53,16 +53,16 @@ if __name__ == '__main__':
         debug.log(("starting version:", v, " ..."))
         CONFIG.overwrite_version(CONFIG, v)
 
-        for mfcc in mfccs:
-            FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
-            start_time_mfcc = datetime.now()
-            debug.log(("MFCC_COUNT:", FEATURES.N_MFCC, " Version GMM :", start_time_mfcc))
-
-            preparation_phase(mfcc)
-            training_phase('gmm')
-            prediction_phase('gmm', mfcc)
-
-            debug.log(("MFCC_COUNT:", FEATURES.N_MFCC, ":", "----------------------------------------------------------", util.get_duration(start_time_mfcc)))
+        # for mfcc in mfccs:
+        #     FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
+        #     start_time_mfcc = datetime.now()
+        #     debug.log(("MFCC_COUNT:", FEATURES.N_MFCC, " Version GMM :", start_time_mfcc))
+        #
+        #     preparation_phase(mfcc)
+        #     training_phase('gmm')
+        #     prediction_phase('gmm', mfcc)
+        #
+        #     debug.log(("MFCC_COUNT:", FEATURES.N_MFCC, ":", "----------------------------------------------------------", util.get_duration(start_time_mfcc)))
 
         for mfcc in mfccs:
             FEATURES.overwrite_n_mfcc(FEATURES, mfcc)

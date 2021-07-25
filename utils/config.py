@@ -4,14 +4,14 @@ import numpy as np
 class CONFIG:
     VERSION = 1
     LOCAL = False
-    DATASETPATH = 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_bigba_wav'
+    DATASETPATH = 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
     def overwrite_version(self, x):
         self.VERSION = x
 
 
 class SYSTEM:
     PROCESSES = 16
-    LOGLEVEL = 2
+    LOGLEVEL = 1
 
     def overwrite_loglevel(self, x):
         self.LOGLEVEL = x
