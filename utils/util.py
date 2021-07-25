@@ -8,7 +8,7 @@ from datetime import datetime
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils.config import DEBUG
+from utils.config import SYSTEM
 from utils import directoryManager as dm, debug
 
 

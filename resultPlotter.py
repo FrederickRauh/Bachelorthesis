@@ -97,14 +97,14 @@ class ResultPlotter(object):
     if __name__ == 'main':
         print('heheh')
 
-    datasets = ['bigba']
+    datasets = ['ba']
     model_types = ['gmm']
 
 
     for dataset in datasets:
         for model_type in model_types:
             overall = []
-            mfccs = np.arange(13, 41, 1)
+            mfccs = np.arange(12, 41, 1)
             ACC_plot = []
             PRECISION_plot = []
             RECALL_plot = []

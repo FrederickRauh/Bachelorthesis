@@ -12,3 +12,45 @@ Anaconda Environment:
 
 
 [comment]: <> (- pip install pyannote.db.voxceleb)
+
+
+To change configuration (mfccs used, or loglevel in the software ) change in  util/config.py:
+- SYSTEM
+    - PROCESSES: Amount of processes used in prediction and feature extraction (default 16)
+    - LOGLEVEL: 
+          - 0 log nothing, 
+          - 1 log only main.py,
+          - 2: log level 1 + train module, 
+          - 3: log level 2 + prediction module, 
+          - 4: log level 3 + feature extraction,
+          - >4: log everything
+
+- CONFIG:
+    - VERSION: used when making predictions, describes the folder where results are put down ./results/{dataset}/{model_version}/{version}/result.json
+    - LOCAL: wether or not to use a local dataset. Audio file path: ./local/data/wav/ and  test audio file data in ./local/test/
+    - DATASETPATH: path to dataset if not using a local dataset.
+    
+- FEATURES:
+    - SAMPLKERATE 
+    - N:_MFCC 
+    - N_MELS
+    - NFFT:
+    - FMIN:
+    - FMAX:
+    - PREEMPH:
+    - CEPLIFTER:
+    - APPENDENERGY:
+    - WINLEN:
+    - WINSTEP:
+    - WINFUNC:
+    
+- IDS:
+    - SPEAKER_IDS: speaker ids that should be used in the training / prediction / feature extraction phase
+    - FINISHED_IDS: in case you wish to break a phase down into multiple steps, add ids to finished_ids ([]) to skip these.
+    
+- MODELCONFIG:
+    - VERBOSE: loglevel of gridsearch cv. 
+    - N_JOBS: 
+      - -1: use all available processes 
+      - -2: use all but one
+    

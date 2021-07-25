@@ -9,7 +9,7 @@ from backend.svm import svm_model as m
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
 from utils import audioManager as am, directoryManager as dm, resultManager as rm, util, debug
-from utils.config import FEATURES
+from utils.config import FEATURES, SYSTEM
 
 
 class Predictor(object):
@@ -33,9 +33,9 @@ class Predictor(object):
             accepted_ids = []
             false_negative = []
             missed_ids = []
-            false_positiv = []
+            false_positive = []
             imposter_ids = []
-            true_negativ = []
+            true_negative = []
             denied_ids = []
 
             for file in test_files:
@@ -51,39 +51,39 @@ class Predictor(object):
                         missed_ids.append(id_of_file)
                 else:
                     if score == 1:
-                        false_positiv.append(file)
+                        false_positive.append(file)
                         imposter_ids.append(id_of_file)
                     else:
-                        true_negativ.append(file)
+                        true_negative.append(file)
                         denied_ids.append(id_of_file)
 
             # speaker_object_result.update({t:
             speaker_object_result.update({"Accepted": {"amount": len(true_positive),
                                                        "ids": accepted_ids,
                                                        "files": true_positive},
-                                          "Denied": {"amount": len(true_negativ),
+                                          "Denied": {"amount": len(true_negative),
                                                      "ids": denied_ids,
-                                                     "files": true_negativ},
-                                          "Imposter": {"amount": len(false_positiv),
+                                                     "files": true_negative},
+                                          "Imposter": {"amount": len(false_positive),
                                                        "ids": imposter_ids,
-                                                       "files": false_positiv},
+                                                       "files": false_positive},
                                           "Missed": {"amount": len(false_negative),
                                                      "ids": missed_ids,
                                                      "files": false_negative},
                                           "extra": {"total_id_files": len(true_positive) + len(false_negative),
-                                                    "total_imposter_files": len(true_negativ) + len(false_positiv),
+                                                    "total_imposter_files": len(true_negative) + len(false_positive),
                                                     "total_files": len(test_files),
                                                     "model_details": m.load_model(speaker_id, t)[
                                                         'gridsearchcv'].best_params_}
                                           })
         return {speaker_id: speaker_object_result}
 
-    def predict_multiple_speakers_svm(self, speaker_ids, feature_type, mfcc):
+    def predict_n_speakers_svm(self, speaker_ids, feature_type, mfcc):
         test_files = util.load_test_files(speaker_ids)
         extra_data = [[test_files]]
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
-        if True:
-            PROCESSES = 4
+        if len(speaker_ids) > 9:
+            PROCESSES = SYSTEM.PROCESSES
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
             debug.log(("starting mult process:", len(split_speaker_ids)))
             pool = multiprocessing.Pool(processes=PROCESSES)
