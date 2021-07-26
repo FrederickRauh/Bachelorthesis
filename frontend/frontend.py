@@ -1,3 +1,4 @@
+import logging
 import multiprocessing
 import os
 import scipy
@@ -10,7 +11,7 @@ import scipy.io.wavfile as wav
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
-from utils import dataframeManager as dam, directoryManager as dm, debug, util
+from utils import dataframeManager as dam, directoryManager as dm, util
 from utils import fileManager as fm
 
 
@@ -29,7 +30,7 @@ from utils.config import IDS, SYSTEM, FEATURES
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
-    debug.log(("collecting voice samples...."))
+    logging.debug("collecting voice samples....")
     for x in range(number):
         get_voice_input(timespan, samplerate, x, speaker_id, test)
 

@@ -11,10 +11,28 @@ class CONFIG:
 
 class SYSTEM:
     PROCESSES = 16
-    LOGLEVEL = 1
+    LOGLEVEL = 2
+    FEATURE_TYPE = 'librosa'
 
     def overwrite_loglevel(self, x):
         self.LOGLEVEL = x
+
+
+class GMM:
+    N_COMPONENTS = [20]
+    MAX_ITER = [200]
+    COVARIANCE_TYPE = ['diag']
+    N_INIT = [3]
+
+
+
+
+class SVM:
+    KERNELS = ['rbf']
+    C = np.arange(0.1, 5.1, 0.1)
+    C = [round(x, 2) for x in C]
+    GAMMA = ['auto', 'scale']
+    CV = 10
 
 
 class FEATURES:
@@ -35,7 +53,7 @@ class FEATURES:
     # Returns:
     # A numpy array of size (NUMFRAMES by numcep) containing features. Each row holds 1 feature vector.
     SAMPLE_RATE = 16000
-    N_MFCC = 24  # 40
+    N_MFCC = 20  # 40
     N_MELS = 26  # 40  # PREV: 26
     NFFT = 2048  # 2048  # PREV: 0.025 AND 2048(DUO TO ERROR MESSAGE)
     # HOP_LENGTH = 160  # PREV: 0.01
@@ -89,7 +107,8 @@ from sklearn.model_selection import KFold
 
 class MODELCONFIG:
     # --------------------- GridSearch ------------------------
-    cv = KFold(n_splits=4)
+    CV = 10
+    REFIT = True
     # helpful with large datasets to keep an overview
     # n_jobs = -1 use all cpus, -2 use all but one
     VERBOSE = 0

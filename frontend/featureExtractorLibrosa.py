@@ -6,7 +6,7 @@ import pandas as pd
 from scipy.stats import skew
 
 from utils.config import FEATURES
-from utils import audioManager as am, directoryManager as dm, fileManager as fm, util, debug
+from utils import audioManager as am, directoryManager as dm, fileManager as fm, util
 
 
 def extract_mfcc_from_signal(signal):

@@ -1,3 +1,4 @@
+import logging
 import pickle
 
 import numpy as np
@@ -9,12 +10,13 @@ import pandas as pd
 from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
 
-from utils import directoryManager as dm, debug
+from utils import directoryManager as dm
 from utils import util
+from utils.config import SYSTEM
 
 
 def create_librosa_dataframe(speaker_ids):
-    debug.log(("creating librosa dataframe... "))
+    logging.debug("creating librosa dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
@@ -32,7 +34,7 @@ def create_librosa_dataframe(speaker_ids):
 
 
 def create_psf_dataframe(speaker_ids):
-    debug.log(("creating psf dataframe... "))
+    logging.debug("creating psf dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
@@ -70,7 +72,7 @@ def load_dataframe_from_path(path):
     return dataframe
 
 
-def get_data_for_training_from_dataframe(m_type, speaker_id, dataframe, f_type):
+def get_data_for_training(m_type, speaker_id):
     t = []
     y = []
     speaker_ids = [speaker_id]
@@ -87,11 +89,13 @@ def get_data_for_training_from_dataframe(m_type, speaker_id, dataframe, f_type):
                     is_speaker = 1
                 y.append(is_speaker)
     if m_type == 'svm':
-        return get_training_files(dataframe, t, f_type), y
-    return get_training_files(dataframe, t, f_type)
+        return get_training_files(t, SYSTEM.FEATURE_TYPE), y
+    return get_training_files(t, SYSTEM.FEATURE_TYPE)
 
 
-def get_training_files(dataframe, t, f_type):
+def get_training_files(t, f_type):
+    dataframe_path = dm.get_all_data_path() + '\\' + 'librosa-dataframe.json'
+    dataframe = load_dataframe_from_path(dataframe_path)
     training_files = []
     for element in t:
         # training_features = dataframe.loc[dataframe['file_name'] == element].feature.array[0]['0']
