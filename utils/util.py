@@ -9,7 +9,7 @@ from datetime import datetime
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
 from utils.config import SYSTEM
-from utils import directoryManager as dm, debug
+from utils import directoryManager as dm
 
 
 # Turn 3Dim Array in 2D

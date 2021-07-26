@@ -1,9 +1,8 @@
+import logging
 import os
 
 import scipy.io.wavfile as wav
 from os.path import dirname, join as pjoin
-
-from utils import debug
 
 
 # csv
@@ -87,7 +86,7 @@ def make_dir(path):
         try:
             os.mkdir(path)
         except OSError as error:
-            debug.log(("Creating directory %s has failed. Error %s" % (path, error)))
+            logging.error("Creating directory %s has failed. Error %s" % (path, error))
     return path
 
 
@@ -225,6 +224,15 @@ def get_model_path(speaker_id, t):
     # model_folder_path = get_sub_folder_path(parent_path, 'model')
     #
     # return model_folder_path + '\\' + file_name
+
+
+def get_ids_of_paths(paths):
+    ids = []
+    for path in paths:
+        id = get_id_of_path(path)
+        if not id == 'no id in path':
+            ids.append(id)
+    return ids
 
 
 def get_id_of_path(path):

@@ -18,12 +18,12 @@ To change configuration (mfccs used, or loglevel in the software ) change in  ut
 - SYSTEM
     - PROCESSES: Amount of processes used in prediction and feature extraction (default 16)
     - LOGLEVEL: 
-          - 0 log nothing, 
-          - 1 log only main.py,
-          - 2: log level 1 + train module, 
-          - 3: log level 2 + prediction module, 
-          - 4: log level 3 + feature extraction,
-          - >4: log everything
+      -  0: log nothing, 
+      -  1 log only main.py,
+      -  2: log level 1 + train module, 
+      -  3: log level 2 + prediction module, 
+      -  4: log level 3 + feature extraction,
+      - \>4: log everything
 
 - CONFIG:
     - VERSION: used when making predictions, describes the folder where results are put down ./results/{dataset}/{model_version}/{version}/result.json
