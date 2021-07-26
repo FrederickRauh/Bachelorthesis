@@ -1,3 +1,5 @@
+import logging
+
 import numpy as np
 
 
@@ -11,7 +13,7 @@ class CONFIG:
 
 class SYSTEM:
     PROCESSES = 16
-    LOGLEVEL = 2
+    LOGLEVEL = logging.INFO
     FEATURE_TYPE = 'librosa'
 
     def overwrite_loglevel(self, x):
@@ -23,8 +25,6 @@ class GMM:
     MAX_ITER = [200]
     COVARIANCE_TYPE = ['diag']
     N_INIT = [3]
-
-
 
 
 class SVM:

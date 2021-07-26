@@ -16,7 +16,7 @@ from utils.config import SYSTEM
 
 
 def create_librosa_dataframe(speaker_ids):
-    logging.debug("creating librosa dataframe... ")
+    logging.info("creating librosa dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
@@ -34,7 +34,7 @@ def create_librosa_dataframe(speaker_ids):
 
 
 def create_psf_dataframe(speaker_ids):
-    logging.debug("creating psf dataframe... ")
+    logging.info("creating psf dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)

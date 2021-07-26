@@ -14,23 +14,11 @@ from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as fli
 from utils import dataframeManager as dam, directoryManager as dm, util
 from utils import fileManager as fm
 
-
-# getSpeechInput()
-# def getSpeechInput():
-#     recognizer = sr.Recognizer()
-#     try:
-#         debug.print("listening...")
-#         with sr.Microphone() as source:
-#             voice = recognizer.listen(source)
-#             data = recognizer.recognize_google(voice)
-#             debug.print(data)
-#     except:
-#         pass
 from utils.config import IDS, SYSTEM, FEATURES
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
-    logging.debug("collecting voice samples....")
+    logging.info("collecting voice samples....")
     for x in range(number):
         get_voice_input(timespan, samplerate, x, speaker_id, test)
 

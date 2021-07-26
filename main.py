@@ -7,7 +7,6 @@ from datetime import datetime
 import frontend.frontend
 from backend.gmm import GMM
 from backend.svm import SVM
-from backend.trainer import Trainer
 
 from utils.config import IDS, FEATURES, CONFIG, SYSTEM
 from utils import util
@@ -34,16 +33,16 @@ def prediction_phase(version, mfcc):
 
 if __name__ == '__main__':
     #############Config##############
+    logging.basicConfig(level=SYSTEM.LOGLEVEL)
     version = np.arange(0, 1, 1)
     mfccs = np.arange(20, 21, 1)
-    trainer = Trainer()
     svm = SVM()
     gmm = GMM()
 
     # MODELCONFIG.overwrite_n_jobs(MODELCONFIG, -2)
 
     for v in version:
-        logging.debug("starting version:", v, " ...")
+        logging.info(f"starting version: {v}  ...")
         CONFIG.overwrite_version(CONFIG, v)
 
         for mfcc in mfccs:
@@ -51,22 +50,20 @@ if __name__ == '__main__':
 
             FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
             start_time_mfcc = datetime.now()
-            logging.debug("MFCC_COUNT:", FEATURES.N_MFCC, " Version GMM :", start_time_mfcc)
+            logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM : {start_time_mfcc}")
 
             training_phase('gmm')
             prediction_phase('gmm', mfcc)
 
-            logging.debug(
-                      "MFCC_COUNT:", FEATURES.N_MFCC, ":", "----------------------------------------------------------",
-                      util.get_duration(start_time_mfcc))
+            logging.info(
+                f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_mfcc)}")
 
             # FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
             start_time = datetime.now()
-            logging.debug("MFCC_COUNT:", FEATURES.N_MFCC, " Version SVM :", start_time)
+            logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version SVM :{start_time}")
 
             training_phase('svm')
             prediction_phase('svm', mfcc)
 
-            logging.debug(
-                      "MFCC_COUNT:", FEATURES.N_MFCC, ":", "----------------------------------------------------------",
-                      util.get_duration(start_time))
+            logging.info(
+                f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time)}")

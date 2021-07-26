@@ -14,7 +14,6 @@ from sklearn.svm import SVC
 
 from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, modelManager as m, util, \
     resultManager as rm
-# from utils import debug
 from utils.config import MODELCONFIG, SVM as svm_config, SYSTEM, FEATURES
 
 
@@ -22,7 +21,6 @@ class SVM(object):
     score = 0
 
     def __init__(self):
-        # logging.basicConfig(level=logging.DEBUG)
         pass
 
     """
@@ -32,9 +30,8 @@ class SVM(object):
     def create_model(self, speaker_id):
         training_features, is_speaker = dam.get_data_for_training('svm', speaker_id)
         start_time = datetime.now()
-        logging.debug("Training svm_model with:", SYSTEM.FEATURE_TYPE, " features for:", speaker_id, ":: There are:",
-                      len(training_features),
-                      "trainingfiles. Start at: ", start_time)
+        logging.info(
+            f"Training svm_model with: {SYSTEM.FEATURE_TYPE} features for: {speaker_id} :: There are: {len(training_features)} trainingfiles. Start at: {start_time}")
 
         param_grid = [{
             'kernel': svm_config.KERNELS,
@@ -54,11 +51,10 @@ class SVM(object):
 
         svm_model.fit(training_features, is_speaker)
 
-
-        logging.debug(svm_model['gridsearchcv'].best_params_)
+        logging.info(f"{svm_model['gridsearchcv'].best_params_}")
         m.save_model(speaker_id, 'svm_' + SYSTEM.FEATURE_TYPE, svm_model)
 
-        logging.debug(util.get_duration(start_time))
+        logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
         for speaker_id in speaker_ids:
@@ -74,7 +70,7 @@ class SVM(object):
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
 
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, SYSTEM.PROCESSES)
-        logging.debug("starting mult process:", len(split_speaker_ids))
+        logging.info(f"starting mult process: {len(split_speaker_ids)}")
         pool = multiprocessing.Pool(processes=SYSTEM.PROCESSES)
 
         data = []

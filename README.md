@@ -17,14 +17,7 @@ Anaconda Environment:
 To change configuration (mfccs used, or loglevel in the software ) change in  util/config.py:
 - SYSTEM
     - PROCESSES: Amount of processes used in prediction and feature extraction (default 16)
-    - LOGLEVEL: 
-      -  0: log nothing, 
-      -  1 log only main.py,
-      -  2: log level 1 + train module, 
-      -  3: log level 2 + prediction module, 
-      -  4: log level 3 + feature extraction,
-      - \>4: log everything
-
+    - LOGLEVEL: level depends on python logging.level
 - CONFIG:
     - VERSION: used when making predictions, describes the folder where results are put down ./results/{dataset}/{model_version}/{version}/result.json
     - LOCAL: wether or not to use a local dataset. Audio file path: ./local/data/wav/ and  test audio file data in ./local/test/

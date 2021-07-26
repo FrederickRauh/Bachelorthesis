@@ -11,7 +11,7 @@ from utils import directoryManager as dm
 
 # Overall CSV (pairs.csv)
 def create_overall_csv():
-    logging.debug("creating pairs.csv")
+    logging.info("creating pairs.csv")
     ids = dm.get_all_ids()
     folder_struc = '\\' + "wav" + '\\'
 

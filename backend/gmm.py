@@ -13,7 +13,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
 
 from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, modelManager as m, util, resultManager as rm
-# from utils import debug
 from utils.config import MODELCONFIG, GMM as gmm_config, SYSTEM, FEATURES, IDS
 
 
@@ -28,9 +27,7 @@ class GMM(object):
     def create_model(self, speaker_id):
         training_features = dam.get_data_for_training('gmm', speaker_id)
         start_time = datetime.now()
-        logging.debug("Training gmm_model with ", SYSTEM.FEATURE_TYPE, " features for:", speaker_id, ":: There are:",
-                      len(training_features),
-                      " trainingfiles. Start at: ", start_time)
+        logging.info(f"Training gmm_model with {SYSTEM.FEATURE_TYPE} features for: {speaker_id} :: There are: {len(training_features)} trainingfiles. Start at: {start_time}")
 
         param_grid = [{
             'n_components': gmm_config.N_COMPONENTS,
@@ -51,7 +48,7 @@ class GMM(object):
         )
         gmm_model.fit(training_features)
         m.save_model(speaker_id, 'gmm_' + SYSTEM.FEATURE_TYPE, gmm_model)
-        logging.debug(util.get_duration(start_time))
+        logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
         for speaker_id in speaker_ids:
@@ -67,7 +64,7 @@ class GMM(object):
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
 
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, SYSTEM.PROCESSES)
-        logging.debug("starting mult process:", len(split_speaker_ids))
+        logging.info(f"starting mult process:{len(split_speaker_ids)}")
         pool = multiprocessing.Pool(processes=SYSTEM.PROCESSES)
 
         data = []
