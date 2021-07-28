@@ -11,7 +11,7 @@ from utils import dataframeManager as dam, directoryManager as dm
 class ResultPlotter(object):
 
     def __init__(self):
-        print('hello')
+        pass
 
     def get_confusion_mats(mfcc_count, dataset, model_type, feature_type):
         confusion_mats = []
@@ -94,8 +94,6 @@ class ResultPlotter(object):
         fig2.show()
         fig3.show()
 
-    if __name__ == 'main':
-        print('heheh')
 
     datasets = ['ba']
     model_types = ['gmm']

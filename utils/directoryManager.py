@@ -1,11 +1,8 @@
 import logging
 import os
 
-import scipy.io.wavfile as wav
 from os.path import dirname, join as pjoin
 
-
-# csv
 from utils.config import CONFIG
 
 
@@ -207,6 +204,8 @@ def get_model_path(speaker_id, t):
         path = path + '\\' + "svm"
     if t.__contains__('gmm'):
         path = path + '\\' + "gmm"
+        if t.__contains__('ubm'):
+            path += '-ubm'
 
     if not os.path.exists(path):
         make_dir(path)
@@ -220,10 +219,6 @@ def get_model_path(speaker_id, t):
     file_name = speaker_id + "_" + t + "_model.pickel"
     path = path + '\\' + file_name
     return path
-
-    # model_folder_path = get_sub_folder_path(parent_path, 'model')
-    #
-    # return model_folder_path + '\\' + file_name
 
 
 def get_ids_of_paths(paths):
@@ -257,20 +252,7 @@ def get_all_wav_names():
 
 
 def get_all_ids():
-    ids = get_all_wav_names()
-    # if ids.__contains__('pairs.csv'):
-    #     ids.remove('pairs.csv')
-    # if ids.__contains__('dataframe.csv'):
-    #     ids.remove('dataframe.csv')
-    # if ids.__contains__('librosa-dataframe.json'):
-    #     ids.remove('librosa-dataframe.json')
-    # if ids.__contains__('psf-dataframe.json'):
-    #     ids.remove('psf-dataframe.json')
-    # if ids.__contains__('result-svm.json'):
-    #     ids.remove('result-svm.json')
-    # if ids.__contains__('result-gmm.json'):
-    #     ids.remove('result-gmm.json')
-    return ids
+    return get_all_wav_names()
 
 
 # used to switch between

@@ -72,25 +72,37 @@ def load_dataframe_from_path(path):
     return dataframe
 
 
-def get_data_for_training(m_type, speaker_id):
-    t = []
-    y = []
-    speaker_ids = [speaker_id]
+def get_data_for_training(m_type, speaker_ids):
     if m_type == 'svm':
-        speaker_ids = dm.get_all_ids()
+        return get_svm_data_for_training(speaker_ids[0])
+    else:
+        return get_gmm_data_for_training(speaker_ids)
+
+
+def get_gmm_data_for_training(speaker_ids):
+    t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         for wav_file in wav_files:
             file = id + '\\' + wav_file
             t.append(file)
-            if m_type == 'svm':
-                is_speaker = 0
-                if id == speaker_id:
-                    is_speaker = 1
-                y.append(is_speaker)
-    if m_type == 'svm':
-        return get_training_files(t, SYSTEM.FEATURE_TYPE), y
     return get_training_files(t, SYSTEM.FEATURE_TYPE)
+
+
+def get_svm_data_for_training(speaker_id):
+    t = []
+    y = []
+    speaker_ids = dm.get_all_ids()
+    for id in speaker_ids:
+        wav_files = dm.get_wav_files(id)
+        for wav_file in wav_files:
+            file = id + '\\' + wav_file
+            t.append(file)
+            is_speaker = 0
+            if id == speaker_id:
+                is_speaker = 1
+            y.append(is_speaker)
+    return get_training_files(t, SYSTEM.FEATURE_TYPE), y
 
 
 def get_training_files(t, f_type):
@@ -100,7 +112,7 @@ def get_training_files(t, f_type):
     for element in t:
         # training_features = dataframe.loc[dataframe['file_name'] == element].feature.array[0]['0']
         # training_files.append(training_features)
-        #------------------
+        # ------------------
         # load features from files(/psf)
         parts = dataframe.loc[dataframe['file_name'] == element].file_name.array[0].split('\\')
         file_path = parts[0] + '\\' + parts[1] + '\\' + f_type + '\\' + parts[2].replace('.wav', '.json')

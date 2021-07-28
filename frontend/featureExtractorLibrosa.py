@@ -25,8 +25,11 @@ def extract_processed_features_from_file(file_path):
     signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     mfcc = extract_mfcc_from_signal(signal)
-    d_mfcc = librosa.feature.delta(mfcc, order=1)
-    dd_mfcc = librosa.feature.delta(d_mfcc, order=2)
+    d_mfcc = librosa.feature.delta(mfcc)
+    dd_mfcc = librosa.feature.delta(d_mfcc)
+
+    # ft1 = np.concatenate((mfcc, d_mfcc, dd_mfcc), axis=0)
+
     ft1 = np.hstack((mfcc, d_mfcc, dd_mfcc))
     ft2 = librosa.feature.zero_crossing_rate(signal)[0]
     ft3 = librosa.feature.spectral_rolloff(signal)[0]
@@ -45,6 +48,16 @@ def extract_processed_features_from_file(file_path):
     ft5_trunc = np.hstack((np.mean(ft5), np.std(ft5), skew(ft5), np.max(ft5), np.median(ft5), np.min(ft5)))
     ft6_trunc = np.hstack((np.mean(ft6), np.std(ft6), skew(ft6), np.max(ft6), np.median(ft6), np.max(ft6)))
     return np.hstack((ft1_trunc, ft2_trunc, ft3_trunc, ft4_trunc, ft5_trunc, ft6_trunc))
+
+
+# def extract_processed_features_from_file(file_path):
+#     signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
+#     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
+#     mfcc = extract_mfcc_from_signal(signal)
+#     d_mfcc = librosa.feature.delta(mfcc)
+#     energy = librosa.feature.rms(S=signal)
+#     d_energy = librosa.feature.delta(energy)
+
 
 
 def get_right_format(ft):

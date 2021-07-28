@@ -28,7 +28,7 @@ class SVM(object):
     """
 
     def create_model(self, speaker_id):
-        training_features, is_speaker = dam.get_data_for_training('svm', speaker_id)
+        training_features, is_speaker = dam.get_data_for_training('svm', [speaker_id])
         start_time = datetime.now()
         logging.info(
             f"Training svm_model with: {SYSTEM.FEATURE_TYPE} features for: {speaker_id} :: There are: {len(training_features)} trainingfiles. Start at: {start_time}")
@@ -63,11 +63,14 @@ class SVM(object):
     """
     # Prediction part
     """
-
-    def predict_n_speakers(self, speaker_ids, mfcc):
+    def get_test_files_and_extra_data(self, speaker_ids):
         test_files = util.load_test_files(speaker_ids)
         extra_data = [[test_files]]
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
+        return test_files, extra_data_object
+
+    def predict_n_speakers(self, speaker_ids, mfcc):
+        test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, SYSTEM.PROCESSES)
         logging.info(f"starting mult process: {len(split_speaker_ids)}")
