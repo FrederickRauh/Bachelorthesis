@@ -1,10 +1,7 @@
 import logging
 import multiprocessing
-import pickle
 from datetime import datetime
-from multiprocessing import Process
 
-import numpy as np
 import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
@@ -14,7 +11,7 @@ from sklearn.svm import SVC
 
 from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, modelManager as m, util, \
     resultManager as rm
-from utils.config import MODELCONFIG, SVM as svm_config, SYSTEM, FEATURES
+from config import MODELCONFIG, SVM as svm_config, SYSTEM, FEATURES
 
 
 class SVM(object):

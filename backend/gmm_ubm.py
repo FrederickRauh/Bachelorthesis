@@ -1,8 +1,6 @@
 import logging
 import multiprocessing
-import pickle
 from datetime import datetime
-from multiprocessing import Process
 
 import numpy as np
 import pandas as pd
@@ -12,9 +10,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
 
-from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, modelManager as m, util, \
+from utils import audioManager as am, dataframeManager as dam, modelManager as m, util, \
     resultManager as rm
-from utils.config import MODELCONFIG, GMM as gmm_config, SYSTEM, FEATURES, IDS
+from config import MODELCONFIG, GMM as gmm_config, SYSTEM, FEATURES, IDS
 
 
 class GMMUBM(object):

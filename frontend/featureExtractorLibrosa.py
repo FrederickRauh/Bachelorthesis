@@ -1,7 +1,6 @@
 import librosa
 
 import numpy as np
-import pandas as pd
 from scipy.stats import skew
 
 from config import FEATURES
@@ -20,7 +19,6 @@ def extract_processed_mfcc_from_file(file_path):
 
 
 def extract_processed_features_from_file(file_path):
-    # sr = 16000 to match psf..
     signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     mfcc = extract_mfcc_from_signal(signal)
@@ -28,7 +26,6 @@ def extract_processed_features_from_file(file_path):
     dd_mfcc = librosa.feature.delta(d_mfcc)
 
     # ft1 = np.concatenate((mfcc, d_mfcc, dd_mfcc), axis=0)
-
     ft1 = np.hstack((mfcc, d_mfcc, dd_mfcc))
     ft2 = librosa.feature.zero_crossing_rate(signal)[0]
     ft3 = librosa.feature.spectral_rolloff(signal)[0]
@@ -37,10 +34,7 @@ def extract_processed_features_from_file(file_path):
     ft6 = librosa.feature.spectral_bandwidth(signal)[0]
     ft1_trunc = np.hstack((np.mean(ft1, axis=1), np.std(ft1, axis=1), skew(ft1, axis=1), np.max(ft1, axis=1),
                            np.median(ft1, axis=1), np.min(ft1, axis=1)))
-    # ft2_trunc = get_right_format(ft2)
-    # ft3_trunc = get_right_format(ft3)
-    # ft4_trunc = get_right_format(ft4)
-    # ft5_trunc = get_right_format(ft5)
+
     ft2_trunc = np.hstack((np.mean(ft2), np.std(ft2), skew(ft2), np.max(ft2), np.median(ft2), np.min(ft2)))
     ft3_trunc = np.hstack((np.mean(ft3), np.std(ft3), skew(ft3), np.max(ft3), np.median(ft3), np.min(ft3)))
     ft4_trunc = np.hstack((np.mean(ft4), np.std(ft4), skew(ft4), np.max(ft4), np.median(ft4), np.min(ft4)))
@@ -68,15 +62,3 @@ def extract_mfcc_from_file_to_json(file_path):
     new_file_path = dm.get_feature_librosa_json_path(file_path)
     features = mfcc_feat
     dam.write_features_to_json_file(new_file_path, file_path, features)
-
-
-def load_features_from_json(file_path):
-    json_path = get_feature_json_path(file_path)
-    json_data = pd.read_json(json_path)
-    features = json_data.features
-    return features[0]
-
-
-def get_feature_json_path(wav_path):
-    json_path = dm.get_feature_librosa_json_path(wav_path)
-    return json_path.replace('.wav', '.json')

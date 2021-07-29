@@ -19,9 +19,7 @@ def extract_signal_from_file(file_path):
     sr, signal = wav.read(file_path)
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'psf')
     # if signal is stereo only take one channel
-    if isinstance(signal[0], np.ndarray):
-        signal = signal[:, 0]
-    return signal
+    return signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
 
 
 def extract_mfcc_from_signal(signal):
@@ -66,10 +64,3 @@ def extract_mfcc_from_file_to_json(file_path):
     new_file_path = dm.get_feature_psf_json_path(file_path)
     features = mfcc_feat
     dam.write_features_to_json_file(new_file_path, file_path, features)
-
-
-def load_features_from_json(file_path):
-    json_path = dm.get_feature_psf_json_path(file_path)
-    json_data = pd.read_json(json_path)
-    features = json_data.features
-    return features
