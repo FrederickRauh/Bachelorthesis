@@ -1,45 +1,14 @@
 import logging
 import os
 
-from os.path import dirname, join as pjoin
+from os.path import join as pjoin
 
-from utils.config import CONFIG
+from config import CONFIG
 
-
-def create_csv_file_name(speaker_id):
-    return speaker_id + '.csv'
-
-
-def get_csv_path(speaker_id):
-    parent_path = get_parent_path(speaker_id)
-    csv_path = get_sub_folder_path(parent_path, 'csv')
-    filename = create_csv_file_name(speaker_id)
-    return csv_path + '\\' + filename
-
-
-def create_feature_csv_dir(file_path):
-    sub_path = file_path.split('\\')
-    new_dir_path = ''
-    for x in range(len(sub_path)):
-        if not x == (len(sub_path) - 1):
-            new_dir_path = new_dir_path + sub_path[x] + '\\'
-    make_dir(new_dir_path)
-
-
-def get_feature_librosa_csv_path(wav_path):
-    json_path = get_feature_path(wav_path, 'librosa')
-    return json_path.replace('.wav', '.csv')
-
-
-def get_feature_psf_csv_path(wav_path):
-    json_path = get_feature_path(wav_path, 'psf')
-    return json_path.replace('.wav', '.csv')
-
-
-def get_all_data_csv_file_path():
-    path = get_all_data_path() + '\\' + 'pairs.csv'
-    return path
-
+"""
+This file contains all methods used to create dirs, read content von dirs, direct file accessing methods should not be 
+contained in this file
+"""
 
 # features
 def get_feature_path(wav_path, version):
@@ -102,13 +71,6 @@ def get_sub_folder_path(parent_path, sub_folder):
     return path
 
 
-def sub_folder_switch(x):
-    return {
-        'csv': 1,
-        'wav': 2
-    }.get(x, 9)
-
-
 # results
 def get_results_folder(model_type):
     data_path = make_dir(get_all_data_path() + '\\' + "result")
@@ -168,7 +130,6 @@ def get_wav_files_in_folder(path):
     for file in files:
         if file.endswith('.wav'):
             wav_files.append(dir_path + '\\' + file)
-        # files = []
     return wav_files
 
 
@@ -263,9 +224,7 @@ def get_all_data_path():
 
 
 def is_large_data_set():
-    if get_all_data_path().__contains__('voxceleb'):
-        return True
-    return False
+    return True if get_all_data_path().__contains__('voxceleb') else False
 
 
 def get_project_path():
@@ -274,7 +233,6 @@ def get_project_path():
 
 def get_my_path():
     return CONFIG.DATASETPATH
-    # return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
 
 
 def get_test_path():
@@ -286,6 +244,7 @@ def get_test_subfolders(speaker_id):
     return os.listdir(path)
 
 
+# Todo
 def get_voxceleb_path():
     return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_dev_wav' + '\\' + 'wav'
 

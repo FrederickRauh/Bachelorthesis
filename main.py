@@ -9,8 +9,8 @@ from backend.gmm import GMM
 from backend.gmm_ubm import GMMUBM
 from backend.svm import SVM
 
-from utils.config import IDS, FEATURES, CONFIG, SYSTEM
-from utils import util, directoryManager as dm
+from config import IDS, FEATURES, CONFIG, SYSTEM
+from utils import util
 
 
 def preparation_phase(mfcc):

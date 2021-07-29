@@ -1,20 +1,15 @@
 import logging
 import multiprocessing
 import os
-import scipy
 
-from datetime import datetime
-
-import speech_recognition as sr
 import sounddevice as sd
 import scipy.io.wavfile as wav
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 
 from utils import dataframeManager as dam, directoryManager as dm, util
-from utils import fileManager as fm
 
-from utils.config import IDS, SYSTEM, FEATURES
+from config import SYSTEM, FEATURES
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
@@ -37,24 +32,6 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
     sd.wait()
     wav.write(wav_path, samplerate, recording)
     os.startfile(wav_path)
-
-
-def process_features_with_psf(speaker_id):
-    files = dm.get_wav_files(speaker_id)
-    if len(files) > 0:
-        for file in files:
-            file_path = dm.get_parent_path(speaker_id) + '\\' + file
-            features = fpsf.extract_mfcc_from_file_psf(file_path)
-            fm.edit_csv(speaker_id, file, features)
-
-
-def process_features_with_librosa(speaker_id):
-    files = dm.get_wav_files(speaker_id)
-    if len(files) > 0:
-        for file in files:
-            file_path = dm.get_parent_path(speaker_id) + '\\' + file
-            features = flib.extract_mfcc_from_file_librosa(file_path)
-            fm.edit_csv(speaker_id, file, features)
 
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe, feature_type, mfcc_count):

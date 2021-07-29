@@ -1,7 +1,9 @@
 import pickle
 
-from utils import dataframeManager as dam, directoryManager as dm
-from utils.config import SYSTEM
+from utils import directoryManager as dm
+"""
+This file is responsible for saving and loading models
+"""
 
 
 def save_model(speaker_id, t, model):

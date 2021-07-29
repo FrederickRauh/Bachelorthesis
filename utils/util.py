@@ -2,13 +2,8 @@ import os
 
 import numpy as np
 
-import scipy.io.wavfile as wav
-
 from datetime import datetime
 
-from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
-
-from utils.config import SYSTEM
 from utils import directoryManager as dm
 
 
@@ -73,4 +68,3 @@ def get_duration(start_time):
     minutes = (duration.total_seconds() // 60) - (hours * 60)
     seconds = duration.total_seconds() - (hours * 3600) - (minutes * 60)
     return "--> duration: %0.0fh:%0.0fmin:%0.2fsec" % (hours, minutes, seconds)
-          # "----- Model: accuracy: %f; standard deviation of %f" % (score.mean(), score.std())

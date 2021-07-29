@@ -1,3 +1,5 @@
+import os
+import json
 import logging
 
 import pandas as pd
@@ -44,6 +46,29 @@ def create_psf_dataframe(speaker_ids):
     dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
     save_dataframe_to_json_file(features_dataframe, dataframe_path)
     return features_dataframe
+
+def create_feature_json(json_path, rows):
+    dm.create_feature_json_dir(json_path)
+    with open(json_path, 'w', newline='') as file:
+        writer = json.writer(file)
+        writer.writerow(["file_name", "features"])
+        writer.writerows(rows)
+
+
+def find_feature_json(json_path):
+    if not os.path.isfile(json_path):
+        create_feature_json(json_path, [])
+    return json_path
+
+
+def write_features_to_json_file(json_path, wav_path, features):
+    json_path = json_path.replace('.wav', '.json')
+    find_feature_json(json_path)
+    entry = []
+    entry.append([wav_path, features, len(features)])
+    json_file = pd.DataFrame(entry, columns=['wav_path', 'features', 'feature count'])
+    dm.check_if_file_exists_then_remove(json_path)
+    json_file.to_json(json_path)
 
 
 def save_dataframe_to_json_file(dataframe, path):

@@ -1,17 +1,12 @@
 import python_speech_features as psf
-import csv
 
 import numpy as np
 import pandas as pd
 
 import scipy.io.wavfile as wav
-from scipy.signal.windows import hann
-from scipy.stats import skew
 
-from sklearn import preprocessing
-
-from utils.config import FEATURES
-from utils import audioManager as am, directoryManager as dm, fileManager as fm, util
+from config import FEATURES
+from utils import audioManager as am, dataframeManager as dam, directoryManager as dm
 
 
 def extract_filterbank_energies_from_file(file_path):
@@ -65,46 +60,12 @@ def extract_processed_features_from_file(file_path):
     return np.vstack((ft1, ft2))
 
 
-def extract_mfcc_from_file_to_csv(file_path):
-    mfcc_feat = extract_processed_features_from_file(file_path)
-    new_file_path = dm.get_feature_psf_csv_path(file_path)
-    features = mfcc_feat
-    fm.write_features_to_psf_csv_file(new_file_path, file_path, features)
-
-
-def load_features_from_csv(file_path):
-    csv_path = get_feature_csv_path(file_path)
-    csv_data = pd.read_csv(csv_path)
-    features = np.array(csv_data.features)
-    return features
-
-
-def get_feature_csv_path(wav_path):
-    csv_path = dm.get_feature_psf_csv_path(wav_path)
-    return csv_path.replace('.wav', '.csv')
-
-
-def get_features_out_of_csv(files):
-    data_path = dm.get_all_wav_path()
-    x = []
-    for file in files:
-        file_path = data_path + '\\' + file
-        csv_path = get_feature_csv_path(file_path)
-        x.append(get_features_from_csv(csv_path))
-    return x
-
-
-def get_features_from_csv(file):
-    csv_path = get_feature_csv_path(file)
-    return pd.read_csv(csv_path).features
-
-
 # json version
 def extract_mfcc_from_file_to_json(file_path):
     mfcc_feat = extract_processed_features_from_file(file_path)
     new_file_path = dm.get_feature_psf_json_path(file_path)
     features = mfcc_feat
-    fm.write_features_to_json_file(new_file_path, file_path, features)
+    dam.write_features_to_json_file(new_file_path, file_path, features)
 
 
 def load_features_from_json(file_path):
