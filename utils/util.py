@@ -4,6 +4,7 @@ import numpy as np
 
 from datetime import datetime
 
+from config import CONFIG
 from utils import directoryManager as dm
 
 
@@ -44,20 +45,18 @@ def adjust_file_amount_for_voxceleb(dir, speaker_id):
 def load_test_files(speaker_ids):
     files = []
     for speaker_id in speaker_ids:
-        if dm.is_large_data_set():
-            dir = [dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 1]]
-            dir = adjust_file_amount_for_voxceleb(dir, speaker_id)
-        else:
+        if CONFIG.LOCAL:
             dir = dm.get_test_subfolders(speaker_id)
-        for dir_path in dir:
-            if dm.is_large_data_set():
-                files_path = dm.get_voxceleb_path() + '\\' + speaker_id + '\\' + dir_path
-            else:
+            for dir_path in dir:
                 files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
-
-            f = dm.get_wav_files_in_folder(files_path)
-            for x in range(len(f)):
-                files.append(f[x])
+                wav_files = dm.get_wav_files_in_folder(files_path)
+                for x in range(len(wav_files)):
+                    files.append(wav_files[x])
+        else:
+            wav_files = dm.get_wav_files(speaker_id)[-10:]
+            for wav_file in wav_files:
+                wav_file = dm.get_all_wav_path() + '\\' + speaker_id + '\\' + wav_file
+                files.append(wav_file)
     return files
 
 

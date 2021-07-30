@@ -53,7 +53,6 @@ def feature_extraction_for_n_speaker(speaker_ids, create_dataframe, feature_type
             dam.create_psf_dataframe(speaker_ids)
 
 
-
 def feature_extraction_for_files(speaker_ids, feature_type, mfcc_count):
     FEATURES.overwrite_n_mfcc(FEATURES, mfcc_count)
     for speaker_id in speaker_ids:

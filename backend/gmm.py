@@ -76,6 +76,8 @@ class GMM(object):
         pool.close()
         pool.join()
 
+        # results = self.predict_mult(speaker_ids, test_files, mfcc)
+
         overall_results = []
         for result in results:
             overall_results += result

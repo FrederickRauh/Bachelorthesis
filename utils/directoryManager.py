@@ -56,10 +56,6 @@ def make_dir(path):
     return path
 
 
-def create_sub_folder(parent_path, sub_folder_name):
-    make_dir(os.path.join(parent_path, sub_folder_name))
-
-
 def list_sub_folders(parent_path):
     return os.listdir(parent_path)
 
@@ -95,29 +91,24 @@ def get_file_name(speaker_id, number):
 
 def get_wav_files(speaker_id):
     parent_path = get_parent_path(speaker_id)
-    directories = list_sub_folders(parent_path)
-    # -------------------------------------------------
-    # done in order to keep unseen data for testing afterwards
-    if is_large_data_set():
-        directories = remove_wav_files_if_voxceleb(directories, parent_path)
-    files = []
+    wav_folders = get_wav_folders(speaker_id)
     wav_files = []
-    for directory in directories:
-        if not directory.__contains__('csv') and not directory == 'model':
-            dir_path = parent_path + '\\' + directory
-            for base, dirs2, Files in os.walk(dir_path):
-                if not base.endswith('\librosa') and not base.endswith('\psf'):
-                    files = Files
+    for directory in wav_folders:
+        sub_dir_path = parent_path + '\\' + directory
+        for base, dirs2, Files in os.walk(sub_dir_path):
+            if not base.endswith('\librosa') and not base.endswith('\psf'):
+                files = Files
             for file in files:
                 if file.endswith('.wav'):
                     wav_files.append(directory + '\\' + file)
             files = []
+
     return wav_files
 
 
-def get_wav_folder_path(speaker_id):
+def get_wav_folders(speaker_id):
     parent_path = get_parent_path(speaker_id)
-    return get_sub_folder_path(parent_path, 'wav')
+    return list_sub_folders(parent_path)
 
 
 def get_wav_files_in_folder(path):
@@ -131,25 +122,6 @@ def get_wav_files_in_folder(path):
         if file.endswith('.wav'):
             wav_files.append(dir_path + '\\' + file)
     return wav_files
-
-
-def remove_wav_files_if_voxceleb(directories, parent_path):
-    if directories.__contains__("model"):
-        directories.remove('model')
-    last_dir = directories.pop()
-    if last_dir.__contains__("psf"):
-        last_dir.remove('psf')
-    if last_dir.__contains__('librosa'):
-        last_dir.remove('librosa')
-    last_dir_path = parent_path + '\\' + last_dir
-    i = 0
-    for base, dirs2, Files in os.walk(last_dir_path):
-        for file in Files:
-            if file.endswith(".wav"):
-                i += 1
-    if i < 10:
-        directories.pop()
-    return directories
 
 
 def get_all_models_path():

@@ -16,7 +16,7 @@ from utils import util
 def preparation_phase(mfcc):
     # frontend.frontend.feature_extraction_for_files([IDS.SPEAKER_IDS[0]], 'librosa', 20)
 
-    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=False,
+    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=True,
                                                        feature_type=SYSTEM.FEATURE_TYPE, mfcc_count=mfcc)
 
 
@@ -42,8 +42,8 @@ def prediction_phase(version, mfcc):
 if __name__ == '__main__':
     #############Config##############
     logging.basicConfig(level=0)
-    logger = logging.getLogger()
-    logger.disabled = True
+    # logger = logging.getLogger()
+    # logger.disabled = True
     version = np.arange(0, 1, 1)
     mfccs = np.arange(20, 21, 1)
     gmm = GMM()

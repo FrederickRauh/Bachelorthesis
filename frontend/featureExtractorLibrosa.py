@@ -4,7 +4,7 @@ import numpy as np
 from scipy.stats import skew
 
 from config import FEATURES
-from utils import audioManager as am, dataframeManager as dam, directoryManager as dm
+from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, jsonManager as jm
 
 
 def extract_mfcc_from_signal(signal):
@@ -61,4 +61,4 @@ def extract_mfcc_from_file_to_json(file_path):
     mfcc_feat = extract_processed_features_from_file(file_path)
     new_file_path = dm.get_feature_librosa_json_path(file_path)
     features = mfcc_feat
-    dam.write_features_to_json_file(new_file_path, file_path, features)
+    jm.write_features_to_json_file(new_file_path, file_path, features)

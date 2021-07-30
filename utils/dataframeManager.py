@@ -16,6 +16,8 @@ This file shall only contain methods that create, load, save dataframes to json 
     create_librosa_dataframe (creates the dataframe which links all wav files to the corresponding json files containing 
     their features)
 """
+
+
 def create_librosa_dataframe(speaker_ids):
     logging.info("creating librosa dataframe... ")
     all_features = []
@@ -34,11 +36,15 @@ def create_librosa_dataframe(speaker_ids):
     create_psf_dataframe (creates the dataframe which links all wav files to the corresponding json files containing     
     their features)
 """
+
+
 def create_psf_dataframe(speaker_ids):
     logging.info("creating psf dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
+        if dm.is_large_data_set():
+            files = files[:len(files) - 10]
         for file in files:
             file_name = speaker_id + '\\' + file
             all_features.append([speaker_id, file_name])
@@ -46,29 +52,6 @@ def create_psf_dataframe(speaker_ids):
     dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
     save_dataframe_to_json_file(features_dataframe, dataframe_path)
     return features_dataframe
-
-def create_feature_json(json_path, rows):
-    dm.create_feature_json_dir(json_path)
-    with open(json_path, 'w', newline='') as file:
-        writer = json.writer(file)
-        writer.writerow(["file_name", "features"])
-        writer.writerows(rows)
-
-
-def find_feature_json(json_path):
-    if not os.path.isfile(json_path):
-        create_feature_json(json_path, [])
-    return json_path
-
-
-def write_features_to_json_file(json_path, wav_path, features):
-    json_path = json_path.replace('.wav', '.json')
-    find_feature_json(json_path)
-    entry = []
-    entry.append([wav_path, features, len(features)])
-    json_file = pd.DataFrame(entry, columns=['wav_path', 'features', 'feature count'])
-    dm.check_if_file_exists_then_remove(json_path)
-    json_file.to_json(json_path)
 
 
 def save_dataframe_to_json_file(dataframe, path):
@@ -82,7 +65,11 @@ def load_dataframe_from_path(path):
 
 
 def get_data_for_training(m_type, speaker_ids):
-    return get_svm_data_for_training(speaker_ids[0]) if m_type == 'svm' else get_gmm_data_for_training(speaker_ids)
+    if m_type == 'svm':
+        files = get_svm_data_for_training(speaker_ids[0])
+    else:
+        files = get_gmm_data_for_training(speaker_ids)
+    return files[:len(files) - 10]
 
 
 def get_gmm_data_for_training(speaker_ids):
@@ -110,7 +97,6 @@ def get_svm_data_for_training(speaker_id):
 
 
 def get_training_files(t, f_type):
-    print("F_TYPE: ", f_type)
     dataframe_path = dm.get_all_data_path() + '\\' + f_type + '-dataframe.json'
     dataframe = load_dataframe_from_path(dataframe_path)
     training_files = []
