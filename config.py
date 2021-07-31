@@ -5,8 +5,9 @@ import numpy as np
 
 class CONFIG:
     VERSION = 1
-    LOCAL = False
+    LOCAL = True
     DATASETPATH = 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_ba_wav'
+
     def overwrite_version(self, x):
         self.VERSION = x
 
@@ -62,7 +63,7 @@ class FEATURES:
     PREEMPH = 0.97  # 0.0  #0.97  # PREV: 0.07
     CEPLIFTER = 0  # PREV: 22
     APPENDENERGY = True  # PREV: TRUE
-    WINLEN = 0.05  # 0.064  # PREV N_FFT / SR WIN LENGTH OF 16-64MS
+    WINLEN = 0.025  # 0.064  # PREV N_FFT / SR WIN LENGTH OF 16-64MS
     WINSTEP = 0.01  # PREV: 0.036, HOP_LENGTH / SR (DEFAULT 0.01 (10MS))
     WINFUNC = lambda x: np.hamming(x)
 

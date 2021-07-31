@@ -16,7 +16,7 @@ from utils import util
 def preparation_phase(mfcc):
     # frontend.frontend.feature_extraction_for_files([IDS.SPEAKER_IDS[0]], 'librosa', 20)
 
-    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=True,
+    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=False,
                                                        feature_type=SYSTEM.FEATURE_TYPE, mfcc_count=mfcc)
 
 
@@ -57,30 +57,30 @@ if __name__ == '__main__':
         CONFIG.overwrite_version(CONFIG, v)
 
         for mfcc in mfccs:
-            preparation_phase(mfcc)
+            # preparation_phase(mfcc)
 
             FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
 
             """
             GMM
             """
-            start_time_gmm = datetime.now()
-            logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM : {start_time_gmm}")
+            # start_time_gmm = datetime.now()
+            # logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM : {start_time_gmm}")
+            #
+            # training_phase('gmm')
+            # prediction_phase('gmm', mfcc)
+            #
+            # logging.info(
+            #     f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_gmm)}")
 
-            training_phase('gmm')
-            prediction_phase('gmm', mfcc)
-
-            logging.info(
-                f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_gmm)}")
-
-            """
-            GMM-UBM
-            """
+            # """
+            # GMM-UBM
+            # """
             start_time_gmm = datetime.now()
             logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM-UBM : {start_time_gmm}")
 
             training_phase('gmm-ubm')
-            prediction_phase('gmm-ubm', mfcc)
+            # prediction_phase('gmm-ubm', mfcc)
 
             logging.info(
                 f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_gmm)}")
