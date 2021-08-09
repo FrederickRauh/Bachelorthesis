@@ -1,11 +1,10 @@
 import numpy as np
 
 from utils import directoryManager as dm, util
-from config import CONFIG as config
 from utils.dataframeManager import load_dataframe_from_path
 
 
-def get_data_for_training(m_type, speaker_ids, feature_type=config.FEATURE_TYPE):
+def get_data_for_training(m_type, speaker_ids, feature_type):
     y = []
     if m_type == 'svm':
         files, y = get_svm_data_for_training(speaker_ids[0], feature_type)
@@ -16,7 +15,7 @@ def get_data_for_training(m_type, speaker_ids, feature_type=config.FEATURE_TYPE)
     return np.asarray(files), y
 
 
-def get_gmm_data_for_training(speaker_ids, feature_type=config.FEATURE_TYPE):
+def get_gmm_data_for_training(speaker_ids, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
@@ -28,7 +27,7 @@ def get_gmm_data_for_training(speaker_ids, feature_type=config.FEATURE_TYPE):
     return get_training_files(t, feature_type)
 
 
-def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type=config.FEATURE_TYPE):
+def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
@@ -46,7 +45,7 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type=config.FEATU
     return get_training_files(t, feature_type)
 
 
-def get_svm_data_for_training(speaker_id, feature_type=config.FEATURE_TYPE):
+def get_svm_data_for_training(speaker_id, feature_type):
     t = []
     y = []
     speaker_ids = dm.get_all_ids()
@@ -61,7 +60,7 @@ def get_svm_data_for_training(speaker_id, feature_type=config.FEATURE_TYPE):
     return get_training_files(t, feature_type), y
 
 
-def get_training_files(t, feature_type=config.FEATURE_TYPE):
+def get_training_files(t, feature_type):
     training_files = []
     for element in t:
         parts = element.split('\\')
@@ -79,16 +78,8 @@ def get_training_files(t, feature_type=config.FEATURE_TYPE):
 def load_test_files(speaker_ids):
     files = []
     for speaker_id in speaker_ids:
-        if config.LOCAL:
-            dir = dm.get_test_subfolders(speaker_id)
-            for dir_path in dir:
-                files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
-                wav_files = dm.get_wav_files_in_folder(files_path)
-                for x in range(len(wav_files)):
-                    files.append(wav_files[x])
-        else:
-            wav_files = dm.get_wav_files(speaker_id)[-10:]
-            for wav_file in wav_files:
-                wav_file = dm.get_all_wav_path() + '\\' + speaker_id + '\\' + wav_file
-                files.append(wav_file)
+        wav_files = dm.get_wav_files(speaker_id)[-10:]
+        for wav_file in wav_files:
+            wav_file = dm.get_all_wav_path() + '\\' + speaker_id + '\\' + wav_file
+            files.append(wav_file)
     return np.asarray(files)

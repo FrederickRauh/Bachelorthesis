@@ -25,22 +25,6 @@ def split_array_for_multiprocess(array, num):
     return output
 
 
-def adjust_file_amount_for_voxceleb(dir, speaker_id):
-    parent_path = dm.get_voxceleb_path() + '\\' + speaker_id
-    path = parent_path + '\\' + dir[0]
-    i = 0
-    for base, dirs2, Files in os.walk(path):
-        for file in Files:
-            if file.endswith(".wav"):
-                i += 1
-    if i < 10:
-        next_dir = dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 2]
-        if next_dir.__contains__('model'):
-            next_dir = dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 3]
-        dir.append(next_dir)
-    return dir
-
-
 def get_duration(start_time):
     after_time = datetime.now()
     duration = after_time - start_time

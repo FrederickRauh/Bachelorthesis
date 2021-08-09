@@ -1,6 +1,5 @@
 import numpy as np
 
-from config import CONFIG as config
 from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
 from utils import util
@@ -28,7 +27,7 @@ def get_four_seconds_frame_of_audio(sr, signal, t):
     return sr, signal
 
 
-def get_features_for_prediction(file_path, feature_type=config.FEATURE_TYPE):
+def get_features_for_prediction(file_path, feature_type):
     if feature_type == 'psf':
         # return [fpsf.extract_processed_features_from_file(file_path)]
         return util.get_correct_array_form([fpsf.extract_processed_features_from_file(file_path)])

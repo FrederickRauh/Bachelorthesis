@@ -1,9 +1,9 @@
 import logging
 import os
+from configparser import ConfigParser
 
 from os.path import join as pjoin
 
-from config import CONFIG as config
 
 """
 This file contains all methods used to create dirs, read content von dirs, direct file accessing methods should not be 
@@ -198,39 +198,16 @@ def get_all_ids():
     return get_all_wav_names()
 
 
-# used to switch between
 def get_all_data_path():
-    if config.LOCAL:
-        return os.path.join(get_project_path(), "data")
-    return get_my_path()
+    return get_data_path()
 
 
 def is_large_data_set():
     return True if get_all_data_path().__contains__('voxceleb') else False
 
 
-def get_project_path():
-    return os.path.join(os.getcwd(), 'local')
-
-
-def get_my_path():
-    return config.DATASET_PATH
-
-
-def get_test_path():
-    return os.path.join(get_project_path(), "test")
-
-
-def get_test_subfolders(speaker_id):
-    path = get_test_path() + '\\' + speaker_id
-    return os.listdir(path)
-
-
-# Todo
-def get_voxceleb_path():
-    return 'E:' + '\\' + 'voxceleb' + '\\' + 'vox1_dev_wav' + '\\' + 'wav'
-
-
-def get_voxceleb_subfolders(speaker_id):
-    path = get_voxceleb_path() + '\\' + speaker_id
-    return os.listdir(path)
+def get_data_path():
+    file = 'config.ini'
+    config = ConfigParser()
+    config.read(file)
+    return config['config']['DATASET_PATH']

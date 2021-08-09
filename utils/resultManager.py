@@ -1,8 +1,6 @@
 import pandas as pd
 
 from utils import dataframeManager as dam, directoryManager as dm
-from config import CONFIG as config
-
 
 """
 ResultManager contains the methods to calculate the confusion mat after prediction and 

@@ -7,7 +7,6 @@ from datetime import datetime
 import frontend.frontend
 from backend.gmm import GMM
 
-from config import CONFIG as config, IDS
 from utils import util
 
 gmm = GMM()

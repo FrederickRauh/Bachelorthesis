@@ -10,15 +10,19 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
 
+from configparser import ConfigParser
+
 from utils import audioManager as am, dataframeManager as dam, directoryManager as dm, modelManager as m, util, \
     resultManager as rm, trainingTestingManager as tt
-from config import CONFIG as config, IDS
+
 
 
 class GMM(object):
 
     def __init__(self):
-        pass
+        file = 'config.ini'
+        config = ConfigParser()
+        config.read(file)
 
     """
     # Training phase

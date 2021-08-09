@@ -5,12 +5,15 @@ from datetime import datetime
 import frontend.frontend
 from backend.svm import SVM
 
-from config import CONFIG as config, IDS
 from utils import util
 
 svm = SVM()
 
 if __name__ == '__main__':
+    while(True):
+        print("HEY")
+
+
     #############Config##############
     logging.basicConfig(level=0)
     # logger = logging.getLogger()

@@ -7,7 +7,6 @@ import scipy.io.wavfile as wav
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 from utils import dataframeManager as dam, directoryManager as dm, util
-from config import CONFIG as config
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):

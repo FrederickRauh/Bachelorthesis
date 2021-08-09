@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 from utils import directoryManager as dm, util
-from config import CONFIG as config
 
 """
 DataframeManager is used when working with a dataframe/json file containing information for the training / predicting phase.

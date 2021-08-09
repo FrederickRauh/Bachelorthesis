@@ -5,12 +5,11 @@ import numpy as np
 from datetime import datetime
 
 import frontend.frontend
-from backend.gmm import GMM
 from backend.gmm_ubm import GMMUBM
-from backend.svm import SVM
 
-from config import CONFIG as config, IDS
 from utils import util
+
+from configparser import ConfigParser
 
 
 def preparation_phase():
@@ -30,6 +29,10 @@ def prediction_phase(version):
 
 if __name__ == '__main__':
     #############Config##############
+    file = 'config.ini'
+    config = ConfigParser()
+    config.read(file)
+
     logging.basicConfig(level=0)
     # logger = logging.getLogger()
     # logger.disabled = True
@@ -57,7 +60,7 @@ if __name__ == '__main__':
         GMM-UBM
         """
         start_time_gmm = datetime.now()
-        logging.info(f"FEATURE_VERSION: {config.FEATURE_TYPE} Version GMM-UBM : {start_time_gmm}")
+        logging.info(f"FEATURE_VERSION: {config['features']['FEATURE_TYPE']} Version GMM-UBM : {start_time_gmm}")
 
         training_phase('gmm-ubm')
         prediction_phase('gmm-ubm')

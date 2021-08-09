@@ -10,6 +10,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 ENV NAME BachelorThesis
 ENV PYTHONPATH /app
 
+RUN mkdir "dataset"
+
 CMD ["python", "./scripts/SvmScript.py"]
 
 

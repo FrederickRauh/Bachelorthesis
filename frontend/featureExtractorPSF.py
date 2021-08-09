@@ -6,7 +6,6 @@ import pandas as pd
 import scipy.io.wavfile as wav
 from sklearn import preprocessing
 
-from config import CONFIG as config
 from utils import audioManager as am, directoryManager as dm, jsonManager as jm
 
 

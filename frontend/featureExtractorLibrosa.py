@@ -4,7 +4,6 @@ import numpy as np
 from scipy.stats import skew
 from sklearn import preprocessing
 
-from config import CONFIG as config
 from utils import audioManager as am, directoryManager as dm, jsonManager as jm, util
 
 
