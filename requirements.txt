@@ -5,9 +5,8 @@ python_speech_features
 scikit-learn~=0.24.2
 SpeechRecognition
 sounddevice
-tensorflow
+tensorflocw
 
 numpy~=1.19.5
 scipy~=1.6.3
 librosa~=0.8.1
-libsndfile1-dev
