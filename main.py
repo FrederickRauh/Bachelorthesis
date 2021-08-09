@@ -51,11 +51,7 @@ if __name__ == '__main__':
         """
         GMM
         """
-        # logging.info(f"FEATURE_VERSION: {config.FEATURE_TYPE} Version GMM : {start_time_gmm}")
-        #
-        # training_phase('gmm')
-        # prediction_phase('gmm')
-        #
+
 
         """
         GMM-UBM
