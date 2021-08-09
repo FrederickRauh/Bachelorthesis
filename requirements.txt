@@ -7,9 +7,7 @@ SpeechRecognition
 sounddevice
 tensorflow
 
-
-
-
 numpy~=1.19.5
 scipy~=1.6.3
 librosa~=0.8.1
+libsndfile1-dev
