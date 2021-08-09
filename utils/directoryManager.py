@@ -9,7 +9,8 @@ from os.path import join as pjoin
 This file contains all methods used to create dirs, read content von dirs, direct file accessing methods should not be 
 contained in this file
 """
-
+def get_project_path():
+    return os.getcwd()
 
 # features
 def get_feature_path(wav_path, version):
