@@ -8,6 +8,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 ENV NAME BachelorThesis
+ENV PYTHONPATH /app
+
+RUN ls
 
 CMD ["python", "scripts/SvmScript.py"]
 
