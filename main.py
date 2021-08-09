@@ -28,7 +28,7 @@ def prediction_phase(version):
 
 if __name__ == '__main__':
     #############Config##############
-    file = 'config.ini'
+    file = dm.get_project_path() + '\\' + 'config.ini'
     config = ConfigParser()
     config.read(file)
 
