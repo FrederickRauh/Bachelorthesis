@@ -22,7 +22,7 @@ class SVM(object):
     def __init__(self):
         print(dm.get_project_path())
 
-        file = dm.get_project_path() + '\\' + 'config.ini'
+        file = 'config.ini'
         config = ConfigParser()
         config.read(file)
 
