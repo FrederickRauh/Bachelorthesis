@@ -1,3 +1,14 @@
 FROM python:3.9
 
-RUN pip install
+WORKDIR /app
+
+ADD . /app
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+ENV NAME BachelorThesis
+
+CMD ["python", "./scripts/SvmScript.py"]
+
+

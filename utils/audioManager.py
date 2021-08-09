@@ -1,5 +1,6 @@
 import numpy as np
 
+from config import CONFIG as config
 from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
 from utils import util
@@ -8,6 +9,7 @@ from utils import util
 AudioManager is used as util service for feature extraction and frontend classes. 
 This file should only contain methods used on a signal.
 """
+
 
 def get_four_seconds_frame_of_audio(sr, signal, t):
     duration = len(signal) / float(sr)
@@ -26,10 +28,10 @@ def get_four_seconds_frame_of_audio(sr, signal, t):
     return sr, signal
 
 
-def get_features_for_prediction(file_path, feature_type):
+def get_features_for_prediction(file_path, feature_type=config.FEATURE_TYPE):
     if feature_type == 'psf':
-        return [fpsf.extract_processed_features_from_file(file_path)]
-        # return util.get_correct_array_form([fpsf.extract_processed_features_from_file(file_path)])
+        # return [fpsf.extract_processed_features_from_file(file_path)]
+        return util.get_correct_array_form([fpsf.extract_processed_features_from_file(file_path)])
     else:
         return [flib.extract_processed_features_from_file(file_path)]
         # return util.get_correct_array_form([flib.extract_processed_features_from_file(file_path)])

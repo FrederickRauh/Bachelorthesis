@@ -4,7 +4,6 @@ import numpy as np
 
 from datetime import datetime
 
-from config import CONFIG
 from utils import directoryManager as dm
 
 
@@ -40,24 +39,6 @@ def adjust_file_amount_for_voxceleb(dir, speaker_id):
             next_dir = dm.get_voxceleb_subfolders(speaker_id)[len(dm.get_voxceleb_subfolders(speaker_id)) - 3]
         dir.append(next_dir)
     return dir
-
-
-def load_test_files(speaker_ids):
-    files = []
-    for speaker_id in speaker_ids:
-        if CONFIG.LOCAL:
-            dir = dm.get_test_subfolders(speaker_id)
-            for dir_path in dir:
-                files_path = dm.get_test_path() + '\\' + speaker_id + '\\' + dir_path
-                wav_files = dm.get_wav_files_in_folder(files_path)
-                for x in range(len(wav_files)):
-                    files.append(wav_files[x])
-        else:
-            wav_files = dm.get_wav_files(speaker_id)[-10:]
-            for wav_file in wav_files:
-                wav_file = dm.get_all_wav_path() + '\\' + speaker_id + '\\' + wav_file
-                files.append(wav_file)
-    return files
 
 
 def get_duration(start_time):

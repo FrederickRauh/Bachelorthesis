@@ -9,34 +9,23 @@ from backend.gmm import GMM
 from backend.gmm_ubm import GMMUBM
 from backend.svm import SVM
 
-from config import IDS, FEATURES, CONFIG, SYSTEM
+from config import CONFIG as config, IDS
 from utils import util
 
 
-def preparation_phase(mfcc):
-    # frontend.frontend.feature_extraction_for_files([IDS.SPEAKER_IDS[0]], 'librosa', 20)
-
-    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=False,
-                                                       feature_type=SYSTEM.FEATURE_TYPE, mfcc_count=mfcc)
+def preparation_phase():
+    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=True,
+                                                       feature_type=config.FEATURE_TYPE)
 
 
 def training_phase(version):
-    if version == 'gmm':
-        gmm.train(speaker_ids=IDS.SPEAKER_IDS)
     if version == 'gmm-ubm':
-        gmm_ubm.train(speaker_ids=IDS.SPEAKER_IDS)
-    if version == 'svm':
-        svm.train(speaker_ids=IDS.SPEAKER_IDS)
+        gmm_ubm.train(speaker_ids=IDS.SPEAKER_IDS, feature_type=config.FEATURE_TYPE)
 
 
-def prediction_phase(version, mfcc):
-    if version == 'gmm':
-        gmm.predict_n_speakers(speaker_ids=IDS.SPEAKER_IDS, mfcc=mfcc)
+def prediction_phase(version):
     if version == 'gmm-ubm':
         gmm_ubm.predict_speaker(speaker_id=IDS.SPEAKER_IDS[0], speaker_ids=IDS.SPEAKER_IDS)
-        # gmm_ubm.predict_n_speakers(speaker_ids=IDS.SPEAKER_IDS, mfcc=mfcc)
-    if version == 'svm':
-        svm.predict_n_speakers(speaker_ids=IDS.SPEAKER_IDS, mfcc=mfcc)
 
 
 if __name__ == '__main__':
@@ -45,55 +34,43 @@ if __name__ == '__main__':
     # logger = logging.getLogger()
     # logger.disabled = True
     version = np.arange(0, 1, 1)
-    mfccs = np.arange(20, 21, 1)
-    gmm = GMM()
+    # version = [5, 8, 13, 16, 20]
+    # mfccs = np.arange(20, 21, 1)
+    mfcc = 20
+
     gmm_ubm = GMMUBM()
-    svm = SVM()
 
     # MODELCONFIG.overwrite_n_jobs(MODELCONFIG, -2)
 
     for v in version:
         logging.info(f"starting version: {v}  ...")
-        CONFIG.overwrite_version(CONFIG, v)
+        # config.overwrite_version(v)
 
-        for mfcc in mfccs:
-            # preparation_phase(mfcc)
+        # preparation_phase()
 
-            FEATURES.overwrite_n_mfcc(FEATURES, mfcc)
+        """
+        GMM
+        """
+        # logging.info(f"FEATURE_VERSION: {config.FEATURE_TYPE} Version GMM : {start_time_gmm}")
+        #
+        # training_phase('gmm')
+        # prediction_phase('gmm')
+        #
 
-            """
-            GMM
-            """
-            # start_time_gmm = datetime.now()
-            # logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM : {start_time_gmm}")
-            #
-            # training_phase('gmm')
-            # prediction_phase('gmm', mfcc)
-            #
-            # logging.info(
-            #     f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_gmm)}")
+        """
+        GMM-UBM
+        """
+        start_time_gmm = datetime.now()
+        logging.info(f"FEATURE_VERSION: {config.FEATURE_TYPE} Version GMM-UBM : {start_time_gmm}")
 
-            # """
-            # GMM-UBM
-            # """
-            start_time_gmm = datetime.now()
-            logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version GMM-UBM : {start_time_gmm}")
+        training_phase('gmm-ubm')
+        prediction_phase('gmm-ubm')
 
-            training_phase('gmm-ubm')
-            # prediction_phase('gmm-ubm', mfcc)
-
-            logging.info(
-                f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_gmm)}")
+        logging.info(
+            f"----------------------------------------------------------{util.get_duration(start_time_gmm)}")
 
 
-            """
-            SVM
-            """
-            # start_time_svm = datetime.now()
-            # logging.info(f"MFCC_COUNT: {FEATURES.N_MFCC} Version SVM :{start_time_svm}")
-            #
-            # training_phase('svm')
-            # prediction_phase('svm', mfcc)
-            #
-            # logging.info(
-            #     f"MFCC_COUNT:{FEATURES.N_MFCC}: ----------------------------------------------------------{util.get_duration(start_time_svm)}")
+        """
+        SVM
+        """
+

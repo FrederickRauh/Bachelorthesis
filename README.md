@@ -14,7 +14,7 @@ Anaconda Environment:
 [comment]: <> (- pip install pyannote.db.voxceleb)
 
 
-To change configuration (mfccs used, or loglevel in the software ) change in  util/config.py:
+To change configuration (mfccs used, or loglevel in the software ) change in  ./config.py:
 - SYSTEM
     - PROCESSES: Amount of processes used in prediction and feature extraction (default 16)
     - LOGLEVEL: level depends on python logging.level

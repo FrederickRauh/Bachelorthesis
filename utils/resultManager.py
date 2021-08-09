@@ -1,13 +1,14 @@
 import pandas as pd
 
 from utils import dataframeManager as dam, directoryManager as dm
-from config import FEATURES, CONFIG
+from config import CONFIG as config
 
 
 """
 ResultManager contains the methods to calculate the confusion mat after prediction and 
 outputting it in the result folder.
 """
+
 
 def load_result(file_path):
     result_json = dam.load_datafram_from_path(file_path)
@@ -90,7 +91,7 @@ def create_result_json(results, t, extra_data_object):
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
-    version_path = dm.make_dir(directory_path + '\\' + 'version' + str(CONFIG.VERSION))
-    path = version_path + '\\' + t[1] + '-' + str(FEATURES.N_MFCC) + ".json"
+    version_path = dm.make_dir(directory_path + '\\' + 'version' + str(config.VERSION))
+    path = version_path + '\\' + t[1] + '-' + str(config.G_N_COMPONENTS) + '-' + 'all-features' + ".json"
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

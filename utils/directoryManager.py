@@ -3,12 +3,13 @@ import os
 
 from os.path import join as pjoin
 
-from config import CONFIG
+from config import CONFIG as config
 
 """
 This file contains all methods used to create dirs, read content von dirs, direct file accessing methods should not be 
 contained in this file
 """
+
 
 # features
 def get_feature_path(wav_path, version):
@@ -138,13 +139,22 @@ def get_model_path(speaker_id, t):
     if t.__contains__('gmm'):
         path = path + '\\' + "gmm"
         if t.__contains__('ubm'):
-            path += '-ubm'
+            path += '-ubm' + '\\'
+            if not os.path.exists(path):
+                make_dir(path)
+            if t.__contains__('single'):
+                path += 'gmm'
+            if t.__contains__('universal'):
+                path += 'ubm'
 
     if not os.path.exists(path):
         make_dir(path)
 
+    models = []
+
     for base, dirs2, Files in os.walk(path):
         models = Files
+
     for model in models:
         if model.__contains__(speaker_id) and model.__contains__(t):
             return path + '\\' + model
@@ -190,7 +200,7 @@ def get_all_ids():
 
 # used to switch between
 def get_all_data_path():
-    if CONFIG.LOCAL:
+    if config.LOCAL:
         return os.path.join(get_project_path(), "data")
     return get_my_path()
 
@@ -204,7 +214,7 @@ def get_project_path():
 
 
 def get_my_path():
-    return CONFIG.DATASETPATH
+    return config.DATASET_PATH
 
 
 def get_test_path():

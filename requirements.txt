@@ -1,0 +1,8 @@
+tensorflow
+scikit-learn
+SpeechRecognition
+sounddevice
+playsound
+python_speech_features
+matplotlib
+pandas

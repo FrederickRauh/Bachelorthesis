@@ -7,7 +7,7 @@ import scipy.io.wavfile as wav
 
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 from utils import dataframeManager as dam, directoryManager as dm, util
-from config import SYSTEM, FEATURES
+from config import CONFIG as config
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
@@ -32,21 +32,21 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
     os.startfile(wav_path)
 
 
-def feature_extraction_for_n_speaker(speaker_ids, create_dataframe, feature_type, mfcc_count):
+def feature_extraction_for_n_speaker(speaker_ids, create_dataframe, feature_type):
 
     # if len(speaker_ids) > 9:
     if False:
-        PROCESSES = SYSTEM.PROCESSES
+        PROCESSES = config.PROCESSES
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
         pool = multiprocessing.Pool(processes=PROCESSES)
         data = []
         for x in range(PROCESSES):
-            data.append((split_speaker_ids[x], feature_type, mfcc_count))
+            data.append((split_speaker_ids[x], feature_type))
         pool.starmap(feature_extraction_for_files, data)
         pool.close()
         pool.join()
     else:
-        feature_extraction_for_files(speaker_ids, feature_type, mfcc_count)
+        feature_extraction_for_files(speaker_ids, feature_type)
     if create_dataframe:
         if feature_type == 'librosa':
             dam.create_librosa_dataframe(speaker_ids)
@@ -54,13 +54,12 @@ def feature_extraction_for_n_speaker(speaker_ids, create_dataframe, feature_type
             dam.create_psf_dataframe(speaker_ids)
 
 
-def feature_extraction_for_files(speaker_ids, feature_type, mfcc_count):
-    FEATURES.overwrite_n_mfcc(FEATURES, mfcc_count)
+def feature_extraction_for_files(speaker_ids, feature_type):
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
         for file in files:
             file_path = dm.get_parent_path(speaker_id) + '\\' + file
             if feature_type == 'librosa':
-                flib.extract_mfcc_from_file_to_json(file_path)
+                flib.extract_features_from_file_to_json(file_path)
             if feature_type == 'psf':
-                fpsf.extract_mfcc_from_file_to_json(file_path)
+                fpsf.extract_features_from_file_to_json(file_path)

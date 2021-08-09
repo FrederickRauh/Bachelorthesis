@@ -2,23 +2,24 @@ import os
 import json
 import logging
 
+import numpy as np
 import pandas as pd
 
 from utils import directoryManager as dm, util
-from config import SYSTEM
+from config import CONFIG as config
 
 """
 DataframeManager is used when working with a dataframe/json file containing information for the training / predicting phase.
 This file shall only contain methods that create, load, save dataframes to json as also output content of said files.
 """
 
-"""
-    create_librosa_dataframe (creates the dataframe which links all wav files to the corresponding json files containing 
-    their features)
-"""
-
 
 def create_librosa_dataframe(speaker_ids):
+    """
+    create_librosa_dataframe (creates the dataframe which links all wav files to the corresponding json files containing
+    their features)
+    :arg speaker_ids
+    """
     logging.info("creating librosa dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
@@ -32,13 +33,12 @@ def create_librosa_dataframe(speaker_ids):
     return features_dataframe
 
 
-"""
-    create_psf_dataframe (creates the dataframe which links all wav files to the corresponding json files containing     
-    their features)
-"""
-
-
 def create_psf_dataframe(speaker_ids):
+    """
+    create_psf_dataframe (creates the dataframe which links all wav files to the corresponding json files containing
+    their features)
+    :arg speaker_ids
+    """
     logging.info("creating psf dataframe... ")
     all_features = []
     for speaker_id in speaker_ids:
@@ -62,51 +62,3 @@ def save_dataframe_to_json_file(dataframe, path):
 def load_dataframe_from_path(path):
     dataframe = pd.read_json(path)
     return dataframe
-
-
-def get_data_for_training(m_type, speaker_ids):
-    if m_type == 'svm':
-        files = get_svm_data_for_training(speaker_ids[0])
-    else:
-        files = get_gmm_data_for_training(speaker_ids)
-    return files[:len(files) - 10]
-
-
-def get_gmm_data_for_training(speaker_ids):
-    t = []
-    for id in speaker_ids:
-        wav_files = dm.get_wav_files(id)
-        for wav_file in wav_files:
-            file = id + '\\' + wav_file
-            t.append(file)
-    return get_training_files(t, SYSTEM.FEATURE_TYPE)
-
-
-def get_svm_data_for_training(speaker_id):
-    t = []
-    y = []
-    speaker_ids = dm.get_all_ids()
-    for id in speaker_ids:
-        wav_files = dm.get_wav_files(id)
-        for wav_file in wav_files:
-            file = id + '\\' + wav_file
-            t.append(file)
-            is_speaker = 1 if id == speaker_id else 0
-            y.append(is_speaker)
-    return get_training_files(t, SYSTEM.FEATURE_TYPE), y
-
-
-def get_training_files(t, f_type):
-    dataframe_path = dm.get_all_data_path() + '\\' + f_type + '-dataframe.json'
-    dataframe = load_dataframe_from_path(dataframe_path)
-    training_files = []
-    for element in t:
-        parts = dataframe.loc[dataframe['file_name'] == element].file_name.array[0].split('\\')
-        file_path = parts[0] + '\\' + parts[1] + '\\' + f_type + '\\' + parts[2].replace('.wav', '.json')
-        path = dm.get_all_wav_path() + '\\' + file_path
-        file_features = load_dataframe_from_path(path)
-        features = file_features.features[0]
-        training_files.append(features)
-
-    return training_files
-    # return util.get_correct_array_form(training_files)
