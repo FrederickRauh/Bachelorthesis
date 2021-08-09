@@ -1,7 +1,6 @@
 matplotlib
 pandas
 playsound
-pyaudio
 python_speech_features
 scikit-learn
 SpeechRecognition
