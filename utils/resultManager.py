@@ -1,3 +1,5 @@
+from configparser import ConfigParser
+
 import pandas as pd
 
 from utils import dataframeManager as dam, directoryManager as dm
@@ -6,7 +8,9 @@ from utils import dataframeManager as dam, directoryManager as dm
 ResultManager contains the methods to calculate the confusion mat after prediction and 
 outputting it in the result folder.
 """
-
+file = dm.get_project_path() + '\\' + 'config.ini'
+config = ConfigParser()
+config.read(file)
 
 def load_result(file_path):
     result_json = dam.load_datafram_from_path(file_path)
@@ -84,12 +88,14 @@ def create_result_json(results, t, extra_data_object):
     speaker_object, confusion_mat = create_speaker_object_with_confusion_mat(results)
 
     extra_data = {"test_files_amount": len(extra_data_object.overall_test_files[0]),
-                  "test_files": extra_data_object.overall_test_files[0]}
+                  "test_files": extra_data_object.overall_test_files[0],
+                  "feature_version": config.get('features', 'FEATURE_TYPE')
+                  }
     result_json = [(confusion_mat, [speaker_object], extra_data)]
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
-    version_path = dm.make_dir(directory_path + '\\' + 'version' + str(config.VERSION))
-    path = version_path + '\\' + t[1] + '-' + str(config.G_N_COMPONENTS) + '-' + 'all-features' + ".json"
+    version_path = dm.make_dir(directory_path + '\\' + 'version' + config.get('config', 'VERSION'))
+    path = version_path + '\\' + 'result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

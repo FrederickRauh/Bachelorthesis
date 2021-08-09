@@ -7,24 +7,23 @@ from datetime import datetime
 import frontend.frontend
 from backend.gmm_ubm import GMMUBM
 
-from utils import util
+from utils import directoryManager as dm, util
 
 from configparser import ConfigParser
 
 
 def preparation_phase():
-    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=IDS.SPEAKER_IDS, create_dataframe=True,
-                                                       feature_type=config.FEATURE_TYPE)
+    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
 
 
 def training_phase(version):
     if version == 'gmm-ubm':
-        gmm_ubm.train(speaker_ids=IDS.SPEAKER_IDS, feature_type=config.FEATURE_TYPE)
+        gmm_ubm.train(speaker_ids=dm.get_all_ids())
 
 
 def prediction_phase(version):
     if version == 'gmm-ubm':
-        gmm_ubm.predict_speaker(speaker_id=IDS.SPEAKER_IDS[0], speaker_ids=IDS.SPEAKER_IDS)
+        gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
 
 
 if __name__ == '__main__':

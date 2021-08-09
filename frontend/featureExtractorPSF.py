@@ -1,3 +1,5 @@
+from configparser import ConfigParser
+
 import python_speech_features as psf
 
 import numpy as np
@@ -7,6 +9,10 @@ import scipy.io.wavfile as wav
 from sklearn import preprocessing
 
 from utils import audioManager as am, directoryManager as dm, jsonManager as jm
+
+file = dm.get_project_path() + '\\' + 'config.ini'
+config = ConfigParser()
+config.read(file)
 
 
 def extract_filterbank_energies_from_file(file_path):
@@ -24,13 +30,14 @@ def extract_signal_from_file(file_path):
 
 def extract_mfcc_from_signal(signal):
     return psf.mfcc(signal=signal,
-                    samplerate=config.SAMPLE_RATE,
-                    winlen=config.WINLEN,
-                    numcep=config.N_MFCC,
-                    nfilt=config.N_MELS,
-                    nfft=config.NFFT,
-                    appendEnergy=config.APPENDENERGY,
-                    winfunc=config.WINFUNC)
+                    samplerate=config.getint('features', 'SAMPLE_RATE'),
+                    winlen=config.getint('features', 'WINLEN'),
+                    numcep=config.getint('features', 'N_MFCC'),
+                    nfilt=config.getint('features', 'N_MELS'),
+                    nfft=config.getint('features', 'NFFT'),
+                    appendEnergy=config.getint('features', 'APPENDENERGY'),
+                    winfunc=lambda x: np.hamming(x)
+                    )
 
 
 def get_delta_delta_from_signal(mfcc):
@@ -43,11 +50,11 @@ def get_delta_delta_from_signal(mfcc):
 
 
 def extract_filter_banks_and_energies_from_signal(signal):
-    return psf.fbank(signal, samplerate=config.SAMPLE_RATE,
-                     nfilt=config.N_MELS,
-                     winlen=config.WINLEN,
-                     winstep=config.WINSTEP,
-                     winfunc=config.WINFUNC
+    return psf.fbank(signal, samplerate=config.getint('features', 'SAMPLE_RATE'),
+                     nfilt=config.getint('features', 'N_MELS'),
+                     winlen=config.getint('features', 'WINLEN'),
+                     winstep=config.getint('features', 'WINSTEP'),
+                     winfunc=lambda x: np.hamming(x)
                      )
 
 

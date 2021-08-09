@@ -1,3 +1,5 @@
+from configparser import ConfigParser
+
 import librosa
 
 import numpy as np
@@ -6,21 +8,23 @@ from sklearn import preprocessing
 
 from utils import audioManager as am, directoryManager as dm, jsonManager as jm, util
 
+file = dm.get_project_path() + '\\' + 'config.ini'
+config = ConfigParser()
+config.read(file)
+
 
 def extract_mfcc_from_signal(signal):
-    mfcc = librosa.feature.mfcc(signal, sr=config.SAMPLE_RATE, n_mfcc=config.N_MFCC)
-    # return preprocessing.scale(mfcc)
-    return mfcc
+    return librosa.feature.mfcc(signal, sr=config.getint('features', 'SAMPLE_RATE'), n_mfcc=config.getint('features', 'N_MFCC'))
 
 
 def extract_processed_mfcc_from_file(file_path):
-    signal, sr = librosa.load(file_path, sr=config.SAMPLE_RATE)
+    signal, sr = librosa.load(file_path, sr=config.getint('features', 'SAMPLE_RATE'))
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     return extract_mfcc_from_signal(signal)
 
 
 def extract_processed_features_from_file(file_path):
-    signal, sr = librosa.load(file_path, sr=config.SAMPLE_RATE)
+    signal, sr = librosa.load(file_path, sr=config.getint('features', 'SAMPLE_RATE'))
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     signal = signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
     mfcc = extract_mfcc_from_signal(signal)
