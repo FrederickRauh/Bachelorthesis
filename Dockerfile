@@ -1,14 +1,31 @@
-FROM python:3.9-slim-buster
+FROM python:3.6-buster as build
 
-WORKDIR /app
+WORKDIR /var
 
-ADD . /app
+ADD . /var
+
+RUN python -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 ENV NAME BachelorThesis
-ENV PYTHONPATH /app
+ENV PYTHONPATH /var
+
+FROM python:3.6-buster AS run
+
+COPY --from=build /opt/venv /opt/venv
+
+COPY . .
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN apt-get update -y && apt-get install -y --no-install-recommends build-essential gcc \
+                                        libsndfile1
 
 RUN mkdir "dataset"
 
