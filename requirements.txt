@@ -1,8 +1,12 @@
-tensorflow
+matplotlib
+pandas
+playsound
+pyaudio
+python_speech_features
 scikit-learn
 SpeechRecognition
 sounddevice
-playsound
-python_speech_features
-matplotlib
-pandas
+tensorflow
+
+
+
