@@ -10,6 +10,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 ENV NAME BachelorThesis
 ENV PYTHONPATH /app
 
-CMD ["python", "/scripts/SvmScript.py"]
+CMD ["python", "./scripts/SvmScript.py"]
 
 
