@@ -1,4 +1,4 @@
-FROM python:3.6-buster as build
+FROM python:3.9-buster as build
 
 WORKDIR /var
 
@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 ENV NAME BachelorThesis
 ENV PYTHONPATH /var
 
-FROM python:3.6-buster AS run
+FROM python:3.9-buster AS run
 
 COPY --from=build /opt/venv /opt/venv
 
