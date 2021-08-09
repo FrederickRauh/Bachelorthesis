@@ -31,9 +31,6 @@ RUN adduser --disabled-password \
     $USER
 COPY environment.yml requirements.txt /tmp/
 RUN chown $UID:$GID /tmp/environment.yml /tmp/requirements.txt
-COPY postBuild /usr/local/bin/postBuild.sh
-RUN chown $UID:$GID /usr/local/bin/postBuild.sh && \
-    chmod u+x /usr/local/bin/postBuild.sh
 COPY docker/entrypoint.sh /usr/local/bin/
 RUN chown $UID:$GID /usr/local/bin/entrypoint.sh && \
     chmod u+x /usr/local/bin/entrypoint.sh
@@ -64,7 +61,6 @@ RUN conda update --name base --channel defaults conda && \
     conda clean --all --yes
 # run the postBuild script to install any JupyterLab extensions
 RUN conda activate $ENV_PREFIX && \
-    /usr/local/bin/postBuild.sh && \
     conda deactivate \
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
