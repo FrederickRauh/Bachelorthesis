@@ -1,28 +1,14 @@
 FROM continuumio/anaconda3
 MAINTAINER "Frederick Rauh"
 
-RUN apt-get update && apt-get install -y libgtk2.0-dev && rm -rf /var/lib/apt/lists/*
+WORKDIR /var
 
-COPY requirements.txt .
+COPY environment.yml .
 
-RUN /opt/conda/bin/conda update -n base -c defaults conda && \
-    /opt/conda/bin/conda install python=3.9 && \
-    /opt/conda/bin/conda install anaconda-client && \
-    /opt/conda/bin/conda install jupyter -y && \
-    /opt/conda/bin/conda install --channel https://conda.anaconda.org/menpo opencv3 -y && \
-    /opt/conda/bin/conda install numpy pandas scikit-learn matplotlib pyyaml h5py keras -y && \
-    /opt/conda/bin/conda upgrade dask && \
-    pip install tensorflow imutils && \
-    pip install --no-cache-dir -r requirements.txt
+RUN conda env create -f environment.yml
 
-RUN ["mkdir", "dataset"]
-COPY conf/.jupyter /root/.jupyter
-COPY run_jupyter.sh /
+RUN conda activate bachelorthesis
+RUN echo "Here we go:"
 
-# Jupyter and Tensorboard ports
-EXPOSE 8888 6006
-
-# Store notebooks in this mounted directory
-VOLUME /dataset
-
-CMD ["/SvmScript.py"]
+# The code to run when container is started:
+ENTRYPOINT ["python", "SvmScript.py"]
