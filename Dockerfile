@@ -12,6 +12,6 @@ ENV PYTHONPATH /app
 
 RUN mkdir "dataset"
 
-CMD ["python", ".SvmScript.py"]
+CMD ["python", "SvmScript.py"]
 
 
