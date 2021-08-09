@@ -4,13 +4,13 @@ WORKDIR /app
 
 ADD . /app
 
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
 ENV NAME BachelorThesis
 ENV PYTHONPATH /app
 
 RUN ls
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 CMD ["python", "scripts/SvmScript.py"]
 
