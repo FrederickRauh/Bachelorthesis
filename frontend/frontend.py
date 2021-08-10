@@ -10,7 +10,7 @@ import scipy.io.wavfile as wav
 from frontend import featureExtractorPSF as fpsf, featureExtractorLibrosa as flib
 from utils import dataframeManager as dam, directoryManager as dm, util
 
-file = rf'{dm.get_project_path()}//config.ini'
+file = rf'{dm.get_project_path()}/config.ini'
 config = ConfigParser()
 config.read(file)
 

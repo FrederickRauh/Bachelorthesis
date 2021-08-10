@@ -8,7 +8,7 @@ from sklearn import preprocessing
 
 from utils import audioManager as am, directoryManager as dm, jsonManager as jm, util
 
-file = rf'{dm.get_project_path()}//config.ini'
+file = rf'{dm.get_project_path()}/config.ini'
 config = ConfigParser()
 config.read(file)
 
