@@ -12,8 +12,8 @@ RUN apt-get update \
     && pip3 install --upgrade pip \
     && pip install -r requirements.txt \
 
-COPY SvmScript.py ./SvmScript.py
-COPY GmmScript.py ./GmmScript.py
+COPY SvmScript.py .
+COPY GmmScript.py .
 
 CMD ["python3", "SvmScript.py"]
 CMD ["python3", "GmmScript.py"]
