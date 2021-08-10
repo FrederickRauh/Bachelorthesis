@@ -211,4 +211,4 @@ def get_data_path():
     file = get_project_path() + '\\' + 'config.ini'
     config = ConfigParser()
     config.read(file)
-    return config['config']['DATASET_PATH']
+    return config.get('system', 'DATASET_PATH')
