@@ -117,7 +117,7 @@ class GMMUBM(object):
 
     def train(self, speaker_ids):
 
-        # self.create_ubm(speaker_ids=speaker_ids)
+        self.create_ubm(speaker_ids=speaker_ids)
 
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
 
