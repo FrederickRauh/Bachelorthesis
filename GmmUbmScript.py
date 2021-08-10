@@ -3,18 +3,18 @@ from configparser import ConfigParser
 from datetime import datetime
 
 import frontend.frontend
-from backend.svm import SVM
+from backend.gmm_ubm import GMMUBM
 
 from utils import directoryManager as dm, util
 
+
 """
-SVM
+GMM-UBM
 """
-svm = SVM()
+gmm_ubm = GMMUBM()
 if __name__ == '__main__':
     #############Config##############
-    file = rf'{dm.get_project_path()}//config.ini'
-    print(file)
+    file = dm.get_project_path() + '\\' + 'config.ini'
     config = ConfigParser()
     config.read(file)
 
@@ -25,13 +25,15 @@ if __name__ == '__main__':
     logger.disabled = not config.getboolean('system', 'LOG')
 
     start_time = datetime.now()
-    logging.info(f"Version SVM :{start_time}")
+    logging.info(f"Version GMM-UBM :{start_time}")
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
     frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
     # training phase
-    svm.train(speaker_ids=dm.get_all_ids())
+    gmm_ubm.train(speaker_ids=dm.get_all_ids())
     # prediction phase
-    svm.predict_n_speakers(speaker_ids=dm.get_all_ids())
+    gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
 
     logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+
+

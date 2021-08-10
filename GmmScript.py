@@ -1,8 +1,5 @@
 import logging
 from configparser import ConfigParser
-
-import numpy as np
-
 from datetime import datetime
 
 import frontend.frontend
@@ -10,8 +7,11 @@ from backend.gmm import GMM
 
 from utils import directoryManager as dm, util
 
-gmm = GMM()
 
+"""
+GMM
+"""
+gmm = GMM()
 if __name__ == '__main__':
     #############Config##############
     file = rf'{dm.get_project_path()}//config.ini'
