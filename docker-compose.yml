@@ -3,7 +3,7 @@ version: '3.8'
 services:
   proxy:
     image: ba
-    container_name: bachelorthesis
+    container_name: ba
     restart: unless-stopped
     volumes:
       - "./data:/dataset"
