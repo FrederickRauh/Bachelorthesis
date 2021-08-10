@@ -1,19 +1,6 @@
-FROM ubuntu:latest
-
+FROM python:3.9
+EXPOSE 8501
 WORKDIR /app
-
-COPY docker/requirements.txt .
-COPY docker/environment.yml .
-
-RUN apt-get update \
-    && apt-get install -y python3-pip python3-dev \
-    && cd /usr/local/bin \
-    && ln -s /usr/bin/python3 python \
-    && pip3 install --upgrade pip \
-    && pip install -r requirements.txt \
-
-COPY SvmScript.py .
-COPY GmmScript.py .
-
-CMD ["python3", "SvmScript.py"]
-CMD ["python3", "GmmScript.py"]
+COPY . .
+RUN pip install -r ./docker/requirements.txt
+CMD streamlit run SvmScript.py
