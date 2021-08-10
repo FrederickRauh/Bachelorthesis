@@ -1,19 +1,30 @@
-FROM continuumio/miniconda3
+FROM python:3.9-slim-buster
 
-WORKDIR /app
+COPY docker/requirements.txt .
 
-# Create the environment:
-COPY docker/environment.yml .
-RUN conda env create -f environment.yml
-
-# Make RUN commands use the new environment:
-RUN echo "conda activate bachelorthesis" >> ~/.bashrc
-SHELL ["/bin/bash", "--login", "-c"]
-
-# Demonstrate the environment is activated:
-RUN echo "Make sure flask is installed:"
-RUN python -c "import flask"
-
-# The code to run when container is started:
-COPY SvmScript.py entrypoint.sh ./
-ENTRYPOINT ["./entrypoint.sh"]
+RUN apt-get update && apt-get -y upgrade \
+  && apt-get install -y --no-install-recommends \
+    git \
+    wget \
+    g++ \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && mkdir /root/.conda \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh \
+    && echo "Running $(conda --version)" && \
+    conda init bash  \
+    && . /root/.bashrc  \
+    && conda update conda  \
+    && conda create -n python-app  \
+    && conda activate python-app  \
+    && conda install python=3.9 pip  \
+    && pip install -r requirements.txt
+    echo 'print("Hello World!")' > SvmScript.py
+RUN echo 'conda activate python-app \n\
+alias python-app="python python-app.py"' >> /root/.bashrc
+ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
+CMD ["python SvmScript.py"]
