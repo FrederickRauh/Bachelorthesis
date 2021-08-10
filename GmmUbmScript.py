@@ -19,8 +19,6 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.read(file)
 
-    print(os.name)
-
     feature_type = config.get('features', 'FEATURE_TYPE')
 
     logging.basicConfig(level=0)

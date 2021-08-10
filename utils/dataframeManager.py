@@ -24,10 +24,10 @@ def create_librosa_dataframe(speaker_ids):
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
         for file in files:
-            file_name = speaker_id + '\\' + file
+            file_name = rf'{speaker_id}/{file}'
             all_features.append([speaker_id, file_name])
     features_dataframe = pd.DataFrame(all_features, columns=['speaker_id', 'file_name'])
-    dataframe_path = dm.get_all_data_path() + '\\' + 'librosa-dataframe.json'
+    dataframe_path = rf'{dm.get_all_data_path()}/librosa-dataframe.json'
     save_dataframe_to_json_file(features_dataframe, dataframe_path)
     return features_dataframe
 
@@ -45,10 +45,10 @@ def create_psf_dataframe(speaker_ids):
         if dm.is_large_data_set():
             files = files[:len(files) - 10]
         for file in files:
-            file_name = speaker_id + '\\' + file
+            file_name = rf'{speaker_id}/{file}'
             all_features.append([speaker_id, file_name])
     features_dataframe = pd.DataFrame(all_features, columns=['speaker_id', 'file_name'])
-    dataframe_path = dm.get_all_data_path() + '\\' + 'psf-dataframe.json'
+    dataframe_path = rf'{dm.get_all_data_path()}/psf-dataframe.json'
     save_dataframe_to_json_file(features_dataframe, dataframe_path)
     return features_dataframe
 

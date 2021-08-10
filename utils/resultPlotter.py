@@ -15,10 +15,10 @@ class ResultPlotter(object):
 
     def get_confusion_mats(mfcc_count, dataset, model_type, feature_type):
         confusion_mats = []
-        dataset_path = os.getcwd() + '\\' + 'results' + '\\' + dataset + '\\' + model_type
+        dataset_path = rf'{os.getcwd()}/results/{dataset}/{model_type}'
         subfolders = dm.list_sub_folders(dataset_path)
         for subfolder in subfolders:
-            file_path = dataset_path + '\\' + subfolder + '\\' + feature_type + '-' + str(mfcc_count) + '.json'
+            file_path = rf'{dataset_path}/{subfolder}/{feature_type}-{str(mfcc_count)}.json'
             if os.path.exists(file_path):
                 dataframe = dam.load_dataframe_from_path(file_path)
                 confusion_mat = dataframe.confusion_mat[0]

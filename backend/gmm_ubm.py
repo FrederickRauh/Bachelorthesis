@@ -172,10 +172,7 @@ class GMMUBM(object):
     def predict_speaker(self, speaker_id, speaker_ids):
         test_files, _ = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         test_files = test_files[:10]
-        print(test_files)
         for id in speaker_ids:
-            print("----------------------------------------------------------")
-            print(id)
             ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
             gmm_model = m.load_model(id, 'gmm_ubm_single_model_' + self.feature_type)
 

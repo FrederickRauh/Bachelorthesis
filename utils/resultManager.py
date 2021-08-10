@@ -95,7 +95,8 @@ def create_result_json(results, t, extra_data_object):
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
-    version_path = dm.make_dir(directory_path + '\\' + 'version' + config.get('system', 'VERSION'))
-    path = version_path + '\\' + 'result.json'
+    system_version = config.get('system', 'VERSION')
+    version_path = dm.make_dir(rf'{directory_path}/version/{system_version}')
+    path = rf'{version_path}/result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

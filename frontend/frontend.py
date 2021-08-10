@@ -37,8 +37,8 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
 
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe):
-    # if len(speaker_ids) > 9:
-    if False:
+    if len(speaker_ids) > 9:
+    # if False:
         PROCESSES = config.getint('system', 'PROCESSES')
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
         pool = multiprocessing.Pool(processes=PROCESSES)
@@ -61,7 +61,7 @@ def feature_extraction_for_files(speaker_ids, feature_type):
     for speaker_id in speaker_ids:
         files = dm.get_wav_files(speaker_id)
         for file in files:
-            file_path = dm.get_parent_path(speaker_id) + '\\' + file
+            file_path = rf'{dm.get_parent_path(speaker_id)}/{file}'
             if feature_type == 'librosa':
                 flib.extract_features_from_file_to_json(file_path)
             if feature_type == 'psf':

@@ -21,7 +21,7 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
         wav_files = dm.get_wav_files(id)
         wav_files = wav_files[:len(wav_files) - 10]
         for wav_file in wav_files:
-            file = id + '\\' + wav_file
+            file = rf'{id}/{wav_file}'
             t.append(file)
 
     return get_training_files(t, feature_type)
@@ -39,7 +39,7 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
             files = util.split_array_for_multiprocess(wav_files, 2)
             wav_files = files[1]
         for wav_file in wav_files:
-            file = id + '\\' + wav_file
+            file = rf'{id}/{wav_file}'
             t.append(file)
 
     return get_training_files(t, feature_type)
@@ -53,7 +53,7 @@ def get_svm_data_for_training(speaker_id, feature_type):
         wav_files = dm.get_wav_files(id)
         wav_files = wav_files[:len(wav_files) - 10]
         for wav_file in wav_files:
-            file = id + '\\' + wav_file
+            file = rf'{id}/{wav_file}'
             t.append(file)
             is_speaker = 1 if id == speaker_id else 0
             y.append(is_speaker)
@@ -63,9 +63,11 @@ def get_svm_data_for_training(speaker_id, feature_type):
 def get_training_files(t, feature_type):
     training_files = []
     for element in t:
-        parts = element.split('\\')
-        file_path = parts[0] + '\\' + parts[1] + '\\' + feature_type + '\\' + parts[2].replace('.wav', '.json')
-        path = dm.get_all_wav_path() + '\\' + file_path
+        element = element.replace('\\', '/')
+        parts = element.split('/')
+        ending = parts[2].replace('.wav', '.json')
+        file_path = rf'{parts[0]}/{parts[1]}/{feature_type}/{ending}'
+        path = rf'{dm.get_all_wav_path()}/{file_path}'
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
         training_files.append(features)
@@ -80,6 +82,6 @@ def load_test_files(speaker_ids):
     for speaker_id in speaker_ids:
         wav_files = dm.get_wav_files(speaker_id)[-10:]
         for wav_file in wav_files:
-            wav_file = dm.get_all_wav_path() + '\\' + speaker_id + '\\' + wav_file
+            wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
             files.append(wav_file)
     return np.asarray(files)
