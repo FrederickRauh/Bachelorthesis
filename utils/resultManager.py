@@ -8,7 +8,7 @@ from utils import dataframeManager as dam, directoryManager as dm
 ResultManager contains the methods to calculate the confusion mat after prediction and 
 outputting it in the result folder.
 """
-file = dm.get_project_path() + '\\' + 'config.ini'
+file = rf'{dm.get_project_path()}//config.ini'
 config = ConfigParser()
 config.read(file)
 

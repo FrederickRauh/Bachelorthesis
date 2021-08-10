@@ -20,7 +20,7 @@ from utils import audioManager as am, directoryManager as dm, modelManager as m,
 class GMM(object):
 
     def __init__(self):
-        file = dm.get_project_path() + '\\' + 'config.ini'
+        file = rf'{dm.get_project_path()}//config.ini'
         config = ConfigParser()
         config.read(file)
 
