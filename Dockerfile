@@ -6,6 +6,8 @@ RUN conda env create -f docker/environment.yml
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "-n", "bachelorthesis", "/bin/bash", "-c"]
 
+RUN pip install -r docker/requirements.txt
+
 RUN apt-get --yes install libsndfile1
 
 VOLUME /dataset

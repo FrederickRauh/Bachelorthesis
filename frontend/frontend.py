@@ -2,7 +2,7 @@ import logging
 import multiprocessing
 import os
 
-# import sounddevice as sd
+import sounddevice as sd
 from configparser import ConfigParser
 
 import scipy.io.wavfile as wav
@@ -30,10 +30,10 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
     if test:
         wav_path = wav_path.replace('data', 'test')
     filename = str(number)
-    # recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=1)
-    # sd.wait()
-    # wav.write(wav_path, samplerate, recording)
-    # os.startfile(wav_path)
+    recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=1)
+    sd.wait()
+    wav.write(wav_path, samplerate, recording)
+    os.startfile(wav_path)
 
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe):

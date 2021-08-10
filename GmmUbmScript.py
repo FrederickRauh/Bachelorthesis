@@ -29,7 +29,8 @@ if __name__ == '__main__':
     logging.info(f"Version GMM-UBM :{start_time}")
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
-    frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
+    if config.getboolean('features', 'EXTRACT_FEATURES'):
+        frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
     # training phase
     gmm_ubm.train(speaker_ids=dm.get_all_ids())
     # prediction phase
