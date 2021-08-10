@@ -9,6 +9,7 @@ SHELL ["conda", "run", "-n", "bachelorthesis", "/bin/bash", "-c"]
 RUN pip install -r docker/requirements.txt
 
 RUN apt-get --yes install libsndfile1
+RUN apt-get --yes install libportaudio2
 
 VOLUME /dataset
 
