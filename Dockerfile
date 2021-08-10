@@ -8,7 +8,7 @@ SHELL ["conda", "run", "-n", "bachelorthesis", "/bin/bash", "-c"]
 
 RUN apt-get --yes install libsndfile1
 
-VOLUME /var/src/dataset
+VOLUME /dataset
 
 EXPOSE 5003
 # The code to run when container is started:
