@@ -1,4 +1,5 @@
 import logging
+import os
 from configparser import ConfigParser
 from datetime import datetime
 
@@ -17,6 +18,8 @@ if __name__ == '__main__':
     file = rf'{dm.get_project_path()}/config.ini'
     config = ConfigParser()
     config.read(file)
+
+    print(os.name)
 
     feature_type = config.get('features', 'FEATURE_TYPE')
 

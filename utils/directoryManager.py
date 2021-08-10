@@ -14,13 +14,15 @@ def get_project_path():
 
 # features
 def get_feature_path(wav_path, version):
-    sub_path = wav_path.split('\\')
+    sub_path = wav_path.split(config.get('system', 'SEPERATOR'))
     feature_path = ''
     for x in range(len(sub_path)):
         if x == (len(sub_path) - 1):
-            feature_path = feature_path + '\\' + version + '\\' + sub_path[x]
+            feature_path = rf'{feature_path}/{version}/{sub_path[x]}'
+            # feature_path = feature_path + '\\' + version + '\\' +
         else:
-            feature_path = feature_path + sub_path[x] + '\\'
+            feature_path = rf'{feature_path + sub_path[x]}/'
+            # feature_path = feature_path + sub_path[x] + '\\'
     return feature_path
 
 
@@ -208,7 +210,8 @@ def is_large_data_set():
 
 
 def get_data_path():
-    file = rf'{get_project_path()}/config.ini'
-    config = ConfigParser()
-    config.read(file)
     return config.get('system', 'DATASET_PATH')
+
+file = rf'{get_project_path()}/config.ini'
+config = ConfigParser()
+config.read(file)
