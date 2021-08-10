@@ -14,7 +14,6 @@ svm = SVM()
 if __name__ == '__main__':
     #############Config##############
     file = rf'{dm.get_project_path()}/config.ini'
-    print(file)
     config = ConfigParser()
     config.read(file)
 

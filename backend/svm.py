@@ -20,8 +20,6 @@ class SVM(object):
     score = 0
 
     def __init__(self):
-        print(dm.get_project_path())
-
         file = 'config.ini'
         config = ConfigParser()
         config.read(file)

@@ -208,7 +208,7 @@ def is_large_data_set():
 
 
 def get_data_path():
-    file = get_project_path() + '\\' + 'config.ini'
+    file = rf'{get_project_path()}/config.ini'
     config = ConfigParser()
     config.read(file)
     return config.get('system', 'DATASET_PATH')
