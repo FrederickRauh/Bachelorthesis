@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'FEATURE_TYPE')
 
-    logging.basicConfig(level=0)
+    logging.basicConfig(level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
     logger.disabled = not config.getboolean('system', 'LOG')
 
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
     if config.getboolean('features', 'EXTRACT_FEATURES'):
+        logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
     # training phase
     gmm_ubm.train(speaker_ids=dm.get_all_ids())

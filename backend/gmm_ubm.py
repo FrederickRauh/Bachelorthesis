@@ -74,9 +74,10 @@ class GMMUBM(object):
         ).fit(all_training_features)
 
         labels = ubm_model.predict(all_training_features)
-        self.draw_plt(files=all_training_features, labels=labels, name='UBM')
+        t = 'gmm_ubm_universal_background_model_'
+        util.draw_plt(files=all_training_features, labels=labels, name='UBM', type=t)
 
-        m.save_model('', 'gmm_ubm_universal_background_model_' + self.feature_type, ubm_model)
+        m.save_model('', t + self.feature_type, ubm_model)
         logging.info(f"{util.get_duration(start_time)}")
 
     def create_speaker_model(self, speaker_id, values):
@@ -91,7 +92,7 @@ class GMMUBM(object):
         means = values['means']
         print(len(means), len(means[0]))
         gmm.covariances_prior = values['covariances']
-        gmm.mean_prior = means[0]
+        gmm.mean_prior = means[1]
         gmm.weights_concentration_prior = values['weights']
         # gmm.converged_ = values['converged']
         # gmm.tol = values['threshold']
@@ -110,9 +111,10 @@ class GMMUBM(object):
         ).fit(training_features)
 
         labels = gmm_model.predict(training_features)
-        self.draw_plt(files=training_features, labels=labels, name=speaker_id)
+        t = 'gmm_ubm_single_model_'
+        util.draw_plt(files=training_features, labels=labels, name=speaker_id, type=t)
 
-        m.save_model(speaker_id, 'gmm_ubm_single_model_' + self.feature_type, gmm_model)
+        m.save_model(speaker_id, t + self.feature_type, gmm_model)
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
@@ -236,11 +238,3 @@ class GMMUBM(object):
             # print(len(one))
             # print(len(zero))
             # print(len(minus))
-
-
-
-
-    def draw_plt(self, files, labels, name):
-        plt.scatter(files[:, 0], files[:, 1], c=labels)
-        plt.title(name)
-        plt.show()

@@ -14,22 +14,17 @@ file = rf'{dm.get_project_path()}/config.ini'
 config = ConfigParser()
 config.read(file)
 
-def get_voice_input_stream(timespan, samplerate, number, speaker_id, test):
+
+def get_voice_input_stream(timespan, samplerate, number, speaker_id):
     logging.info("collecting voice samples....")
+    folder_name = util.get_random_name()
     for x in range(number):
-        get_voice_input(timespan, samplerate, x, speaker_id, test)
+        get_voice_input(timespan, samplerate, x, speaker_id, folder_name)
 
 
 # getVoiceInput(30, 44100, 1)
-def get_voice_input(timespan, samplerate, number, speaker_id, test):
-    # samplerate = 44100
-    # seconds = 5
-    # parent_path = dm.get_parent_path(speaker_id)
-    # wav_path = dm.get_sub_folder_path(parent_path, 'wav')
-    wav_path = dm.get_file_name(speaker_id, number)
-    if test:
-        wav_path = wav_path.replace('data', 'test')
-    filename = str(number)
+def get_voice_input(timespan, samplerate, number, speaker_id, folder_name):
+    wav_path = dm.get_file_name(speaker_id, folder_name, number)
     recording = sd.rec(int(timespan * samplerate), samplerate=samplerate, channels=1)
     sd.wait()
     wav.write(wav_path, samplerate, recording)
@@ -38,7 +33,7 @@ def get_voice_input(timespan, samplerate, number, speaker_id, test):
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe):
     if len(speaker_ids) > 9:
-    # if False:
+        # if False:
         PROCESSES = config.getint('system', 'PROCESSES')
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
         pool = multiprocessing.Pool(processes=PROCESSES)
