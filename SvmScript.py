@@ -23,6 +23,8 @@ if __name__ == '__main__':
     logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
     logger.disabled = not config.getboolean('system', 'LOG')
+    if config.getboolean('system', 'LOG'):
+        print("container running. logs can be found in info-{model_type}.log")
 
     start_time = datetime.now()
     logging.info(f"Version SVM :{start_time}")
