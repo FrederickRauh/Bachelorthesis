@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'FEATURE_TYPE')
 
-    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'LOGLEVEL'))
+    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-gmmubm.log', level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
     logger.disabled = not config.getboolean('system', 'LOG')
 

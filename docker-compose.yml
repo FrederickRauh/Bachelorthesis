@@ -8,3 +8,6 @@ services:
     volumes:
       - "./data:/dataset"
       - "${PWD}/config.ini:/var/src/config.ini"
+      - "${PWD}/info-svm.log:/var/src/info-svm.log"
+      - "${PWD}/info-gmm.log:/var/src/info-gmm.log"
+      - "${PWD}/info-gmmubm.log:/var/src/info-gmmubm.log"
