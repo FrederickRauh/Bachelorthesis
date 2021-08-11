@@ -15,7 +15,7 @@ from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, util, resultManager as rm, \
+from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, util, resultManager as rm, \
     trainingTestingManager as tt
 
 
@@ -29,14 +29,14 @@ class GMMUBM(object):
         config.read(file)
         self.feature_type = config.get('features', 'FEATURE_TYPE')
         self.ubm_param_grid = [{
-            'n_components': [512],
-            'max_iter': [500],
+            'n_components': [2048],
+            'max_iter': [200],
             'covariance_type': ['diag'],
             'n_init': [3]
         }]
         self.gmm_param_grid = [{
             'n_components': [16],
-            'max_iter': [500],
+            'max_iter': [200],
             'covariance_type': ['diag'],
             'n_init': [3]
         }]
@@ -71,7 +71,7 @@ class GMMUBM(object):
                          n_jobs=self.N_JOBS,
                          verbose=self.VERBOSE
                          )
-        ).fit(all_training_features)
+        ).fit_transform(all_training_features)
 
         labels = ubm_model.predict(all_training_features)
         t = 'gmm_ubm_universal_background_model_'
@@ -83,6 +83,7 @@ class GMMUBM(object):
     def create_speaker_model(self, speaker_id, values):
         start_time = datetime.now()
         training_features, _ = tt.get_data_for_training('gmm-ubm-gmm', [speaker_id], self.feature_type)
+
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id} :: There are: "
             f"{len(training_features)} training files. Start at: {start_time}")
@@ -90,14 +91,20 @@ class GMMUBM(object):
         gmm = BayesianGaussianMixture()
 
         means = values['means']
-        print(len(means), len(means[0]))
+        transformed_mean = means[0]
+
+        # for i in range(len(means[0])):
+        #     mean = []
+        #     for j in range(len(means)):
+        #         mean.append(means[j][i])
+        #     transformed_mean.append(mean)
+        # transformed_mean = np.asarray(transformed_mean)
+
         gmm.covariances_prior = values['covariances']
-        gmm.mean_prior = means[1]
+        gmm.mean_prior = transformed_mean
         gmm.weights_concentration_prior = values['weights']
         # gmm.converged_ = values['converged']
         # gmm.tol = values['threshold']
-
-
 
         gmm_model = make_pipeline(
             StandardScaler(),
@@ -106,9 +113,10 @@ class GMMUBM(object):
                          cv=self.CV,
                          refit=self.REFIT,
                          n_jobs=self.N_JOBS,
-                         verbose=self.VERBOSE
+                         verbose=self.VERBOSE,
+                         return_train_score=True
                          )
-        ).fit(training_features)
+        ).fit_transform(training_features)
 
         labels = gmm_model.predict(training_features)
         t = 'gmm_ubm_single_model_'
@@ -119,7 +127,7 @@ class GMMUBM(object):
 
     def train(self, speaker_ids):
 
-        self.create_ubm(speaker_ids=speaker_ids)
+        # self.create_ubm(speaker_ids=speaker_ids)
 
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
 
@@ -130,6 +138,8 @@ class GMMUBM(object):
             'converged': ubm_model['gridsearchcv'].best_estimator_.converged_,
             'threshold': ubm_model['gridsearchcv'].best_estimator_.tol
         }
+
+        jm.write_features_to_json_file(rf"E:/voxceleb/vox1_server/data.json", "UBM", adaptive_values)
 
         for speaker_id in speaker_ids:
             self.create_speaker_model(speaker_id=speaker_id, values=adaptive_values)
@@ -177,7 +187,9 @@ class GMMUBM(object):
         for id in speaker_ids:
             ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
             gmm_model = m.load_model(id, 'gmm_ubm_single_model_' + self.feature_type)
-
+            print('________________________________________________')
+            print('____________________' + speaker_id + '___________________')
+            print('________________________________________________')
             # five = []
             # four = []
             # three = []

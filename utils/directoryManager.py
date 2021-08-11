@@ -120,7 +120,7 @@ def get_all_models_path():
     return path
 
 
-def     get_model_path(speaker_id, t):
+def get_model_path(speaker_id, t):
     path = get_all_models_path()
     if t.__contains__('svm'):
         path = rf'{path}/svm'
@@ -146,8 +146,9 @@ def     get_model_path(speaker_id, t):
     for model in models:
         if model.__contains__(speaker_id) and model.__contains__(t):
             return rf'{path}/{model}'
-
     file_name = speaker_id + "_" + t + "_model.pickel"
+    if t.__contains__('universal'):
+        file_name = 'UBM_model.pickel'
     path = rf'{path}/{file_name}'
     return path
 
@@ -160,7 +161,10 @@ def get_model_plt_path(speaker_id, t):
             s = sub.split('.')
             path += 'plt/'
             make_dir(path)
-            path += s[0] + '.png'
+            if speaker_id == '':
+                path += 'ubm.png'
+            else:
+                path += speaker_id + '.png'
         else:
             path += rf'{sub}/'
     check_if_file_exists_then_remove(path)

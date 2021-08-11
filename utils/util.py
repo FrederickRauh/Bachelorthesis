@@ -51,3 +51,4 @@ def draw_plt(files, labels, name, type):
     plt.title(name)
     path = dm.get_model_plt_path(name, type)
     plt.savefig(path)
+    plt.close(fig)

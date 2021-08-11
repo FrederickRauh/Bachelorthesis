@@ -33,9 +33,11 @@ if __name__ == '__main__':
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
     # training phase
-    gmm_ubm.train(speaker_ids=dm.get_all_ids())
+    if config.getboolean('system', 'TRAIN'):
+        gmm_ubm.train(speaker_ids=dm.get_all_ids())
     # prediction phase
-    gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
+    if config.getboolean('system', 'PREDICT'):
+        gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
 
     logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 

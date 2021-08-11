@@ -96,7 +96,7 @@ def create_result_json(results, t, extra_data_object):
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
     system_version = config.get('system', 'VERSION')
-    version_path = dm.make_dir(rf'{directory_path}/version/{system_version}')
+    version_path = dm.make_dir(rf'{directory_path}/version{system_version}')
     path = rf'{version_path}/result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)
