@@ -6,4 +6,5 @@ services:
     container_name: ba
     restart: unless-stopped
     volumes:
+      - "./config:/var/src"
       - "./data:/dataset"
