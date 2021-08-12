@@ -80,20 +80,20 @@ class GMM(object):
 
     def predict_n_speakers(self, speaker_ids):
         test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        if self.PROCESSES > 1:
+            split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
+            logging.info(f"starting mult process:{len(split_speaker_ids)}")
+            pool = multiprocessing.Pool(processes=self.PROCESSES)
 
-        split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
-        logging.info(f"starting mult process:{len(split_speaker_ids)}")
-        pool = multiprocessing.Pool(processes=self.PROCESSES)
+            data = []
+            for x in range(self.PROCESSES):
+                data.append((split_speaker_ids[x], test_files))
 
-        data = []
-        for x in range(self.PROCESSES):
-            data.append((split_speaker_ids[x], test_files))
-
-        results = pool.starmap(self.predict_mult, data)
-        pool.close()
-        pool.join()
-
-        # results = self.predict_mult(speaker_ids, test_files)
+            results = pool.starmap(self.predict_mult, data)
+            pool.close()
+            pool.join()
+        else:
+            results = [self.predict_mult(speaker_ids, test_files)]
 
         overall_results = []
         for result in results:

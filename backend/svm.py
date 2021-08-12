@@ -90,7 +90,7 @@ class SVM(object):
     def predict_n_speakers(self, speaker_ids):
         test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
-        if len(speaker_ids) > self.PROCESSES:
+        if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             logging.info(f"starting mult process: {len(split_speaker_ids)}")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
@@ -103,9 +103,7 @@ class SVM(object):
             pool.close()
             pool.join()
         else:
-            results = self.predict_mult(speaker_ids=speaker_ids, test_files=test_files)
-            print(results)
-
+            results = [self.predict_mult(speaker_ids=speaker_ids, test_files=test_files)]
 
         overall_results = []
         for result in results:

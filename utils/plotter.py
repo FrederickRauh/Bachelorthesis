@@ -4,6 +4,7 @@ from random import random
 import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 from utils import dataframeManager as dam, directoryManager as dm, modelManager as m
 
@@ -17,12 +18,26 @@ def draw_plt(files, model_path, name, type):
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    ax.set_xlim([-225, 0])
-    ax.set_ylim([0, 80])
+    ax.set_xlim3d([200, 700])
+    ax.set_ylim3d([-5, 5])
+    ax.set_zlim3d([-1, 1])
 
-    print(files[:, 0])
+    # print(files[:, 0])
+    feature_length = len(files[0])
+    file_length = len(files)
 
-    ax.scatter(files[:, 0], files[:, 1], c=labels)
+    x = files[:, :int((feature_length / 3))]
+    y = files[:, int((feature_length / 3)):(int((feature_length / 3)) * 2)]
+    z = files[:, (int((feature_length / 3)) * 2):]
+    x_plot = []
+    y_plot = []
+    z_plot = []
+    for i in range(file_length):
+        x_plot.append(sum(x[i]))
+        y_plot.append(sum(y[i]))
+        z_plot.append(sum(z[i]))
+
+    ax.scatter(x_plot, y_plot, z_plot, c=labels)
     plt.title(name)
     path = dm.get_model_plt_path(name, type)
     plt.savefig(path)

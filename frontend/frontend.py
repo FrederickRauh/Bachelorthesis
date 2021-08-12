@@ -32,9 +32,9 @@ def get_voice_input(timespan, samplerate, number, speaker_id, folder_name):
 
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe):
-    if len(speaker_ids) > 9:
+    PROCESSES = config.getint('system', 'PROCESSES')
+    if PROCESSES > 1:
     # if False:
-        PROCESSES = config.getint('system', 'PROCESSES')
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
         pool = multiprocessing.Pool(processes=PROCESSES)
         data = []

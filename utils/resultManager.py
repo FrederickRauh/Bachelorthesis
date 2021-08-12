@@ -12,6 +12,7 @@ file = rf'{dm.get_project_path()}/config.ini'
 config = ConfigParser()
 config.read(file)
 
+
 def load_result(file_path):
     result_json = dam.load_datafram_from_path(file_path)
     return result_json.confusion_mat[0]
@@ -23,22 +24,35 @@ def create_speaker_object(true_positive, true_negative, false_positive, false_ne
     imposter_ids = dm.get_ids_of_paths(false_positive)
     missed_ids = dm.get_ids_of_paths(false_negative)
     file_amount = len(true_positive) + len(true_negative) + len(false_positive) + len(false_negative)
-    return {"Accepted": {"amount": len(true_positive),
-                         "ids": accepted_ids,
-                         "files": true_positive},
-            "Denied": {"amount": len(true_negative),
-                       "ids": denied_ids,
-                       "files": true_negative},
-            "Imposter": {"amount": len(false_positive),
-                         "ids": imposter_ids,
-                         "files": false_positive},
-            "Missed": {"amount": len(false_negative),
-                       "ids": missed_ids,
-                       "files": false_negative},
-            "extra": {"total_id_files": len(true_positive) + len(false_negative),
-                      "total_imposter_files": len(true_negative) + len(false_positive),
-                      "total_files": file_amount}
-            }
+    speaker_object = {"Accepted": {"amount": len(true_positive),
+                                   "ids": accepted_ids,
+                                   "files": true_positive},
+                      "Denied": {"amount": len(true_negative),
+                                 "ids": denied_ids,
+                                 "files": true_negative},
+                      "Imposter": {"amount": len(false_positive),
+                                   "ids": imposter_ids,
+                                   "files": false_positive},
+                      "Missed": {"amount": len(false_negative),
+                                 "ids": missed_ids,
+                                 "files": false_negative}}
+    if config.getboolean("system", "ADD_EXTRA"):
+        speaker_object = {"Accepted": {"amount": len(true_positive),
+                                       "ids": accepted_ids,
+                                       "files": true_positive},
+                          "Denied": {"amount": len(true_negative),
+                                     "ids": denied_ids,
+                                     "files": true_negative},
+                          "Imposter": {"amount": len(false_positive),
+                                       "ids": imposter_ids,
+                                       "files": false_positive},
+                          "Missed": {"amount": len(false_negative),
+                                     "ids": missed_ids,
+                                     "files": false_negative},
+                          "extra": {"total_id_files": len(true_positive) + len(false_negative),
+                                    "total_imposter_files": len(true_negative) + len(false_positive),
+                                    "total_files": file_amount}}
+    return speaker_object
 
 
 def create_speaker_object_with_confusion_mat(results):
@@ -55,7 +69,6 @@ def create_speaker_object_with_confusion_mat(results):
         fp += int(result[0][key]["Imposter"]['amount'])
         fn += int(result[0][key]["Missed"]['amount'])
         speaker_object.update({key: result[0][key]})
-
 
     false_accept_rate = -1
     if not (fp + tn) == 0: false_accept_rate = fp / (fp + tn)
