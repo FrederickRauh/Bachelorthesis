@@ -15,12 +15,12 @@ from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, util, resultManager as rm, \
+from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, plotter as p, util, \
+    resultManager as rm, \
     trainingTestingManager as tt
 
 
 class GMMUBM(object):
-
     config = None
 
     def __init__(self):
@@ -47,7 +47,6 @@ class GMMUBM(object):
 
         self.PROCESSES = config.getint("system", "PROCESSES")
 
-
     """
     # Training phase
     # UBM - Universal Background model
@@ -58,9 +57,9 @@ class GMMUBM(object):
 
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
+
         logging.info(f"Training gmm_model with {self.feature_type} features for: 'UBM' :: There are: "
                      f"{len(all_training_features)} training files. Start at: {start_time}")
-
 
         ubm_model = make_pipeline(
             StandardScaler(),
@@ -71,13 +70,12 @@ class GMMUBM(object):
                          n_jobs=self.N_JOBS,
                          verbose=self.VERBOSE
                          )
-        ).fit_transform(all_training_features)
+        ).fit(all_training_features)
 
-        labels = ubm_model.predict(all_training_features)
-        t = 'gmm_ubm_universal_background_model_'
-        util.draw_plt(files=all_training_features, labels=labels, name='UBM', type=t)
-
-        m.save_model('', t + self.feature_type, ubm_model)
+        t = 'gmm_ubm_universal_background_model_' + self.feature_type
+        m.save_model('', t, ubm_model)
+        p.draw_plt(files=all_training_features, model_path=t,
+                      name='', type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def create_speaker_model(self, speaker_id, values):
@@ -116,18 +114,16 @@ class GMMUBM(object):
                          verbose=self.VERBOSE,
                          return_train_score=True
                          )
-        ).fit_transform(training_features)
+        ).fit(training_features)
 
-        labels = gmm_model.predict(training_features)
-        t = 'gmm_ubm_single_model_'
-        util.draw_plt(files=training_features, labels=labels, name=speaker_id, type=t)
-
-        m.save_model(speaker_id, t + self.feature_type, gmm_model)
+        t = 'gmm_ubm_single_model_' + self.feature_type
+        m.save_model(speaker_id, t, gmm_model)
+        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
 
-        # self.create_ubm(speaker_ids=speaker_ids)
+        self.create_ubm(speaker_ids=speaker_ids)
 
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
 
@@ -147,12 +143,12 @@ class GMMUBM(object):
     """
     # Prediction phase
     """
+
     def get_test_files_and_extra_data(self, speaker_ids):
         test_files = tt.load_test_files(speaker_ids)
         extra_data = [[test_files]]
         extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
         return test_files, extra_data_object
-
 
     def predict_n_speakers(self, speaker_ids):
         test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)

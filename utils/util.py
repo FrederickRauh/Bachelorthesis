@@ -7,8 +7,9 @@ import numpy as np
 from datetime import datetime
 
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-from utils import directoryManager as dm
+from utils import directoryManager as dm, modelManager as m
 
 
 # Turn 3Dim Array in 2D
@@ -42,13 +43,4 @@ def get_random_name():
     return ''.join(random.choices(string.ascii_letters + string.digits + '-' + '_', k=16))
 
 
-def draw_plt(files, labels, name, type):
-    fig = plt.figure()
-    ax = fig.add_subplot()
-    ax.set_xlim([-225, 0])
-    ax.set_ylim([0, 80])
-    ax.scatter(files[:, 0], files[:, 1], c=labels)
-    plt.title(name)
-    path = dm.get_model_plt_path(name, type)
-    plt.savefig(path)
-    plt.close(fig)
+

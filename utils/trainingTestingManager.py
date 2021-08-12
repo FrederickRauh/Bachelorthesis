@@ -41,7 +41,6 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
-
     return get_training_files(t, feature_type)
 
 
@@ -71,8 +70,6 @@ def get_training_files(t, feature_type):
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
         training_files.append(features)
-    # if feature_type == 'psf':
-    #     training_files = util.get_correct_array_form(training_files)
     # return util.get_correct_array_form(training_files)
     return training_files
 

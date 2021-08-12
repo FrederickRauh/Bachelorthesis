@@ -1,5 +1,4 @@
 import logging
-import os
 from configparser import ConfigParser
 from datetime import datetime
 
@@ -44,5 +43,3 @@ if __name__ == '__main__':
         gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
 
     logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
-
-

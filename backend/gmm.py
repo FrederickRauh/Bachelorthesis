@@ -1,6 +1,5 @@
 import logging
 import multiprocessing
-import os
 from datetime import datetime
 
 import numpy as np
@@ -13,7 +12,7 @@ from sklearn.mixture import GaussianMixture
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
+from utils import audioManager as am, directoryManager as dm, modelManager as m, plotter as p, util, \
     resultManager as rm, trainingTestingManager as tt
 
 
@@ -43,7 +42,6 @@ class GMM(object):
     """
     # Training phase
     """
-
     def create_model(self, speaker_id):
         training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
         start_time = datetime.now()
@@ -61,7 +59,9 @@ class GMM(object):
                          )
         )
         gmm_model.fit(training_features)
-        m.save_model(speaker_id, 'gmm_' + self.feature_type, gmm_model)
+        t = 'gmm_' + self.feature_type
+        m.save_model(speaker_id, t, gmm_model)
+        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
@@ -104,7 +104,7 @@ class GMM(object):
     def predict_mult(self, speaker_ids, test_files):
         part_results = []
         for speaker_id in speaker_ids:
-            part_results.append([self.predict_speaker(speaker_id, dm.get_all_ids(), test_files, self.feature_type)])
+            part_results.append([self.predict_speaker(speaker_id, dm.get_all_ids(), test_files)])
         return part_results
 
     def predict_for_all_models(self, models, ids, file):
@@ -139,7 +139,7 @@ class GMM(object):
 
         for file in test_files:
             id_of_file = dm.get_id_of_path(file)
-            winner = self.predict_for_all_models(models, ids_of_models, file, self.feature_type)
+            winner = self.predict_for_all_models(models, ids_of_models, file)
 
             if winner == speaker_id:
                 if winner == id_of_file:  # match is the speaker

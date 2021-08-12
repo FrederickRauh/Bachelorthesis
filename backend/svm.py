@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
+from utils import audioManager as am, directoryManager as dm, modelManager as m, plotter as p, util, \
     resultManager as rm, trainingTestingManager as tt
 
 
@@ -67,7 +67,9 @@ class SVM(object):
         svm_model.fit(training_features, is_speaker)
 
         logging.info(f"{svm_model['gridsearchcv'].best_params_}")
-        m.save_model(speaker_id, 'svm_' + self.feature_type, svm_model)
+        t = 'svm_' + self.feature_type
+        m.save_model(speaker_id, t, svm_model)
+        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
 
         logging.info(f"{util.get_duration(start_time)}")
 
