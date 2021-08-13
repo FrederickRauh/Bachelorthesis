@@ -17,7 +17,7 @@ def extract_mfcc_from_signal(signal):
     mfcc = librosa.feature.mfcc(signal, sr=config.getint('features', 'SAMPLE_RATE'), n_mfcc=config.getint('features', 'N_MFCC'))
     mfcc = mfcc.astype(float)
     mfcc_scaled = preprocessing.scale(mfcc)
-    return mfcc_scaled
+    return mfcc_scaled.T
 
 
 def extract_extra_features_from_signal(signal, mfcc, d_mfcc, dd_mfcc):

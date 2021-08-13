@@ -17,7 +17,7 @@ from utils import audioManager as am, directoryManager as dm, modelManager as m,
 
 
 class SVM(object):
-    score = 0
+    # score = 0
 
     def __init__(self):
         file = 'config.ini'
@@ -112,7 +112,7 @@ class SVM(object):
     def predict_file(self, speaker_id, t, file_path):
         x = am.get_features_for_prediction(file_path, self.feature_type)
         svm_model = m.load_model(speaker_id, t)
-        self.score = svm_model.predict(x)
+        return svm_model.predict(x)
 
     def predict_speaker(self, speaker_id, test_files):
         speaker_object_result = {}
@@ -124,16 +124,16 @@ class SVM(object):
         true_negative = []
 
         for file in test_files:
-            self.predict_file(speaker_id, t, file)
+            score = self.predict_file(speaker_id, t, file)
             id_of_file = dm.get_id_of_path(file)
 
             if speaker_id == id_of_file:
-                if self.score == 1:
+                if score == 1:
                     true_positive.append(file)
                 else:
                     false_negative.append(file)
             else:
-                if self.score == 1:
+                if score == 1:
                     false_positive.append(file)
                 else:
                     true_negative.append(file)

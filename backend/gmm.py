@@ -99,24 +99,12 @@ class GMM(object):
             part_results.append([self.predict_speaker(speaker_id, dm.get_all_ids(), test_files)])
         return part_results
 
-    # Speaker Recognition not verification
-    def predict_winner_for_all_models(self, models, ids, file):
+
+    def predict_file(self, speaker_id, t, file):
         x = am.get_features_for_prediction(file, self.feature_type)
-
-        log_likelihood = np.zeros(len(models))
-
-        for i in range(len(models)):
-            gmm_model = models[i]
-            scores = np.array(gmm_model.score(x))
-            log_likelihood[i] = scores.sum()
-        winner = np.argmax(log_likelihood)
-        winner_id = ids[winner]
-        return winner_id
-
-    def predict_for_one_model(self, model, file):
-        x = am.get_features_for_prediction(file, self.feature_type)
-        score = model.predict_proba(x)
-        return score.sum()
+        model = m.load_model(speaker_id, t)
+        scores = np.array(model.score(x))
+        return scores.sum()
 
     def predict_speaker(self, speaker_id, speaker_ids, test_files):
         speaker_object_result = {}
@@ -127,23 +115,25 @@ class GMM(object):
         false_positive = []
         true_negative = []
 
-        models = [m.load_model(speaker_id, t) for speaker_id in speaker_ids]
-        ids_of_models = [id for id in speaker_ids]
+        # models = [m.load_model(speaker_id, t) for speaker_id in speaker_ids]
+        # ids_of_models = [id for id in speaker_ids]
 
         for file in test_files:
             id_of_file = dm.get_id_of_path(file)
-            winner = self.predict_for_all_models(models, ids_of_models, file)
+            score = self.predict_file(speaker_id, t, file)
 
-            if winner == speaker_id:
-                if winner == id_of_file:  # match is the speaker
-                    true_positive.append(file)
-                else:  # imposter file
-                    false_positive.append(file)
-            else:
-                if dm.get_id_of_path(file) == speaker_id:  # should have matched but failed.
-                    false_negative.append(file)
-                else:  # matches to a model, that is not owner of file
-                    true_negative.append(file)
+            print(speaker_id, score)
+
+            # if winner == speaker_id:
+            #     if winner == id_of_file:  # match is the speaker
+            #         true_positive.append(file)
+            #     else:  # imposter file
+            #         false_positive.append(file)
+            # else:
+            #     if dm.get_id_of_path(file) == speaker_id:  # should have matched but failed.
+            #         false_negative.append(file)
+            #     else:  # matches to a model, that is not owner of file
+            #         true_negative.append(file)
 
         speaker_object_result.update(
             rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
