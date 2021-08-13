@@ -1,8 +1,11 @@
-version: '3.8'
-
+version: '3'
 services:
-  proxy:
-    image: ba
+  sv:
+    build:
+      context: /home/user/gitprojects/bachelorthesis
+      args:
+        - GIT_PULL
+      dockerfile: /home/user/gitprojects/bachelorthesis/docker/svm/Dockerfile
     container_name: ba
     restart: unless-stopped
     volumes:
