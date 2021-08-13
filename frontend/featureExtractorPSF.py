@@ -29,15 +29,17 @@ def extract_signal_from_file(file_path):
 
 
 def extract_mfcc_from_signal(signal):
-    return psf.mfcc(signal=signal,
+    mfcc = psf.mfcc(signal=signal,
                     samplerate=config.getint('features', 'SAMPLE_RATE'),
-                    winlen=config.getint('features', 'WINLEN'),
+                    winlen=config.getfloat('features', 'WINLEN'),
+                    winstep=config.getfloat("features", "WINSTEP"),
                     numcep=config.getint('features', 'N_MFCC'),
-                    nfilt=config.getint('features', 'N_MELS'),
-                    nfft=config.getint('features', 'NFFT'),
-                    appendEnergy=config.getint('features', 'APPENDENERGY'),
+                    appendEnergy=config.getboolean('features', 'APPENDENERGY'),
                     winfunc=lambda x: np.hamming(x)
                     )
+    mfcc = mfcc.astype(float)
+    mfcc_scaled = preprocessing.scale(mfcc)
+    return mfcc_scaled
 
 
 def get_delta_delta_from_signal(mfcc):
@@ -52,8 +54,8 @@ def get_delta_delta_from_signal(mfcc):
 def extract_filter_banks_and_energies_from_signal(signal):
     return psf.fbank(signal, samplerate=config.getint('features', 'SAMPLE_RATE'),
                      nfilt=config.getint('features', 'N_MELS'),
-                     winlen=config.getint('features', 'WINLEN'),
-                     winstep=config.getint('features', 'WINSTEP'),
+                     winlen=config.getfloat('features', 'WINLEN'),
+                     winstep=config.getfloat('features', 'WINSTEP'),
                      winfunc=lambda x: np.hamming(x)
                      )
 
@@ -65,7 +67,8 @@ def extract_processed_features_from_file(file_path):
     d_mfcc, dd_mfcc = get_delta_delta_from_signal(mfcc)
     # ft1 = get_delta_delta_from_signal(signal)
     # ft2, ft3 = extract_filter_banks_and_energies_from_signal(signal)
-    processed_features = np.hstack((mfcc, d_mfcc))
+    processed_features = np.concatenate((mfcc, d_mfcc))
+    processed_features = np.hstack(processed_features)
     return processed_features
 
 

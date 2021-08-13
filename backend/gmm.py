@@ -1,3 +1,4 @@
+import json
 import logging
 import multiprocessing
 from datetime import datetime
@@ -23,12 +24,11 @@ class GMM(object):
         config.read(file)
 
         self.feature_type = config.get('features', 'FEATURE_TYPE')
-
         self.param_grid = [{
-            'n_components': [16],
-            'max_iter': [10000],
-            'covariance_type': ['diag'],
-            'n_init': [3]
+            'n_components': json.loads(config.get('gmm', 'G_N_COMPONENTS')),
+            'max_iter': json.loads(config.get('gmm', 'G_MAX_ITER')),
+            'covariance_type': json.loads(config.get('gmm', 'G_COVARIANCE_TYPE')),
+            'n_init': json.loads(config.get('gmm', 'G_N_INIT'))
         }]
 
         self.CV = config.getint('modelconfig', 'CV')
@@ -103,8 +103,16 @@ class GMM(object):
     def predict_file(self, speaker_id, t, file):
         x = am.get_features_for_prediction(file, self.feature_type)
         model = m.load_model(speaker_id, t)
-        scores = np.array(model.score(x))
-        return scores.sum()
+        means = model['gridsearchcv'].best_estimator_.means_
+
+        covariance = model['gridsearchcv'].best_estimator_.covariances_
+        # for x in range(len(means)):
+        #     print(x, means[x], covariance[x])
+        score = model.score_samples(x)
+        return np.exp(score)
+
+        # scores = np.array(model.score(x) - 1)
+        # return scores.sum()
 
     def predict_speaker(self, speaker_id, speaker_ids, test_files):
         speaker_object_result = {}

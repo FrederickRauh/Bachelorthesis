@@ -1,3 +1,4 @@
+import json
 import logging
 import math
 import multiprocessing
@@ -27,16 +28,16 @@ class GMMUBM(object):
         config.read(file)
         self.feature_type = config.get('features', 'FEATURE_TYPE')
         self.ubm_param_grid = [{
-            'n_components': [2048],
-            'max_iter': [200],
-            'covariance_type': ['diag'],
-            'n_init': [3]
+            'n_components': json.loads(config.get('gmm-ubm', 'UBM_N_COMPONENTS')),
+            'max_iter': json.loads(config.get('gmm-ubm', 'UBM_MAX_ITER')),
+            'covariance_type': json.loads(config.get('gmm-ubm', 'UBM_COVARIANCE_TYPE')),
+            'n_init': json.loads(config.get('gmm-ubm', 'UBM_N_INIT'))
         }]
         self.gmm_param_grid = [{
-            'n_components': [16],
-            'max_iter': [200],
-            'covariance_type': ['diag'],
-            'n_init': [3]
+            'n_components': json.loads(config.get('gmm-ubm', 'GMM_N_COMPONENTS')),
+            'max_iter': json.loads(config.get('gmm-ubm', 'GMM_MAX_ITER')),
+            'covariance_type': json.loads(config.get('gmm-ubm', 'GMM_COVARIANCE_TYPE')),
+            'n_init': json.loads(config.get('gmm-ubm', 'GMM_N_INIT'))
         }]
         self.CV = config.getint('modelconfig', 'CV')
         self.REFIT = config.getboolean('modelconfig', 'REFIT')
@@ -121,7 +122,7 @@ class GMMUBM(object):
 
     def train(self, speaker_ids):
 
-        # self.create_ubm(speaker_ids=speaker_ids)
+        self.create_ubm(speaker_ids=speaker_ids)
 
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
 

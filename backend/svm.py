@@ -1,3 +1,4 @@
+import json
 import logging
 import multiprocessing
 from datetime import datetime
@@ -30,9 +31,9 @@ class SVM(object):
         C = [round(x, 2) for x in C]
 
         self.param_grid = [{
-            'kernel': ['rbf'],
+            'kernel': json.loads(config.get('svm', 'KERNELS')),
             'C': C,
-            'gamma': ['auto', 'scale']
+            'gamma': json.loads(config.get('svm', 'GAMMA'))
         }]
 
         self.CV = config.getint('modelconfig', 'CV')
