@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from utils import directoryManager as dm, util
 from utils.dataframeManager import load_dataframe_from_path
@@ -72,6 +73,13 @@ def get_training_files(t, feature_type):
         training_files.append(features)
     # return util.get_correct_array_form(training_files)
     return training_files
+
+
+def get_test_files_and_extra_data(speaker_ids):
+    test_files = load_test_files(speaker_ids)
+    extra_data = [[test_files]]
+    extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
+    return test_files, extra_data_object
 
 
 def load_test_files(speaker_ids):

@@ -18,9 +18,9 @@ def draw_plt(files, model_path, name, type):
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    ax.set_xlim3d([200, 700])
-    ax.set_ylim3d([-5, 5])
-    ax.set_zlim3d([-1, 1])
+    # ax.set_xlim3d([200, 700])
+    # ax.set_ylim3d([-2, 2])
+    # ax.set_zlim3d([-0.1, 0.1])
 
     # print(files[:, 0])
     feature_length = len(files[0])
@@ -33,9 +33,9 @@ def draw_plt(files, model_path, name, type):
     y_plot = []
     z_plot = []
     for i in range(file_length):
-        x_plot.append(sum(x[i]))
-        y_plot.append(sum(y[i]))
-        z_plot.append(sum(z[i]))
+        x_plot.append(x[i].mean())
+        y_plot.append(y[i].mean())
+        z_plot.append(z[i].mean())
 
     ax.scatter(x_plot, y_plot, z_plot, c=labels)
     plt.title(name)

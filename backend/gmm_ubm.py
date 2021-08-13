@@ -1,4 +1,3 @@
-import json
 import logging
 import math
 import multiprocessing
@@ -6,7 +5,6 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
@@ -123,9 +121,19 @@ class GMMUBM(object):
 
     def train(self, speaker_ids):
 
-        self.create_ubm(speaker_ids=speaker_ids)
+        # self.create_ubm(speaker_ids=speaker_ids)
 
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
+
+        all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
+                                                            feature_type=self.feature_type)
+
+
+        t = 'gmm_ubm_universal_background_model_' + self.feature_type
+        p.draw_plt(files=all_training_features, model_path=t,
+                   name='', type=t)
+
+        print("Drawn")
 
         adaptive_values = {
             'covariances': ubm_model['gridsearchcv'].best_estimator_.covariances_,
@@ -143,15 +151,8 @@ class GMMUBM(object):
     """
     # Prediction phase
     """
-
-    def get_test_files_and_extra_data(self, speaker_ids):
-        test_files = tt.load_test_files(speaker_ids)
-        extra_data = [[test_files]]
-        extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
-        return test_files, extra_data_object
-
     def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             logging.info(f"starting mult process:{len(split_speaker_ids)}")
@@ -179,7 +180,7 @@ class GMMUBM(object):
         return part_results
 
     def predict_speaker(self, speaker_id, speaker_ids):
-        test_files, _ = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         test_files = test_files[:10]
         for id in speaker_ids:
             ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)

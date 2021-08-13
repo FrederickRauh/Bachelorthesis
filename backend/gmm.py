@@ -3,7 +3,6 @@ import multiprocessing
 from datetime import datetime
 
 import numpy as np
-import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
@@ -27,7 +26,7 @@ class GMM(object):
 
         self.param_grid = [{
             'n_components': [16],
-            'max_iter': [500],
+            'max_iter': [10000],
             'covariance_type': ['diag'],
             'n_init': [3]
         }]
@@ -71,15 +70,8 @@ class GMM(object):
     """
     # Prediction phase
     """
-
-    def get_test_files_and_extra_data(self, speaker_ids):
-        test_files = tt.load_test_files(speaker_ids)
-        extra_data = [[test_files]]
-        extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
-        return test_files, extra_data_object
-
     def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             logging.info(f"starting mult process:{len(split_speaker_ids)}")
@@ -107,7 +99,8 @@ class GMM(object):
             part_results.append([self.predict_speaker(speaker_id, dm.get_all_ids(), test_files)])
         return part_results
 
-    def predict_for_all_models(self, models, ids, file):
+    # Speaker Recognition not verification
+    def predict_winner_for_all_models(self, models, ids, file):
         x = am.get_features_for_prediction(file, self.feature_type)
 
         log_likelihood = np.zeros(len(models))

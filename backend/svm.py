@@ -80,15 +80,8 @@ class SVM(object):
     """
     # Prediction part
     """
-
-    def get_test_files_and_extra_data(self, speaker_ids):
-        test_files = tt.load_test_files(speaker_ids)
-        extra_data = [[test_files]]
-        extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
-        return test_files, extra_data_object
-
     def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = self.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
