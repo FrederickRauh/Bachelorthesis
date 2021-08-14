@@ -4,14 +4,21 @@ from random import random
 import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.colors import LogNorm
 from mpl_toolkits.mplot3d import Axes3D
+from sklearn import mixture
 
 from utils import dataframeManager as dam, directoryManager as dm, modelManager as m
 
 
 def draw_plt(files, model_path, name, type):
     model = m.load_model(name, model_path)
-    labels = model.predict(files)
+    print(model)
+    labels = []
+    for file in files:
+        labels.append(model.predict(file))
+
+    print(labels)
 
     if name == '':
         name = 'UBM'
@@ -51,7 +58,6 @@ def draw_features(features, name):
         ax.plot(feature)
     plt.title(name)
     plt.show()
-
 
 # class Plotter(object):
 #

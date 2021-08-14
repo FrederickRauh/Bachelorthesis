@@ -67,8 +67,8 @@ def extract_processed_features_from_file(file_path):
     d_mfcc, dd_mfcc = get_delta_delta_from_signal(mfcc)
     # ft1 = get_delta_delta_from_signal(signal)
     # ft2, ft3 = extract_filter_banks_and_energies_from_signal(signal)
-    processed_features = np.concatenate((mfcc, d_mfcc))
-    processed_features = np.hstack(processed_features)
+    # processed_features = np.concatenate((mfcc, d_mfcc))
+    processed_features = np.hstack((mfcc, d_mfcc))
     return processed_features
 
 

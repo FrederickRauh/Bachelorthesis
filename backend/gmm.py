@@ -57,10 +57,17 @@ class GMM(object):
                          verbose=self.VERBOSE
                          )
         )
-        gmm_model.fit(training_features)
+        features = np.asarray([])
+        for vector in training_features:
+            if features.size == 0:
+                features = vector
+            else:
+                features = np.vstack((features, vector))
+
+        gmm_model.fit(features)
         t = 'gmm_' + self.feature_type
         m.save_model(speaker_id, t, gmm_model)
-        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
+        # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
@@ -103,12 +110,9 @@ class GMM(object):
     def predict_file(self, speaker_id, t, file):
         x = am.get_features_for_prediction(file, self.feature_type)
         model = m.load_model(speaker_id, t)
-        means = model['gridsearchcv'].best_estimator_.means_
 
-        covariance = model['gridsearchcv'].best_estimator_.covariances_
-        # for x in range(len(means)):
-        #     print(x, means[x], covariance[x])
-        score = model.score_samples(x)
+        score = model.score(x)
+        print(score)
         return np.exp(score)
 
         # scores = np.array(model.score(x) - 1)

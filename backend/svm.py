@@ -64,8 +64,16 @@ class SVM(object):
                          n_jobs=self.N_JOBS,
                          verbose=self.VERBOSE)
         )
-
-        svm_model.fit(training_features, is_speaker)
+        features = np.asarray([])
+        is_speaker_feature = np.asarray([])
+        for x in range(len(training_features)):
+            if features.size == 0:
+                features = training_features[x]
+                is_speaker_feature = is_speaker[x]
+            else:
+                features = np.vstack((features, training_features[x]))
+                is_speaker_feature = np.vstack((is_speaker_feature, is_speaker[x]))
+        svm_model.fit(features, is_speaker_feature)
 
         logging.info(f"{svm_model['gridsearchcv'].best_params_}")
         t = 'svm_' + self.feature_type
