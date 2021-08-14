@@ -53,7 +53,16 @@ class SVM(object):
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
 
-
+        # features = np.asarray([])
+        # is_speaker_feature = np.asarray([])
+        # for x in range(len(training_features)):
+        #     print(x)
+        #     if features.size == 0:
+        #         features = training_features[x]
+        #         is_speaker_feature = is_speaker[x]
+        #     else:
+        #         features = np.vstack((features, training_features[x]))
+        #         is_speaker_feature = np.vstack((is_speaker_feature, is_speaker[x]))
 
         svm_model = make_pipeline(
             StandardScaler(),
@@ -63,22 +72,12 @@ class SVM(object):
                          refit=self.REFIT,
                          n_jobs=self.N_JOBS,
                          verbose=self.VERBOSE)
-        )
-        features = np.asarray([])
-        is_speaker_feature = np.asarray([])
-        for x in range(len(training_features)):
-            if features.size == 0:
-                features = training_features[x]
-                is_speaker_feature = is_speaker[x]
-            else:
-                features = np.vstack((features, training_features[x]))
-                is_speaker_feature = np.vstack((is_speaker_feature, is_speaker[x]))
-        svm_model.fit(features, is_speaker_feature)
+        ).fit(training_features, is_speaker)
 
         logging.info(f"{svm_model['gridsearchcv'].best_params_}")
         t = 'svm_' + self.feature_type
         m.save_model(speaker_id, t, svm_model)
-        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
+        # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
 
         logging.info(f"{util.get_duration(start_time)}")
 

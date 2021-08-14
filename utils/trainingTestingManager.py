@@ -51,17 +51,20 @@ def get_svm_data_for_training(speaker_id, feature_type):
     speaker_ids = dm.get_all_ids()
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        wav_files = wav_files[:len(wav_files) - 10]
+        # only get at max 20 files from Speaker, to avoid to much training data
+        index = len(wav_files) / 10
+        if index < 10:
+            index = 10
+        wav_files = wav_files[:int(index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
             is_speaker = 1 if id == speaker_id else 0
             y.append(is_speaker)
-    return get_training_files(t, feature_type), y
 
-
-def get_training_files(t, feature_type):
     training_files = []
+    length_of_file = 0
+
     for element in t:
         element = element.replace('\\', '/')
         parts = element.split('/')
@@ -70,9 +73,34 @@ def get_training_files(t, feature_type):
         path = rf'{dm.get_all_wav_path()}/{file_path}'
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
+        features = np.asarray(features)
         training_files.append(features)
+    training_files = util.get_correct_array_form(training_files)
+
+    return training_files, y
+
+
+def get_training_files(t, feature_type):
+    training_files = []
+    length_of_file = 0
+
+    for element in t:
+        element = element.replace('\\', '/')
+        parts = element.split('/')
+        ending = parts[2].replace('.wav', '.json')
+        file_path = rf'{parts[0]}/{parts[1]}/{feature_type}/{ending}'
+        path = rf'{dm.get_all_wav_path()}/{file_path}'
+        file_features = load_dataframe_from_path(path)
+        features = file_features.features[0]
+        features = np.asarray(features)
+
+        length_of_file = len(features)
+        # training_files.append(features)
+
+        for vector in features:
+            training_files.append(vector)
     # return util.get_correct_array_form(training_files)
-    return training_files
+    return training_files, length_of_file
 
 
 def get_test_files_and_extra_data(speaker_ids):
