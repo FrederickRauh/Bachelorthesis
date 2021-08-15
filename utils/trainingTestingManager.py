@@ -20,7 +20,7 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        index = 25
+        index = 50
         wav_files = wav_files[:int(index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'

@@ -129,14 +129,14 @@ class GMM(object):
 
     def predict_file(self, speaker_id, t, file_path):
         model = m.load_model(speaker_id, t)
-        # features = am.get_features_for_prediction(file_path, self.feature_type)
+        features = am.get_features_for_prediction(file_path, self.feature_type)
 
         # scores = np.array(model.score(features))
-        scores = model.predict_proba(file_path)
+        scores = model.predict_proba(features)
         count = 0
         for score in scores:
             for x in range(len(score)):
-                if score[x] >= 0.8:
+                if score[x] >= 0.9:
                     count += 1
 
         count /= 399
@@ -189,13 +189,9 @@ class GMM(object):
         #         false_negative.append(test_files[x])
         #     else:  # matches to a model, that is not owner of file
         #         true_negative.append(test_files[x])
-        test_files, _ = tt.get_data_for_training('gmm', speaker_ids, self.feature_type)
-
-        print("loaded")
 
         for file in test_files:
-            # id_of_file = dm.get_id_of_path('id100')
-            id_of_file = '100001'
+            id_of_file = dm.get_id_of_path(file)
             score = self.predict_file(speaker_id, t, file)
 
             if speaker_id == id_of_file:
