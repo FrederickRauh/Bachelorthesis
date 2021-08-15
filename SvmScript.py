@@ -18,6 +18,8 @@ if __name__ == '__main__':
     config.read(file)
 
     feature_type = config.get('features', 'FEATURE_TYPE')
+    # speaker_ids = dm.get_all_ids()
+    speaker_ids = ['id00001']
 
     logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
@@ -31,14 +33,14 @@ if __name__ == '__main__':
     # preparation phase
     if config.getboolean('system', 'EXTRACT_FEATURES'):
         logging.info(f"extracting features...")
-        frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
+        frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=speaker_ids, create_dataframe=True)
     # training phase
     if config.getboolean('system', 'TRAIN_MODEL'):
         logging.info(f"train models...")
-        svm.train(speaker_ids=dm.get_all_ids())
+        svm.train(speaker_ids=speaker_ids)
     # prediction phase
     if config.getboolean('system', 'PREDICT_SPEAKER'):
         logging.info(f"predicting speaker...")
-        svm.predict_n_speakers(speaker_ids=dm.get_all_ids())
+        svm.predict_n_speakers(speaker_ids=speaker_ids)
 
     logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

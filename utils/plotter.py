@@ -13,12 +13,7 @@ from utils import dataframeManager as dam, directoryManager as dm, modelManager 
 
 def draw_plt(files, model_path, name, type):
     model = m.load_model(name, model_path)
-    print(model)
-    labels = []
-    for file in files:
-        labels.append(model.predict(file))
-
-    print(labels)
+    labels = model.predict(files)
 
     if name == '':
         name = 'UBM'
@@ -33,9 +28,9 @@ def draw_plt(files, model_path, name, type):
     feature_length = len(files[0])
     file_length = len(files)
 
-    x = files[:, :int((feature_length / 3))]
-    y = files[:, int((feature_length / 3)):(int((feature_length / 3)) * 2)]
-    z = files[:, (int((feature_length / 3)) * 2):]
+    x = files[:, :int((feature_length / 2))]
+    y = files[:, int((feature_length / 2)):(int(feature_length) -1 )]
+    z = files[:, ]
     x_plot = []
     y_plot = []
     z_plot = []

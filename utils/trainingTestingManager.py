@@ -20,7 +20,8 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        wav_files = wav_files[:len(wav_files) - 10]
+        index = 25
+        wav_files = wav_files[:int(index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -32,13 +33,12 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        wav_files = wav_files[:len(wav_files) - 10]
+        index = 25
+        wav_files = wav_files[:int(index)]
         if m_type == 'gmm-ubm-ubm':
-            files = util.split_array_for_multiprocess(wav_files, 2)
-            wav_files = files[0]
+            wav_files = wav_files[:5]
         else:
-            files = util.split_array_for_multiprocess(wav_files, 2)
-            wav_files = files[1]
+            wav_files = wav_files[5:]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -48,18 +48,19 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
 def get_svm_data_for_training(speaker_id, feature_type):
     t = []
     y = []
+    y_new = []
     speaker_ids = dm.get_all_ids()
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         # only get at max 20 files from Speaker, to avoid to much training data
-        index = len(wav_files) / 10
-        if index < 10:
-            index = 10
+        index = 25
         wav_files = wav_files[:int(index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
             is_speaker = 1 if id == speaker_id else 0
+            for x in range(399):
+                y_new.append(is_speaker)
             y.append(is_speaker)
 
     training_files = []
@@ -73,16 +74,21 @@ def get_svm_data_for_training(speaker_id, feature_type):
         path = rf'{dm.get_all_wav_path()}/{file_path}'
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
-        features = np.asarray(features)
-        training_files.append(features)
-    training_files = util.get_correct_array_form(training_files)
+        features = np.array(features)
+        # training_files.append(features)
+        for vector in features:
+            training_files.append(vector)
 
-    return training_files, y
+    # training_files = util.get_correct_array_form(training_files)
+
+    return training_files, y_new
 
 
 def get_training_files(t, feature_type):
-    training_files = []
+    # training_files = []
     length_of_file = 0
+
+    training_features = np.asarray(())
 
     for element in t:
         element = element.replace('\\', '/')
@@ -94,13 +100,15 @@ def get_training_files(t, feature_type):
         features = file_features.features[0]
         features = np.asarray(features)
 
-        length_of_file = len(features)
         # training_files.append(features)
 
         for vector in features:
-            training_files.append(vector)
+            if training_features.size == 0:
+                training_features = vector
+            else:
+                training_features = np.vstack((training_features, vector))
     # return util.get_correct_array_form(training_files)
-    return training_files, length_of_file
+    return training_features
 
 
 def get_test_files_and_extra_data(speaker_ids):

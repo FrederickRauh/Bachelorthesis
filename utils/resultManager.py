@@ -97,7 +97,7 @@ def create_speaker_object_with_confusion_mat(results):
     return speaker_object, confusion_mat
 
 
-def create_result_json(results, t, extra_data_object):
+def create_overall_result_json(results, t, extra_data_object):
     speaker_object, confusion_mat = create_speaker_object_with_confusion_mat(results)
 
     extra_data = {"test_files_amount": len(extra_data_object.overall_test_files[0]),
@@ -109,7 +109,20 @@ def create_result_json(results, t, extra_data_object):
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
     system_version = config.get('system', 'VERSION')
-    version_path = dm.make_dir(rf'{directory_path}/version{system_version}')
+    version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
     path = rf'{version_path}/result.json'
+    dm.check_if_file_exists_then_remove(path)
+    result_file.to_json(path)
+
+
+def create_single_result_json(speaker_id, t, results):
+    speaker_object, confusion_mat = create_speaker_object_with_confusion_mat(results)
+    result_json = [(confusion_mat, [speaker_object])]
+    result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object'])
+    t = t.split('-')
+    directory_path = dm.get_results_folder(t[0])
+    system_version = config.get('system', 'VERSION')
+    version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
+    path = rf'{version_path}/{speaker_id}-result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

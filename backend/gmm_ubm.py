@@ -172,7 +172,7 @@ class GMMUBM(object):
         for result in results:
             overall_results += result
 
-        rm.create_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object)
 
     def predict_mult(self, speaker_ids, test_files):
         part_results = []

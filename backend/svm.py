@@ -53,17 +53,6 @@ class SVM(object):
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
 
-        # features = np.asarray([])
-        # is_speaker_feature = np.asarray([])
-        # for x in range(len(training_features)):
-        #     print(x)
-        #     if features.size == 0:
-        #         features = training_features[x]
-        #         is_speaker_feature = is_speaker[x]
-        #     else:
-        #         features = np.vstack((features, training_features[x]))
-        #         is_speaker_feature = np.vstack((is_speaker_feature, is_speaker[x]))
-
         svm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(SVC(),
@@ -89,7 +78,7 @@ class SVM(object):
     # Prediction part
     """
     def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
@@ -109,7 +98,7 @@ class SVM(object):
         overall_results = []
         for result in results:
             overall_results += result
-        rm.create_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object)
 
     def predict_mult(self, speaker_ids, test_files):
         part_results = []
@@ -118,9 +107,18 @@ class SVM(object):
         return part_results
 
     def predict_file(self, speaker_id, t, file_path):
-        x = am.get_features_for_prediction(file_path, self.feature_type)
         svm_model = m.load_model(speaker_id, t)
-        return svm_model.predict(x)
+        features = am.get_features_for_prediction(file_path, self.feature_type)
+        scores = []
+
+        # for vector in features:
+        #     print(vector)
+        scores.append(svm_model.predict(features))
+        overall_score = sum(scores[0]) / 399
+        if overall_score > 0:
+            return 1
+        else:
+            return 0
 
     def predict_speaker(self, speaker_id, test_files):
         speaker_object_result = {}
@@ -148,5 +146,7 @@ class SVM(object):
 
         speaker_object_result.update(
             rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
+
+        rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}
