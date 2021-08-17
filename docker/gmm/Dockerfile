@@ -3,6 +3,8 @@ WORKDIR /var/src
 COPY . .
 RUN conda env create -f docker/environment.yml
 
+SHELL ["conda", "update", "-n", "base", "-c", "defaults conda"]
+
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "-n", "bachelorthesis", "/bin/bash", "-c"]
 

@@ -169,9 +169,7 @@ class GMMUBM(object):
     def predict_mult(self, speaker_ids, ubm_model, gmm_models, test_files):
         part_results = []
         for x in range(len(speaker_ids)):
-            logging.info(f"collecting for {speaker_ids[x]}")
             part_results.append([self.predict_speaker(speaker_ids[x], ubm_model, gmm_models[x], test_files)])
-            logging.info(f"results for {speaker_ids[x]} collected")
         return part_results
 
     def predict_file(self, speaker_id, ubm_model, gmm_model, file_path):

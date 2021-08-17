@@ -121,9 +121,7 @@ class GMM(object):
     def predict_mult(self, speaker_ids, models, test_files):
         part_results = []
         for i in range(len(speaker_ids)):
-            logging.info(f"collecting for {speaker_ids[i]}")
             part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
-            logging.info(f"results for {speaker_ids[i]} collected")
         return part_results
 
     def predict_file(self, model, file_path):
