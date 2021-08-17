@@ -27,7 +27,7 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         if index > 0:
-            adjusted_index = index * 5
+            adjusted_index = index * 6
             wav_files = wav_files[:int(adjusted_index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
@@ -41,14 +41,13 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         if index > 0:
-            adjusted_index = index * 5
-            ubm_index = (int(adjusted_index) / 3)
+            adjusted_index = index * 6
+            ubm_index = (int(adjusted_index) / 6)
             wav_files = wav_files[:int(adjusted_index)]
-
         if m_type == 'gmm-ubm-ubm':
-            wav_files = wav_files[:ubm_index]
+            wav_files = wav_files[:int(ubm_index)]
         else:
-            wav_files = wav_files[ubm_index:]
+            wav_files = wav_files[int(ubm_index):]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)

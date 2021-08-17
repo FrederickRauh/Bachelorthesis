@@ -40,6 +40,7 @@ class SVM(object):
         self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
 
         self.PROCESSES = config.getint("system", "PROCESSES")
+        self.FEATURE_THRESHOLD = config.getfloat("system", "FEATURE_THRESHOLD")
 
     """
     # Training part
@@ -50,8 +51,6 @@ class SVM(object):
         start_time = datetime.now()
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
-
-        print(len(training_features))
 
         svm_model = make_pipeline(
             StandardScaler(),
@@ -78,20 +77,21 @@ class SVM(object):
     """
     def predict_n_speakers(self, speaker_ids):
         test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
-
+        models = [m.load_model(speaker_id, "svm_" + self.feature_type) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
+            split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
+            data = []
+            for i in range(self.PROCESSES):
+                data.append((split_speaker_ids[i], split_models[i], test_files))
+
             logging.info(f"starting multi process: {len(split_speaker_ids)}")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
-
-            data = []
-            for x in range(self.PROCESSES):
-                data.append((split_speaker_ids[x], test_files))
-
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
         else:
+            logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
             results = [self.predict_mult(speaker_ids=speaker_ids, test_files=test_files)]
 
         overall_results = []
@@ -99,29 +99,26 @@ class SVM(object):
             overall_results += result
         rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object)
 
-    def predict_mult(self, speaker_ids, test_files):
+    def predict_mult(self, speaker_ids, models, test_files):
         part_results = []
-        for speaker_id in speaker_ids:
-            part_results.append([self.predict_speaker(speaker_id, test_files)])
+        for i in range(len(speaker_ids)):
+            logging.info(f"collecting for {speaker_ids[i]}")
+            part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
+            logging.info(f"results for {speaker_ids[i]} collected")
         return part_results
 
-    def predict_file(self, speaker_id, t, file_path):
-        svm_model = m.load_model(speaker_id, t)
+    def predict_file(self, svm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        # score = svm_model.predict([features.flatten()])
-        # return score
-        # scores = []
         scores = svm_model.predict(features)
         score_sum = sum(scores)
-        overall_score = score_sum / 399
-        if overall_score > 0.20:
+        overall_score = score_sum / len(features)
+        if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0
 
-    def predict_speaker(self, speaker_id, test_files):
+    def predict_speaker(self, speaker_id, model, test_files):
         speaker_object_result = {}
-        t = 'svm_' + self.feature_type
 
         true_positive = []
         false_negative = []
@@ -129,8 +126,8 @@ class SVM(object):
         true_negative = []
 
         for file in test_files:
-            score = self.predict_file(speaker_id, t, file)
             id_of_file = dm.get_id_of_path(file)
+            score = self.predict_file(model, file)
 
             if speaker_id == id_of_file:
                 if score == 1:

@@ -40,6 +40,6 @@ if __name__ == '__main__':
     # prediction phase
     if config.getboolean('system', 'PREDICT_SPEAKER'):
         logging.info(f"predicting speaker...")
-        gmm_ubm.predict_speaker(speaker_id=dm.get_all_ids()[0], speaker_ids=dm.get_all_ids())
+        gmm_ubm.predict_n_speakers(speaker_ids=dm.get_all_ids())
 
     logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

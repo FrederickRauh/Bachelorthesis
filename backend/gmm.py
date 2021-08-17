@@ -43,6 +43,8 @@ class GMM(object):
         self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
 
         self.PROCESSES = config.getint("system", "PROCESSES")
+        self.THRESHOLD = config.getfloat("gmm", "G_THRESHOLD")
+        self.FEATURE_THRESHOLD = config.getfloat("system", "FEATURE_THRESHOLD")
 
     """
     # Training phase
@@ -96,24 +98,19 @@ class GMM(object):
         # if defined in config.ini (SYSTEM, PROCESSES) > 1 multiple processes are started
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
-            logging.info(f"starting multi process:{len(split_speaker_ids)}")
-
-
+            split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
             data = []
-            for x in range(self.PROCESSES):
-                data.append((split_speaker_ids[x], models, test_features, test_files))
+            for i in range(self.PROCESSES):
+                data.append((split_speaker_ids[i], split_models[i], test_files))
 
+            logging.info(f"starting multi process:{len(split_speaker_ids)}")
             pool = Pool(processes=self.PROCESSES)
-
-            for speaker_ids in split_speaker_ids:
-                logging.info(f"Starting thread pool with: {len(speaker_ids)} ids")
-
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = [self.predict_mult(speaker_ids, models, test_features, test_files)]
+            results = [self.predict_mult(speaker_ids, models, test_files)]
 
         overall_results = []
         for result in results:
@@ -121,69 +118,47 @@ class GMM(object):
 
         rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object)
 
-    def predict_mult(self, speaker_ids, models, test_features, test_files):
+    def predict_mult(self, speaker_ids, models, test_files):
         part_results = []
-        for speaker_id in speaker_ids:
-            logging.info(f"collecting for {speaker_id}")
-            part_results.append([self.predict_speaker(speaker_id, dm.get_all_ids(), models, test_features, test_files)])
-            logging.info(f"results for {speaker_id} collected")
+        for i in range(len(speaker_ids)):
+            logging.info(f"collecting for {speaker_ids[i]}")
+            part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
+            logging.info(f"results for {speaker_ids[i]} collected")
         return part_results
 
-
-    def predict_file(self, speaker_id, t, file_path):
-        model = m.load_model(speaker_id, t)
+    def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        # scores = np.array(model.score(features))
         scores = model.predict_proba(features)
         count = 0
         for score in scores:
             for x in range(len(score)):
-                if score[x] >= 0.99915:
+                if score[x] >= self.THRESHOLD:
                     count += 1
-        count /= 399
-        if count > 0.2:
+        count /= len(features)
+        if count > self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0
 
-        # scores = np.array(model.score(x) - 1)
-        # return scores.sum()
-
-    def predict_speaker(self, speaker_id, speaker_ids, models, test_features, test_files):
+    def predict_speaker(self, speaker_id, model, test_files):
         """
         used to predict all given test_features, from test_files for one specific defined id
         :param speaker_id:
-        :param speaker_ids:
-        :param models:
-        :param test_features:
+        :param model:
         :param test_files:
         :return: Speakerobject in dict object {id: speaker_object}
         """
         start_time = datetime.now()
         speaker_object_result = {}
-        t = "gmm_" + self.feature_type
 
         true_positive = []
         false_negative = []
         false_positive = []
         true_negative = []
 
-        model = m.load_model(speaker_id, t)
-
-
-        x_test = []
-        y_test = []
-        y_score = []
-        for file in test_files:
-            features = am.get_features_for_prediction(file, self.feature_type)
-            x_test.append(features)
-            y_test.append(dm.get_id_of_path(file))
-            y_score.append(model.predict_proba(features))
-
-
         for file in test_files:
             id_of_file = dm.get_id_of_path(file)
-            score = self.predict_file(speaker_id, t, file)
+            score = self.predict_file(model, file)
 
             if speaker_id == id_of_file:
                 if score == 1:
@@ -195,8 +170,6 @@ class GMM(object):
                     false_positive.append(file)
                 else:
                     true_negative.append(file)
-
-
 
         speaker_object_result.update(
             rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
