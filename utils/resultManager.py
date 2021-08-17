@@ -100,7 +100,6 @@ def create_speaker_object_with_confusion_mat(results):
 
 
 def create_overall_result_json(results, t, extra_data_object):
-
     sorted_results = []
     ids = []
     for result in results:

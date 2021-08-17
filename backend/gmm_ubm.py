@@ -158,7 +158,8 @@ class GMMUBM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = self.predict_mult(speaker_ids, ubm_model, gmm_models, test_files)
+            single_thread_results = self.predict_mult(speaker_ids, ubm_model, gmm_models, test_files)
+            results = [single_thread_results]
 
         overall_results = []
         for result in results:
@@ -174,7 +175,7 @@ class GMMUBM(object):
             logging.info(f"results for {speaker_ids[x]} collected")
         return part_results
 
-    def predict_file(self, ubm_model, gmm_model, file_path):
+    def predict_file(self, speaker_id, ubm_model, gmm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
 
         ubm_scores = ubm_model.predict_proba(features)
@@ -196,7 +197,8 @@ class GMMUBM(object):
         gmm_count /= len(features)
 
         overall_score = gmm_count / ubm_count
-        if overall_score > 50:
+        # print(speaker_id, file_path, gmm_count, ubm_count, overall_score)
+        if overall_score > 7:
             return 1
         else:
             return 0
@@ -212,7 +214,7 @@ class GMMUBM(object):
 
         for file in test_files:
                 id_of_file = dm.get_id_of_path(file)
-                score = self.predict_file(ubm_model, gmm_model, file)
+                score = self.predict_file(speaker_id, ubm_model, gmm_model, file)
 
                 if speaker_id == id_of_file:
                     if score == 1:

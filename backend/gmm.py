@@ -110,8 +110,8 @@ class GMM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = [self.predict_mult(speaker_ids, models, test_files)]
-
+            single_thread_results = [self.predict_mult(speaker_ids, models, test_files)]
+            results = [single_thread_results]
         overall_results = []
         for result in results:
             overall_results += result
