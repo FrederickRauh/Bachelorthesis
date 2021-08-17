@@ -2,8 +2,7 @@ from configparser import ConfigParser
 
 import pandas as pd
 
-import utils.util
-from utils import dataframeManager as dam, directoryManager as dm, util
+from utils import dataframeManager as dam, directoryManager as dm
 
 """
 ResultManager contains the methods to calculate the confusion mat after prediction and 

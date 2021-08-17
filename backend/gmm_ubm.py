@@ -158,8 +158,7 @@ class GMMUBM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            single_thread_results = self.predict_mult(speaker_ids, ubm_model, gmm_models, test_files)
-            results = [single_thread_results]
+            results = [self.predict_mult(speaker_ids, ubm_model, gmm_models, test_files)]
 
         overall_results = []
         for result in results:
