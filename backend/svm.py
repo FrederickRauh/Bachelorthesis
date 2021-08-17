@@ -92,7 +92,7 @@ class SVM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = [self.predict_mult(speaker_ids=speaker_ids, test_files=test_files)]
+            results = [self.predict_mult(speaker_ids=speaker_ids, models=models, test_files=test_files)]
 
         overall_results = []
         for result in results:
