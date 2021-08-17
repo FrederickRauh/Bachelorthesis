@@ -79,27 +79,32 @@ class GMMUBM(object):
         #               name='', type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def create_speaker_model(self, speaker_id, values):
+    def create_speaker_model(self, speaker_id):
         start_time = datetime.now()
         training_features, _ = tt.get_data_for_training('gmm-ubm-gmm', [speaker_id], self.feature_type)
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id} :: There are: "
             f"{len(training_features)} training files. Start at: {start_time}")
 
-        gmm = BayesianGaussianMixture()
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
 
-        means = values['means']
-        transformed_mean = means
+        adaptive_values = {
+                'covariances': ubm_model['gridsearchcv'].best_estimator_.covariances_,
+                'means': ubm_model['gridsearchcv'].best_estimator_.means_,
+                'weights': ubm_model['gridsearchcv'].best_estimator_.weights_,
+                'converged': ubm_model['gridsearchcv'].best_estimator_.converged_,
+                'threshold': ubm_model['gridsearchcv'].best_estimator_.tol
+            }
 
-        gmm.covariances_prior = values['covariances']
-        gmm.mean_prior = transformed_mean
-        gmm.weights_concentration_prior = values['weights']
-        # gmm.converged_ = values['converged']
-        # gmm.tol = values['threshold']
+        means_list = []
+        for mean in adaptive_values['means']:
+            means_list.append(np.ndarray.tolist(mean))
+
+        self.gmm_param_grid[0].update({"mean_prior": means_list})
 
         gmm_model = make_pipeline(
             StandardScaler(),
-            GridSearchCV(gmm,
+            GridSearchCV(BayesianGaussianMixture(),
                          param_grid=self.gmm_param_grid,
                          cv=self.CV,
                          refit=self.REFIT,
@@ -116,28 +121,21 @@ class GMMUBM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
-        self.create_ubm(speaker_ids=speaker_ids)
+        # self.create_ubm(speaker_ids=speaker_ids)
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
-        all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
-                                                            feature_type=self.feature_type)
+        # all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
+        #                                                     feature_type=self.feature_type)
+        #
+        # t = 'gmm_ubm_universal_background_model_' + self.feature_type
+        # p.draw_plt(files=all_training_features, model_path=t,
+        #            name='', type=t)
 
+        #
 
-        t = 'gmm_ubm_universal_background_model_' + self.feature_type
-        p.draw_plt(files=all_training_features, model_path=t,
-                   name='', type=t)
-
-        adaptive_values = {
-            'covariances': ubm_model['gridsearchcv'].best_estimator_.covariances_,
-            'means': ubm_model['gridsearchcv'].best_estimator_.means_,
-            'weights': ubm_model['gridsearchcv'].best_estimator_.weights_,
-            'converged': ubm_model['gridsearchcv'].best_estimator_.converged_,
-            'threshold': ubm_model['gridsearchcv'].best_estimator_.tol
-        }
-
-        jm.write_features_to_json_file(rf"E:/voxceleb/vox1_server/data.json", "UBM", adaptive_values)
+        # jm.write_features_to_json_file(rf"E:/voxceleb/vox1_server/data.json", "UBM", adaptive_values)
 
         for speaker_id in speaker_ids:
-            self.create_speaker_model(speaker_id=speaker_id, values=adaptive_values)
+            self.create_speaker_model(speaker_id=speaker_id)
 
     """
     # Prediction phase

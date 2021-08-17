@@ -2,7 +2,8 @@ from configparser import ConfigParser
 
 import pandas as pd
 
-from utils import dataframeManager as dam, directoryManager as dm
+import utils.util
+from utils import dataframeManager as dam, directoryManager as dm, util
 
 """
 ResultManager contains the methods to calculate the confusion mat after prediction and 
@@ -99,6 +100,16 @@ def create_speaker_object_with_confusion_mat(results):
 
 
 def create_overall_result_json(results, t, extra_data_object):
+
+    sorted_results = []
+    ids = []
+    for result in results:
+        ids.append(list(result[0].keys()).__getitem__(0))
+    print("pre sort:", ids)
+    ids.sort()
+    print(ids)
+
+
     speaker_object, confusion_mat = create_speaker_object_with_confusion_mat(results)
 
     extra_data = {"test_files_amount": len(extra_data_object.overall_test_files[0]),
