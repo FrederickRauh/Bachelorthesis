@@ -76,10 +76,11 @@ def create_speaker_object_with_confusion_mat(results):
     if not (fn + tp) == 0: false_reject_rate = fn / (fn + tp)
     equal_error_rate = (false_accept_rate + false_reject_rate) / 2
     accuracy = 100 - equal_error_rate
-    recall = -1
-    if not (tp + fn) == 0: recall = tp / (tp + fn)
     precision = -1
     if not (tp + fp) == 0: precision = tp / (tp + fp)
+    recall = -1
+    if not (tp + fn) == 0: recall = tp / (tp + fn)
+
     f1_score = -1
     if not (recall + precision) == 0: f1_score = ((2 * recall * precision) / (recall + precision))
 

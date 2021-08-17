@@ -4,7 +4,6 @@ import multiprocessing
 from datetime import datetime
 
 import numpy as np
-import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
@@ -18,7 +17,6 @@ from utils import audioManager as am, directoryManager as dm, modelManager as m,
 
 
 class SVM(object):
-    # score = 0
 
     def __init__(self):
         file = 'config.ini'
@@ -53,6 +51,8 @@ class SVM(object):
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
 
+        print(len(training_features))
+
         svm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(SVC(),
@@ -67,7 +67,6 @@ class SVM(object):
         t = 'svm_' + self.feature_type
         m.save_model(speaker_id, t, svm_model)
         # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
-
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
@@ -82,7 +81,7 @@ class SVM(object):
 
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
-            logging.info(f"starting mult process: {len(split_speaker_ids)}")
+            logging.info(f"starting multi process: {len(split_speaker_ids)}")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
 
             data = []
@@ -109,13 +108,13 @@ class SVM(object):
     def predict_file(self, speaker_id, t, file_path):
         svm_model = m.load_model(speaker_id, t)
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        scores = []
-
-        # for vector in features:
-        #     print(vector)
-        scores.append(svm_model.predict(features))
-        overall_score = sum(scores[0]) / 399
-        if overall_score > 0:
+        # score = svm_model.predict([features.flatten()])
+        # return score
+        # scores = []
+        scores = svm_model.predict(features)
+        score_sum = sum(scores)
+        overall_score = score_sum / 399
+        if overall_score > 0.20:
             return 1
         else:
             return 0

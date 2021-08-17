@@ -10,6 +10,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
+from sklearn.metrics import precision_recall_curve, plot_precision_recall_curve, average_precision_score
 
 from configparser import ConfigParser
 
@@ -24,9 +25,9 @@ class GMM(object):
         config = ConfigParser()
         config.read(file)
 
-        log_to_stderr()
-        logger = get_logger()
-        logger.disabled = not config.getboolean('system', 'LOG')
+        # log_to_stderr()
+        # logger = get_logger()
+        # logger.disabled = not config.getboolean('system', 'LOG')
 
         self.feature_type = config.get('features', 'FEATURE_TYPE')
         self.param_grid = [{
@@ -63,6 +64,8 @@ class GMM(object):
                          verbose=self.VERBOSE
                          )
         ).fit(training_features)
+        logging.info(f"{gmm_model['gridsearchcv'].best_params_}")
+
         t = 'gmm_' + self.feature_type
         m.save_model(speaker_id, t, gmm_model)
         # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
@@ -93,7 +96,7 @@ class GMM(object):
         # if defined in config.ini (SYSTEM, PROCESSES) > 1 multiple processes are started
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
-            logging.info(f"starting mult process:{len(split_speaker_ids)}")
+            logging.info(f"starting multi process:{len(split_speaker_ids)}")
 
 
             data = []
@@ -130,18 +133,15 @@ class GMM(object):
     def predict_file(self, speaker_id, t, file_path):
         model = m.load_model(speaker_id, t)
         features = am.get_features_for_prediction(file_path, self.feature_type)
-
         # scores = np.array(model.score(features))
         scores = model.predict_proba(features)
         count = 0
         for score in scores:
             for x in range(len(score)):
-                if score[x] >= 0.9:
+                if score[x] >= 0.99915:
                     count += 1
-
         count /= 399
-
-        if count > 0.7:
+        if count > 0.2:
             return 1
         else:
             return 0
@@ -168,27 +168,18 @@ class GMM(object):
         false_positive = []
         true_negative = []
 
-        # models = [m.load_model(speaker_id, t) for speaker_id in speaker_ids]
-        # ids_of_models = [id for id in speaker_ids]
+        model = m.load_model(speaker_id, t)
 
-        # log_likelihood = np.zeros(len(models))
-        #
-        # for i in range(len(models)):
-        #     scores = self.predict_file(models[i], test_features[x])
-        #     log_likelihood[i] = scores
 
-        # winner = ids_of_models[np.argmax(log_likelihood)]
+        x_test = []
+        y_test = []
+        y_score = []
+        for file in test_files:
+            features = am.get_features_for_prediction(file, self.feature_type)
+            x_test.append(features)
+            y_test.append(dm.get_id_of_path(file))
+            y_score.append(model.predict_proba(features))
 
-        # if winner == speaker_id:
-        #     if winner == id_of_file:  # match is the speaker
-        #         true_positive.append(test_files[x])
-        #     else:  # imposter file
-        #         false_positive.append(test_files[x])
-        # else:
-        #     if dm.get_id_of_path(test_files[x]) == speaker_id:  # should have matched but failed.
-        #         false_negative.append(test_files[x])
-        #     else:  # matches to a model, that is not owner of file
-        #         true_negative.append(test_files[x])
 
         for file in test_files:
             id_of_file = dm.get_id_of_path(file)

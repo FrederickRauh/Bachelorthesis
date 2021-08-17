@@ -53,10 +53,8 @@ class GMMUBM(object):
 
     def create_ubm(self, speaker_ids):
         start_time = datetime.now()
-
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
-
         logging.info(f"Training gmm_model with {self.feature_type} features for: 'UBM' :: There are: "
                      f"{len(all_training_features)} training files. Start at: {start_time}")
 
@@ -70,17 +68,17 @@ class GMMUBM(object):
                          verbose=self.VERBOSE
                          )
         ).fit(all_training_features)
+        logging.info(f"{ubm_model['gridsearchcv'].best_params_}")
 
         t = 'gmm_ubm_universal_background_model_' + self.feature_type
         m.save_model('', t, ubm_model)
-        p.draw_plt(files=all_training_features, model_path=t,
-                      name='', type=t)
+        # p.draw_plt(files=all_training_features, model_path=t,
+        #               name='', type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def create_speaker_model(self, speaker_id, values):
         start_time = datetime.now()
         training_features, _ = tt.get_data_for_training('gmm-ubm-gmm', [speaker_id], self.feature_type)
-
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id} :: There are: "
             f"{len(training_features)} training files. Start at: {start_time}")
@@ -89,13 +87,6 @@ class GMMUBM(object):
 
         means = values['means']
         transformed_mean = means[0]
-
-        # for i in range(len(means[0])):
-        #     mean = []
-        #     for j in range(len(means)):
-        #         mean.append(means[j][i])
-        #     transformed_mean.append(mean)
-        # transformed_mean = np.asarray(transformed_mean)
 
         gmm.covariances_prior = values['covariances']
         gmm.mean_prior = transformed_mean
@@ -114,10 +105,11 @@ class GMMUBM(object):
                          return_train_score=True
                          )
         ).fit(training_features)
+        logging.info(f"{gmm_model['gridsearchcv'].best_params_}")
 
         t = 'gmm_ubm_single_model_' + self.feature_type
         m.save_model(speaker_id, t, gmm_model)
-        p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
+        # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
@@ -156,7 +148,7 @@ class GMMUBM(object):
         test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
-            logging.info(f"starting mult process:{len(split_speaker_ids)}")
+            logging.info(f"starting multi process:{len(split_speaker_ids)}")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
 
             data = []

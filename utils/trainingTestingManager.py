@@ -1,9 +1,15 @@
 import numpy as np
 import pandas as pd
 
+from configparser import ConfigParser
+
 from utils import directoryManager as dm, util
 from utils.dataframeManager import load_dataframe_from_path
 
+file = 'config.ini'
+config = ConfigParser()
+config.read(file)
+index = config.getint("system", "TRAINING_FILES")
 
 def get_data_for_training(m_type, speaker_ids, feature_type):
     y = []
@@ -20,8 +26,9 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        index = 50
-        wav_files = wav_files[:int(index)]
+        if index > 0:
+            adjusted_index = index * 5
+            wav_files = wav_files[:int(adjusted_index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -33,12 +40,15 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     t = []
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
-        index = 25
-        wav_files = wav_files[:int(index)]
+        if index > 0:
+            adjusted_index = index * 5
+            ubm_index = (int(adjusted_index) / 3)
+            wav_files = wav_files[:int(adjusted_index)]
+
         if m_type == 'gmm-ubm-ubm':
-            wav_files = wav_files[:5]
+            wav_files = wav_files[:ubm_index]
         else:
-            wav_files = wav_files[5:]
+            wav_files = wav_files[ubm_index:]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -53,8 +63,8 @@ def get_svm_data_for_training(speaker_id, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         # only get at max 20 files from Speaker, to avoid to much training data
-        index = 25
-        wav_files = wav_files[:int(index)]
+        if index > 0:
+            wav_files = wav_files[:int(index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -64,7 +74,7 @@ def get_svm_data_for_training(speaker_id, feature_type):
             y.append(is_speaker)
 
     training_files = []
-    length_of_file = 0
+    training_features = []
 
     for element in t:
         element = element.replace('\\', '/')
@@ -75,13 +85,9 @@ def get_svm_data_for_training(speaker_id, feature_type):
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
         features = np.array(features)
-        # training_files.append(features)
         for vector in features:
-            training_files.append(vector)
-
-    # training_files = util.get_correct_array_form(training_files)
-
-    return training_files, y_new
+            training_features.append(vector)
+    return training_features, y_new
 
 
 def get_training_files(t, feature_type):

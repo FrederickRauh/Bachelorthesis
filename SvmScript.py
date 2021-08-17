@@ -18,8 +18,8 @@ if __name__ == '__main__':
     config.read(file)
 
     feature_type = config.get('features', 'FEATURE_TYPE')
-    # speaker_ids = dm.get_all_ids()
-    speaker_ids = ['id00001']
+    speaker_ids = dm.get_all_ids()
+    # speaker_ids = ['id00001']
 
     logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
