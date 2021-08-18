@@ -74,6 +74,7 @@ class GMM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
+        logging.info(f"starting training for: {speaker_ids}")
         for speaker_id in speaker_ids:
             self.create_model(speaker_id=speaker_id)
 
