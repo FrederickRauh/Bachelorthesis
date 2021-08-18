@@ -91,7 +91,9 @@ def create_feature_json_dir(file_path):
 
 #ids
 def get_all_ids():
-    return os.listdir(get_all_wav_path())
+    ids = os.listdir(get_all_wav_path())
+    ids.sort()
+    return ids
 
 
 def get_ids_of_paths(paths):
