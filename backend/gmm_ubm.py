@@ -126,7 +126,9 @@ class GMMUBM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
-        # self.create_ubm(speaker_ids=speaker_ids)
+        speaker_ids.sort()
+        logging.info(f"starting training for: {speaker_ids}")
+        self.create_ubm(speaker_ids=speaker_ids)
         # ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
         # all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
         #                                                     feature_type=self.feature_type)
@@ -138,7 +140,6 @@ class GMMUBM(object):
         #
 
         # jm.write_features_to_json_file(rf"E:/voxceleb/vox1_server/data.json", "UBM", adaptive_values)
-
         for speaker_id in speaker_ids:
             self.create_speaker_model(speaker_id=speaker_id)
 
