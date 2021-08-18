@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import math
@@ -56,10 +57,10 @@ class GMMUBM(object):
 
     def create_ubm(self, speaker_ids):
         start_time = datetime.now()
+        logging.info(f"Training ubm_model with {self.feature_type} features. Start at: {start_time}")
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
-        logging.info(f"Training gmm_model with {self.feature_type} features for: 'UBM' :: There are: "
-                     f"{len(all_training_features)} training files. Start at: {start_time}")
+        logging.info(f" ::: There are: {len(all_training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
 
         ubm_model = make_pipeline(
             StandardScaler(),
@@ -81,30 +82,34 @@ class GMMUBM(object):
 
     def create_speaker_model(self, speaker_id):
         start_time = datetime.now()
+        logging.info(f"Training gmm_model with {self.feature_type} features for: {speaker_id}. Start at: {start_time}")
         training_features, _ = tt.get_data_for_training('gmm-ubm-gmm', [speaker_id], self.feature_type)
-        logging.info(
-            f"Training gmm_model with {self.feature_type} features for: {speaker_id} :: There are: "
-            f"{len(training_features)} training files. Start at: {start_time}")
+        logging.info(f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
 
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)['gridsearchcv'].best_estimator_
 
         adaptive_values = {
-                'covariances': ubm_model['gridsearchcv'].best_estimator_.covariances_,
-                'means': ubm_model['gridsearchcv'].best_estimator_.means_,
-                'weights': ubm_model['gridsearchcv'].best_estimator_.weights_,
-                'converged': ubm_model['gridsearchcv'].best_estimator_.converged_,
-                'threshold': ubm_model['gridsearchcv'].best_estimator_.tol
+                'covariances': ubm_model.covariances_,
+                'means': ubm_model.means_,
+                'weights': ubm_model.weights_,
+                'converged': ubm_model.converged_,
+                'threshold': ubm_model.tol
             }
 
-        means_list = []
-        for mean in adaptive_values['means']:
-            means_list.append(np.ndarray.tolist(mean))
+        means = adaptive_values['means']
+        # print(len(means))
+        # means_list = []
+        # for mean in adaptive_values['means']:
+        #     means_list.append(np.ndarray.tolist(mean))
+        #
+        # self.gmm_param_grid[0].update({"means_init": means})
 
-        self.gmm_param_grid[0].update({"mean_prior": means_list})
+        gmm = BayesianGaussianMixture()
+        gmm.means_init = means
 
         gmm_model = make_pipeline(
             StandardScaler(),
-            GridSearchCV(BayesianGaussianMixture(),
+            GridSearchCV(gmm,
                          param_grid=self.gmm_param_grid,
                          cv=self.CV,
                          refit=self.REFIT,
@@ -122,7 +127,7 @@ class GMMUBM(object):
 
     def train(self, speaker_ids):
         # self.create_ubm(speaker_ids=speaker_ids)
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
+        # ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
         # all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
         #                                                     feature_type=self.feature_type)
         #
@@ -190,12 +195,14 @@ class GMMUBM(object):
                 if score[x] >= self.GMM_THRESHOLD:
                     gmm_count += 1
 
-        ubm_count /= len(features)
-        gmm_count /= len(features)
+        # print(speaker_id, file_path, gmm_count, ubm_count)
+        features_count = len(features)
+        ubm_count = math.log(ubm_count / features_count)
+        gmm_count = math.log(gmm_count / features_count)
 
         overall_score = gmm_count / ubm_count
-        # print(speaker_id, file_path, gmm_count, ubm_count, overall_score)
-        if overall_score > 7:
+
+        if overall_score > 0.5:
             return 1
         else:
             return 0
