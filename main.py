@@ -24,12 +24,11 @@ if __name__ == '__main__':
         print("container running. logs can be found in info-{model_type}.log")
 
     feature_type = config.get('features', 'FEATURE_TYPE')
-    speaker_ids = list(reversed(dm.get_all_ids()))
+    speaker_ids = dm.get_all_ids()
     # preparation phase
     if config.getboolean('system', 'EXTRACT_FEATURES'):
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
-
 
     """
     GMM
