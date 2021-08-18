@@ -16,7 +16,7 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.read(file)
 
-    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-gmm.log', level=config.getint('system', 'LOGLEVEL'))
+    logging.basicConfig(filename=rf'{dm.get_project_path()}/info.log', level=config.getint('system', 'LOGLEVEL'))
     logger = logging.getLogger()
     logger.disabled = not config.getboolean('system', 'LOG')
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'FEATURE_TYPE')
     speaker_ids = dm.get_all_ids()
-    speaker_ids = speaker_ids.sort()
+    logging.info(f"IDS: {speaker_ids}")
     # preparation phase
     if config.getboolean('system', 'EXTRACT_FEATURES'):
         logging.info(f"extracting features...")
@@ -36,11 +36,6 @@ if __name__ == '__main__':
     """
     gmm = GMM()
     if config.getboolean("system", "GMM"):
-        logging.basicConfig(filename=rf'{dm.get_project_path()}/info-gmm.log',
-                            level=config.getint('system', 'LOGLEVEL'))
-        logger = logging.getLogger()
-        logger.disabled = not config.getboolean('system', 'LOG')
-
         start_time = datetime.now()
         logging.info(f"Version GMM :{start_time}")
         logging.info(f"FEATURE_VERSION: {feature_type}")
@@ -62,11 +57,6 @@ if __name__ == '__main__':
     """
     gmm_ubm = GMMUBM()
     if config.getboolean("system", "GMM_UBM"):
-        logging.basicConfig(filename=rf'{dm.get_project_path()}/info-gmmubm.log',
-                            level=config.getint('system', 'LOGLEVEL'))
-        logger = logging.getLogger()
-        logger.disabled = not config.getboolean('system', 'LOG')
-
         start_time = datetime.now()
         logging.info(f"Version GMM-UBM :{start_time}")
         logging.info(f"FEATURE_VERSION: {feature_type}")
@@ -88,11 +78,6 @@ if __name__ == '__main__':
     """
     svm = SVM()
     if config.getboolean("system", "SVM"):
-        logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log',
-                            level=config.getint('system', 'LOGLEVEL'))
-        logger = logging.getLogger()
-        logger.disabled = not config.getboolean('system', 'LOG')
-
         start_time = datetime.now()
         logging.info(f"Version SVM :{start_time}")
         logging.info(f"FEATURE_VERSION: {feature_type}")
