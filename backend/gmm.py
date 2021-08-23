@@ -44,7 +44,7 @@ class GMM(object):
 
         self.PROCESSES = config.getint("system", "PROCESSES")
         self.THRESHOLD = config.getfloat("gmm", "G_THRESHOLD")
-        self.FEATURE_THRESHOLD = config.getfloat("system", "FEATURE_THRESHOLD")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm", "THRESHOLD")
 
     """
     # Training phase
@@ -126,14 +126,19 @@ class GMM(object):
 
     def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        scores = model.predict_proba(features)
-        count = 0
-        for score in scores:
-            for x in range(len(score)):
-                if score[x] >= self.THRESHOLD:
-                    count += 1
-        count /= len(features)
-        if count > self.FEATURE_THRESHOLD:
+        feature_count = len(features)
+        feature_scores = model.score_samples(features)
+        overall_score = sum(feature_scores) / feature_count
+
+        # scores = model.predict_proba(features)
+        #
+        # for score in scores:
+        #     for x in range(len(score)):
+        #         if score[x] >= self.THRESHOLD:
+        #             count += 1
+        # overall_score = count / feature_count
+
+        if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0
@@ -153,6 +158,8 @@ class GMM(object):
         false_negative = []
         false_positive = []
         true_negative = []
+
+        print(f"-----------------------------------------------------{speaker_id}")
 
         for file in test_files:
             id_of_file = dm.get_id_of_path(file)

@@ -15,3 +15,8 @@ def save_model(speaker_id, t, model):
 def load_model(speaker_id, t):
     model_path = dm.get_model_path(speaker_id, t)
     return pickle.load(open(model_path, 'rb'))
+
+
+def get_model_best_estimator_(speaker_id, t):
+    model = load_model(speaker_id, t)
+    return model['gridsearchcv'].best_params_

@@ -39,6 +39,9 @@ def extract_mfcc_from_signal(signal):
                     )
     mfcc = mfcc.astype(float)
     mfcc_scaled = preprocessing.scale(mfcc)
+    # reworked_mfcc = []
+    # for vector in mfcc_scaled:
+    #     reworked_mfcc.append(vector[1:])
     return mfcc_scaled
 
 
@@ -63,7 +66,7 @@ def extract_filter_banks_and_energies_from_signal(signal):
 def extract_processed_features_from_file(file_path):
     signal = extract_signal_from_file(file_path)
     mfcc = extract_mfcc_from_signal(signal)
-    mfcc = preprocessing.scale(mfcc)
+    # mfcc = preprocessing.scale(mfcc)
     d_mfcc, dd_mfcc = get_delta_delta_from_signal(mfcc)
     # ft1 = get_delta_delta_from_signal(signal)
     # ft2, ft3 = extract_filter_banks_and_energies_from_signal(signal)

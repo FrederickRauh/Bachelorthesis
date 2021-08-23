@@ -40,7 +40,7 @@ class SVM(object):
         self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
 
         self.PROCESSES = config.getint("system", "PROCESSES")
-        self.FEATURE_THRESHOLD = config.getfloat("system", "FEATURE_THRESHOLD")
+        self.FEATURE_THRESHOLD = config.getfloat("svm", "SVM_THRESHOLD")
 
     """
     # Training part

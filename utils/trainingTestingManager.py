@@ -126,7 +126,7 @@ def get_test_files_and_extra_data(speaker_ids):
 def load_test_files(speaker_ids):
     files = []
     for speaker_id in speaker_ids:
-        wav_files = dm.get_wav_files(speaker_id)[-10:]
+        wav_files = dm.get_wav_files(speaker_id)[-30:]
         for wav_file in wav_files:
             wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
             files.append(wav_file)

@@ -46,9 +46,7 @@ class GMMUBM(object):
         self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
 
         self.PROCESSES = config.getint("system", "PROCESSES")
-        self.GMM_THRESHOLD = config.getfloat("gmm-ubm", "GMM_THRESHOLD")
-        self.UBM_THRESHOLD = config.getfloat("gmm-ubm", "UBM_THRESHOLD")
-        self.FEATURE_THRESHOLD = config.getfloat("system", "FEATURE_THRESHOLD")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm-ubm", "THRESHOLD")
 
     """
     # Training phase
@@ -126,18 +124,8 @@ class GMMUBM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
-        self.create_ubm(speaker_ids=speaker_ids)
-        # ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
-        # all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
-        #                                                     feature_type=self.feature_type)
-        #
-        # t = 'gmm_ubm_universal_background_model_' + self.feature_type
-        # p.draw_plt(files=all_training_features, model_path=t,
-        #            name='', type=t)
+        # self.create_ubm(speaker_ids=speaker_ids)
 
-        #
-
-        # jm.write_features_to_json_file(rf"E:/voxceleb/vox1_server/data.json", "UBM", adaptive_values)
         for speaker_id in speaker_ids:
             self.create_speaker_model(speaker_id=speaker_id)
 
@@ -178,30 +166,54 @@ class GMMUBM(object):
 
     def predict_file(self, speaker_id, ubm_model, gmm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-
-        ubm_scores = ubm_model.predict_proba(features)
-        gmm_scores = gmm_model.predict_proba(features)
-
-        ubm_count = 0
-        gmm_count = 0
-        for score in ubm_scores:
-            for x in range(len(score)):
-                if score[x] >= self.UBM_THRESHOLD:
-                    ubm_count += 1
-
-        for score in gmm_scores:
-            for x in range(len(score)):
-                if score[x] >= self.GMM_THRESHOLD:
-                    gmm_count += 1
-
-        # print(speaker_id, file_path, gmm_count, ubm_count)
         features_count = len(features)
-        ubm_count = math.log(ubm_count / features_count)
-        gmm_count = math.log(gmm_count / features_count)
 
-        overall_score = gmm_count / ubm_count
+        features_score = []
 
-        if overall_score > 0.5:
+        # for vector in features:
+        #     ubm_score = ubm_model.score_samples([vector])
+        #     gmm_score = gmm_model.score_samples([vector])
+
+            # vector_score = gmm_score / ubm_score
+            # vector_score = ubm_score - gmm_score
+            # features_score.append(vector_score)
+
+        score_gmm = gmm_model.score_samples(features)
+        score_ubm = ubm_model.score_samples(features)
+
+        overall_score = (sum(score_gmm) / sum(score_ubm))
+        # overall_score = sum(features_score) / features_count
+
+        # print(file_path, overall_score, overall_score_2)
+
+        # ubm_scores = ubm_model.score_samples(features)
+        # gmm_scores = gmm_model.score_samples(features)
+
+        # ubm_count = 0
+        # gmm_count = 0
+        # for score in ubm_scores:
+        #     for x in range(len(score)):
+        #         if score[x] >= self.UBM_THRESHOLD:
+        #             ubm_count += 1
+        #
+        # for score in gmm_scores:
+        #     for x in range(len(score)):
+        #         if score[x] >= self.GMM_THRESHOLD:
+        #             gmm_count += 1
+        #
+        # # print(speaker_id, file_path, gmm_count, ubm_count)
+        #
+        # ubm_score = ubm_count / features_count
+        # gmm_score = gmm_count / features_count
+        #
+        # # ubm_count = math.log(ubm_count / features_count)
+        # # gmm_count = math.log(gmm_count / features_count)
+        #
+        # overall_score =  gmm_score / ubm_score
+        #
+        # print(file_path, ubm_score, gmm_score, overall_score)
+
+        if overall_score < self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0
