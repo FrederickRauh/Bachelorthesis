@@ -80,14 +80,15 @@ class GMM(object):
     """
     # Prediction phase
     """
-    def predict_n_speakers(self, speaker_ids, test_files):
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
         """
         Used to predict for n speakers. Test files are loaded from speaker folders (/dataset/wav/{id}/) last 10 files are taken
         :param speaker_ids:
         :param test_files
+        :param extra_data_object
         :return: outputs overall results into one big result.json, containing overview over all models and their performance.
         """
-        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
         # model loading and feature extraction done outside of potential threads to minimise file access, leading to speed improvement.
         models = [m.load_model(speaker_id, "gmm_" + self.feature_type) for speaker_id in speaker_ids]
@@ -155,30 +156,12 @@ class GMM(object):
         start_time = datetime.now()
         speaker_object_result = {}
 
-        true_positive = []
-        false_negative = []
-        false_positive = []
-        true_negative = []
-
-        print(f"-----------------------------------------------------{speaker_id}")
-
+        score_of_files = []
         for file in test_files:
-            id_of_file = dm.get_id_of_path(file)
-            score = self.predict_file(model, file)
-
-            if speaker_id == id_of_file:
-                if score == 1:
-                    true_positive.append(file)
-                else:
-                    false_negative.append(file)
-            else:
-                if score == 1:
-                    false_positive.append(file)
-                else:
-                    true_negative.append(file)
+            score_of_files.append(self.predict_file(model, file))
 
         speaker_object_result.update(
-            rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
+            rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
 

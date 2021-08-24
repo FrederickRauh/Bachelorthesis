@@ -75,8 +75,8 @@ class SVM(object):
     """
     # Prediction part
     """
-    def predict_n_speakers(self, speaker_ids, test_files):
-        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
+        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
         models = [m.load_model(speaker_id, "svm_" + self.feature_type) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
@@ -116,31 +116,17 @@ class SVM(object):
             return 0
 
     def predict_speaker(self, speaker_id, model, test_files):
+        start_time = datetime.now()
         speaker_object_result = {}
 
-        true_positive = []
-        false_negative = []
-        false_positive = []
-        true_negative = []
-
+        score_of_files = []
         for file in test_files:
-            id_of_file = dm.get_id_of_path(file)
-            score = self.predict_file(model, file)
-
-            if speaker_id == id_of_file:
-                if score == 1:
-                    true_positive.append(file)
-                else:
-                    false_negative.append(file)
-            else:
-                if score == 1:
-                    false_positive.append(file)
-                else:
-                    true_negative.append(file)
+            score_of_files.append(self.predict_file(model, file))
 
         speaker_object_result.update(
-            rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
+            rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
+        logging.info(f"{util.get_duration(start_time)}")
         rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}

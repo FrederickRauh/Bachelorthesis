@@ -16,10 +16,13 @@ config = ConfigParser()
 config.read(file)
 
 
-def get_voice_input_stream(timespan, samplerate, number, speaker_id):
-    logging.info("start collecting voice samples....")
-    folder_name = util.get_random_name()
-    time.sleep(4)
+def get_voice_input_stream(timespan, samplerate, number, speaker_id, attack_name):
+    logging.info("start collecting voice samples in 5 seconds. BETTER START TALKING NOW (just to be sure :) )...")
+    if attack_name == '':
+        folder_name = util.get_random_name()
+    else:
+        folder_name = attack_name + '--attack--' + util.get_random_name()
+    time.sleep(5)
     logging.info("Now recording voice samples....")
     for x in range(number):
         get_voice_input(timespan, samplerate, x, speaker_id, folder_name)

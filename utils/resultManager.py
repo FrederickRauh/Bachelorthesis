@@ -18,6 +18,36 @@ def load_result(file_path):
     return result_json.confusion_mat[0]
 
 
+def sort_results_and_create_speaker_object(speaker_id, file_list, score_list):
+    true_positive = []
+    false_negative = []
+    false_positive = []
+    true_negative = []
+    for x in range(len(file_list)):
+        score = score_list[x]
+        file = file_list[x]
+
+        id_of_file = dm.get_id_of_path(file)
+        if speaker_id == id_of_file:
+            if score == 1:
+                if not file.__contains__('--attack--'):
+                    true_positive.append(file)
+                else:
+                    false_positive.append(file)
+            else:
+                if not file.__contains__('--attack--'):
+                    false_negative.append(file)
+                else:
+                    true_negative.append(file)
+        else:
+            if score == 1:
+                false_positive.append(file)
+            else:
+                true_negative.append(file)
+
+    return create_speaker_object(true_positive, true_negative, false_positive, false_negative)
+
+
 def create_speaker_object(true_positive, true_negative, false_positive, false_negative):
     accepted_ids = dm.get_ids_of_paths(true_positive)
     denied_ids = dm.get_ids_of_paths(true_negative)

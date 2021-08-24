@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     test_files = []
     if config.getboolean('system', 'PREDICT'):
-        test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
     feature_type = config.get('features', 'FEATURE_TYPE')
     speaker_ids = dm.get_all_ids()
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
+            gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
+            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -93,6 +93,6 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
+            svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

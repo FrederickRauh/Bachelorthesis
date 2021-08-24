@@ -128,9 +128,19 @@ def load_test_files(speaker_ids):
     for speaker_id in speaker_ids:
         wav_files = dm.get_wav_files(speaker_id)[-20:]
         for wav_file in wav_files:
-            if speaker_id.__contains__('-replay'):
-                wav_file = rf'{dm.get_all_replay_path()}/{speaker_id}/{wav_file}'
-            else:
-                wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
+            wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
             files.append(wav_file)
     return np.asarray(files)
+
+
+def get_attack_files_and_extra_data(speaker_ids):
+    files = []
+    for speaker_id in speaker_ids:
+        attack_files = dm.get_attack_files(speaker_id)
+        for attack_file in attack_files:
+            attack_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{attack_file}'
+            files.append(attack_file)
+    test_files = np.asarray(files)
+    extra_data = [[test_files]]
+    extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])
+    return test_files, extra_data_object

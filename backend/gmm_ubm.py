@@ -132,8 +132,8 @@ class GMMUBM(object):
     """
     # Prediction phase
     """
-    def predict_n_speakers(self, speaker_ids, test_files):
-        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
+        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
         gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
@@ -164,54 +164,14 @@ class GMMUBM(object):
             part_results.append([self.predict_speaker(speaker_ids[x], ubm_model, gmm_models[x], test_files)])
         return part_results
 
-    def predict_file(self, speaker_id, ubm_model, gmm_model, file_path):
+    def predict_file(self, ubm_model, gmm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        features_count = len(features)
-
-        features_score = []
-
-        # for vector in features:
-        #     ubm_score = ubm_model.score_samples([vector])
-        #     gmm_score = gmm_model.score_samples([vector])
-
-            # vector_score = gmm_score / ubm_score
-            # vector_score = ubm_score - gmm_score
-            # features_score.append(vector_score)
 
         score_gmm = gmm_model.score_samples(features)
         score_ubm = ubm_model.score_samples(features)
 
         overall_score = (sum(score_gmm) / sum(score_ubm))
-        # overall_score = sum(features_score) / features_count
 
-        # print(file_path, overall_score, overall_score_2)
-
-        # ubm_scores = ubm_model.score_samples(features)
-        # gmm_scores = gmm_model.score_samples(features)
-
-        # ubm_count = 0
-        # gmm_count = 0
-        # for score in ubm_scores:
-        #     for x in range(len(score)):
-        #         if score[x] >= self.UBM_THRESHOLD:
-        #             ubm_count += 1
-        #
-        # for score in gmm_scores:
-        #     for x in range(len(score)):
-        #         if score[x] >= self.GMM_THRESHOLD:
-        #             gmm_count += 1
-        #
-        # # print(speaker_id, file_path, gmm_count, ubm_count)
-        #
-        # ubm_score = ubm_count / features_count
-        # gmm_score = gmm_count / features_count
-        #
-        # # ubm_count = math.log(ubm_count / features_count)
-        # # gmm_count = math.log(gmm_count / features_count)
-        #
-        # overall_score =  gmm_score / ubm_score
-        #
-        # print(file_path, ubm_score, gmm_score, overall_score)
 
         if overall_score < self.FEATURE_THRESHOLD:
             return 1
@@ -222,28 +182,12 @@ class GMMUBM(object):
         start_time = datetime.now()
         speaker_object_result = {}
 
-        true_positive = []
-        false_negative = []
-        false_positive = []
-        true_negative = []
-
+        score_of_files = []
         for file in test_files:
-                id_of_file = dm.get_id_of_path(file)
-                score = self.predict_file(speaker_id, ubm_model, gmm_model, file)
-
-                if speaker_id == id_of_file:
-                    if score == 1:
-                        true_positive.append(file)
-                    else:
-                        false_negative.append(file)
-                else:
-                    if score == 1:
-                        false_positive.append(file)
-                    else:
-                        true_negative.append(file)
+                score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
 
         speaker_object_result.update(
-            rm.create_speaker_object(true_positive, true_negative, false_positive, false_negative))
+                rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
 
