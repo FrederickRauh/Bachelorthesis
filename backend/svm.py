@@ -41,6 +41,9 @@ class SVM(object):
 
         self.PROCESSES = config.getint("system", "processes")
         self.FEATURE_THRESHOLD = config.getfloat("svm", "svm_threshold")
+        self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
+
+
 
     """
     # Training part
@@ -127,6 +130,8 @@ class SVM(object):
             rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
-        rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
+
+        if self.CREATE_SINGLE_RESULT:
+            rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}

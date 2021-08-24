@@ -36,9 +36,9 @@ if __name__ == '__main__':
 
     test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids)
 
-    version = config.get('system', 'version')
+    version = config.get('result', 'version')
 
-    config.set('system', 'version', 'dirty')
+    config.set('result', 'version', 'dirty')
     with open('config.ini', "w") as f:
         config.write(f)
 
@@ -63,6 +63,6 @@ if __name__ == '__main__':
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     time.sleep(10)
-    config.set('system', 'version', version)
+    config.set('result', 'version', version)
     with open('config.ini', "w") as f:
         config.write(f)

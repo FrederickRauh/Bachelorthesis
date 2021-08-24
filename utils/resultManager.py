@@ -66,7 +66,7 @@ def create_speaker_object(true_positive, true_negative, false_positive, false_ne
                       "Missed": {"amount": len(false_negative),
                                  "ids": missed_ids,
                                  "files": false_negative}}
-    if config.getboolean("system", "add_extra"):
+    if config.getboolean("result", "add_extra"):
         speaker_object = {"Accepted": {"amount": len(true_positive),
                                        "ids": accepted_ids,
                                        "files": true_positive},
@@ -149,7 +149,7 @@ def create_overall_result_json(results, t, extra_data_object):
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object', 'extra_data'])
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
-    system_version = config.get('system', 'version')
+    system_version = config.get('result', 'version')
     version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
     path = rf'{version_path}/result.json'
     dm.check_if_file_exists_then_remove(path)
@@ -162,7 +162,7 @@ def create_single_result_json(speaker_id, t, results):
     result_file = pd.DataFrame(result_json, columns=['confusion_mat', 'speaker_object'])
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
-    system_version = config.get('system', 'version')
+    system_version = config.get('result', 'version')
     version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
     path = rf'{version_path}/{speaker_id}-result.json'
     dm.check_if_file_exists_then_remove(path)
