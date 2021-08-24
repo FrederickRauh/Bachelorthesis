@@ -124,7 +124,7 @@ class GMMUBM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
     def train(self, speaker_ids):
-        # self.create_ubm(speaker_ids=speaker_ids)
+        self.create_ubm(speaker_ids=speaker_ids)
 
         for speaker_id in speaker_ids:
             self.create_speaker_model(speaker_id=speaker_id)
@@ -132,8 +132,8 @@ class GMMUBM(object):
     """
     # Prediction phase
     """
-    def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+    def predict_n_speakers(self, speaker_ids, test_files):
+        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
         gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:

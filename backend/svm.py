@@ -75,8 +75,8 @@ class SVM(object):
     """
     # Prediction part
     """
-    def predict_n_speakers(self, speaker_ids):
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+    def predict_n_speakers(self, speaker_ids, test_files):
+        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
         models = [m.load_model(speaker_id, "svm_" + self.feature_type) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)

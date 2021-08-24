@@ -7,7 +7,7 @@ from backend.gmm import GMM
 from backend.gmm_ubm import GMMUBM
 from backend.svm import SVM
 
-from utils import directoryManager as dm, util
+from utils import directoryManager as dm, trainingTestingManager as tt, util
 
 if __name__ == '__main__':
 
@@ -22,6 +22,10 @@ if __name__ == '__main__':
 
     if config.getboolean('system', 'LOG'):
         print("container running. logs can be found in info-{model_type}.log")
+
+    test_files = []
+    if config.getboolean('system', 'PREDICT'):
+        test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
     feature_type = config.get('features', 'FEATURE_TYPE')
     speaker_ids = dm.get_all_ids()
@@ -43,12 +47,12 @@ if __name__ == '__main__':
         # training phase
         if config.getboolean('system', 'TRAIN_MODEL'):
             logging.info(f"train models...")
-            gmm.train(speaker_ids=dm.get_all_ids())
+            gmm.train(speaker_ids=speaker_ids)
 
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            gmm.predict_n_speakers(speaker_ids=dm.get_all_ids())
+            gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -69,7 +73,7 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids)
+            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -89,6 +93,6 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'PREDICT_SPEAKER'):
             logging.info(f"predicting speaker...")
-            svm.predict_n_speakers(speaker_ids=speaker_ids)
+            svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files)
 
         logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

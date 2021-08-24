@@ -43,8 +43,8 @@ class GMM(object):
         self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
 
         self.PROCESSES = config.getint("system", "PROCESSES")
-        self.THRESHOLD = config.getfloat("gmm", "G_THRESHOLD")
-        self.FEATURE_THRESHOLD = config.getfloat("gmm", "THRESHOLD")
+        self.THRESHOLD = config.getfloat("gmm", "THRESHOLD")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm", "G_THRESHOLD")
 
     """
     # Training phase
@@ -80,13 +80,14 @@ class GMM(object):
     """
     # Prediction phase
     """
-    def predict_n_speakers(self, speaker_ids):
+    def predict_n_speakers(self, speaker_ids, test_files):
         """
         Used to predict for n speakers. Test files are loaded from speaker folders (/dataset/wav/{id}/) last 10 files are taken
         :param speaker_ids:
+        :param test_files
         :return: outputs overall results into one big result.json, containing overview over all models and their performance.
         """
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+        _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
         # model loading and feature extraction done outside of potential threads to minimise file access, leading to speed improvement.
         models = [m.load_model(speaker_id, "gmm_" + self.feature_type) for speaker_id in speaker_ids]
@@ -127,16 +128,16 @@ class GMM(object):
     def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
         feature_count = len(features)
+        count = 0
         feature_scores = model.score_samples(features)
-        overall_score = sum(feature_scores) / feature_count
+        # overall_score = sum(feature_scores) / feature_count
 
         # scores = model.predict_proba(features)
         #
-        # for score in scores:
-        #     for x in range(len(score)):
-        #         if score[x] >= self.THRESHOLD:
-        #             count += 1
-        # overall_score = count / feature_count
+        for score in feature_scores:
+            if score >= self.THRESHOLD:
+                count += 1
+        overall_score = count / feature_count
 
         if overall_score > self.FEATURE_THRESHOLD:
             return 1

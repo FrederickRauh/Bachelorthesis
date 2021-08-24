@@ -40,6 +40,11 @@ def get_parent_path(speaker_id):
     return make_dir(os.path.join(parent_path, speaker_id))
 
 
+def get_parent_replay_path(speaker_id):
+    parent_path = make_dir(get_all_replay_path())
+    return make_dir(os.path.join(parent_path, speaker_id))
+
+
 def list_sub_folders(parent_path):
     return os.listdir(parent_path)
 
@@ -114,6 +119,13 @@ def get_id_of_path(path):
     return "no id in path"
 
 
+def get_all_replay_ids():
+    parent_path = make_dir(rf'{get_data_path()}/replay')
+    ids = os.listdir(parent_path)
+    ids.sort()
+    return ids
+
+
 #models
 def get_all_models_path():
     path = rf'{get_data_path()}/models'
@@ -183,8 +195,8 @@ def get_all_wav_path():
     return rf'{get_data_path()}/wav'
 
 
-def get_all_wav_names():
-    return
+def get_all_replay_path():
+    return rf'{get_data_path()}/replay'
 
 
 def create_wav_file_name(speaker_id, number):
@@ -196,14 +208,21 @@ def create_wav_file_name(speaker_id, number):
 
 
 def get_file_name(speaker_id, folder_name, number):
-    parent_path = get_parent_path(speaker_id)
+    if speaker_id.__contains__('-replay'):
+        parent_path = get_parent_replay_path(speaker_id)
+    else:
+        parent_path = get_parent_path(speaker_id)
+
     wav_path = get_sub_folder_path(parent_path, folder_name)
     file_name = create_wav_file_name('', number)
     return pjoin(wav_path, file_name)
 
 
 def get_wav_files(speaker_id):
-    parent_path = get_parent_path(speaker_id)
+    if speaker_id.__contains__('replay'):
+        parent_path = get_parent_replay_path(speaker_id)
+    else:
+        parent_path = get_parent_path(speaker_id)
     wav_folders = get_wav_folders(speaker_id)
     wav_files = []
     for directory in wav_folders:
@@ -220,8 +239,12 @@ def get_wav_files(speaker_id):
 
 
 def get_wav_folders(speaker_id):
-    parent_path = get_parent_path(speaker_id)
-    return list_sub_folders(parent_path)
+    if speaker_id.__contains__('-replay'):
+        parent_path = get_parent_replay_path(speaker_id)
+        return list_sub_folders(parent_path)
+    else:
+        parent_path = get_parent_path(speaker_id)
+        return list_sub_folders(parent_path)
 
 
 def get_wav_files_in_folder(path):

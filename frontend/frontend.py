@@ -1,6 +1,7 @@
 import logging
 import multiprocessing
 import os
+import time
 
 import sounddevice as sd
 from configparser import ConfigParser
@@ -16,8 +17,10 @@ config.read(file)
 
 
 def get_voice_input_stream(timespan, samplerate, number, speaker_id):
-    logging.info("collecting voice samples....")
+    logging.info("start collecting voice samples....")
     folder_name = util.get_random_name()
+    time.sleep(4)
+    logging.info("Now recording voice samples....")
     for x in range(number):
         get_voice_input(timespan, samplerate, x, speaker_id, folder_name)
 
