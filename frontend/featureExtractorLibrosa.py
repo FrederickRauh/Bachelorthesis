@@ -14,7 +14,7 @@ config.read(file)
 
 
 def extract_mfcc_from_signal(signal):
-    mfcc = librosa.feature.mfcc(signal, sr=config.getint('features', 'SAMPLE_RATE'), n_mfcc=config.getint('features', 'N_MFCC'))
+    mfcc = librosa.feature.mfcc(signal, sr=config.getint('features', 'sample_rate'), n_mfcc=config.getint('features', 'n_mfcc'))
     mfcc = mfcc.astype(float)
     mfcc_scaled = preprocessing.scale(mfcc)
     return mfcc_scaled
@@ -40,13 +40,13 @@ def extract_extra_features_from_signal(signal, mfcc, d_mfcc, dd_mfcc):
 
 
 def extract_processed_mfcc_from_file(file_path):
-    signal, sr = librosa.load(file_path, sr=config.getint('features', 'SAMPLE_RATE'))
+    signal, sr = librosa.load(file_path, sr=config.getint('features', 'sample_rate'))
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     return extract_mfcc_from_signal(signal)
 
 
 def extract_processed_features_from_file(file_path):
-    signal, sr = librosa.load(file_path, sr=config.getint('features', 'SAMPLE_RATE'))
+    signal, sr = librosa.load(file_path, sr=config.getint('features', 'sample_rate'))
     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
     signal = signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
     mfcc = extract_mfcc_from_signal(signal)
@@ -54,7 +54,7 @@ def extract_processed_features_from_file(file_path):
     dd_mfcc = librosa.feature.delta(d_mfcc, order=2)
     # return np.hstack((mfcc, d_mfcc))
     #
-    x = -1 * (config.getint('features', 'N_MFCC') - 1)
+    x = -1 * (config.getint('features', 'n_mfcc') - 1)
     features = np.concatenate((mfcc[x:], d_mfcc[x:], dd_mfcc[x:]))
     features = np.hstack(features)
     # feature = extract_extra_features_from_signal(signal, mfcc, d_mfcc, dd_mfcc)

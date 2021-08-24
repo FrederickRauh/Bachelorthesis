@@ -38,23 +38,23 @@ def get_voice_input(timespan, samplerate, number, speaker_id, folder_name):
 
 
 def feature_extraction_for_n_speaker(speaker_ids, create_dataframe):
-    PROCESSES = config.getint('system', 'PROCESSES')
+    PROCESSES = config.getint('system', 'processes')
     if PROCESSES > 1:
     # if False:
         split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, PROCESSES)
         pool = multiprocessing.Pool(processes=PROCESSES)
         data = []
         for x in range(PROCESSES):
-            data.append((split_speaker_ids[x], config.get('features', 'FEATURE_TYPE')))
+            data.append((split_speaker_ids[x], config.get('features', 'feature_type')))
         pool.starmap(feature_extraction_for_files, data)
         pool.close()
         pool.join()
     else:
-        feature_extraction_for_files(speaker_ids, config.get('features', 'FEATURE_TYPE'))
+        feature_extraction_for_files(speaker_ids, config.get('features', 'feature_type'))
     if create_dataframe:
-        if config.get('features', 'FEATURE_TYPE') == 'librosa':
+        if config.get('features', 'feature_type') == 'librosa':
             dam.create_librosa_dataframe(speaker_ids)
-        if config.get('features', 'FEATURE_TYPE') == 'psf':
+        if config.get('features', 'feature_type') == 'psf':
             dam.create_psf_dataframe(speaker_ids)
 
 

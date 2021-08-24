@@ -30,11 +30,11 @@ def extract_signal_from_file(file_path):
 
 def extract_mfcc_from_signal(signal):
     mfcc = psf.mfcc(signal=signal,
-                    samplerate=config.getint('features', 'SAMPLE_RATE'),
-                    winlen=config.getfloat('features', 'WINLEN'),
-                    winstep=config.getfloat("features", "WINSTEP"),
-                    numcep=config.getint('features', 'N_MFCC'),
-                    appendEnergy=config.getboolean('features', 'APPENDENERGY'),
+                    samplerate=config.getint('features', 'sample_rate'),
+                    winlen=config.getfloat('features', 'winlen'),
+                    winstep=config.getfloat("features", "winstep"),
+                    numcep=config.getint('features', 'n_mfcc'),
+                    appendEnergy=config.getboolean('features', 'appendenergy'),
                     winfunc=lambda x: np.hamming(x)
                     )
     mfcc = mfcc.astype(float)
@@ -55,10 +55,10 @@ def get_delta_delta_from_signal(mfcc):
 
 
 def extract_filter_banks_and_energies_from_signal(signal):
-    return psf.fbank(signal, samplerate=config.getint('features', 'SAMPLE_RATE'),
-                     nfilt=config.getint('features', 'N_MELS'),
-                     winlen=config.getfloat('features', 'WINLEN'),
-                     winstep=config.getfloat('features', 'WINSTEP'),
+    return psf.fbank(signal, samplerate=config.getint('features', 'sample_rate'),
+                     nfilt=config.getint('features', 'n_mels'),
+                     winlen=config.getfloat('features', 'winlen'),
+                     winstep=config.getfloat('features', 'winstep'),
                      winfunc=lambda x: np.hamming(x)
                      )
 

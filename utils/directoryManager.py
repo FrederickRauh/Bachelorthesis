@@ -22,7 +22,7 @@ def get_data_path():
     """
     Used to access folder containing data
     """
-    return config.get('system', 'DATASET_PATH')
+    return config.get('system', 'dataset_path')
 
 
 # folder structure

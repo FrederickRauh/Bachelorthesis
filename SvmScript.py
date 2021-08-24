@@ -17,7 +17,7 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.read(file)
 
-    feature_type = config.get('features', 'FEATURE_TYPE')
+    feature_type = config.get('features', 'feature_type')
     speaker_ids = list(reversed(dm.get_all_ids()))
     # finished_ids = ['id10050',
     #                 'id10049', 'id10048', 'id10047', 'id10046', 'id10045', 'id10044', 'id10043', 'id10042', 'id10041', 'id10040',
@@ -30,24 +30,24 @@ if __name__ == '__main__':
     # speaker_ids = speaker_ids
 
 
-    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'LOGLEVEL'))
+    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-svm.log', level=config.getint('system', 'loglevel'))
     logger = logging.getLogger()
-    logger.disabled = not config.getboolean('system', 'LOG')
-    if config.getboolean('system', 'LOG'):
+    logger.disabled = not config.getboolean('system', 'log')
+    if config.getboolean('system', 'log'):
         print("container running. logs can be found in info-{model_type}.log")
 
     start_time = datetime.now()
     logging.info(f"Version SVM :{start_time}")
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
-    if config.getboolean('system', 'EXTRACT_FEATURES'):
+    if config.getboolean('system', 'extract_features'):
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=speaker_ids, create_dataframe=True)
     # training phase
-    if config.getboolean('system', 'TRAIN_MODEL'):
+    if config.getboolean('system', 'train_model'):
         logging.info(f"retraining models...")
         retrain_ids = []
-        t = "svm_" + config.getfloat("system", "FEATURE_THRESHOLD")
+        t = "svm_" + config.getfloat("system", "feature_threshold")
         for speaker_id in speaker_ids:
             params = m.get_model_best_estimator_(speaker_id, t)
             if params['C'] == 1.0:
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         print(retrain_ids)
         svm.train(speaker_ids=retrain_ids)
     # prediction phase
-    if config.getboolean('system', 'PREDICT_SPEAKER'):
+    if config.getboolean('system', 'predict_speaker'):
         logging.info(f"predicting speaker...")
         svm.predict_n_speakers(speaker_ids=speaker_ids)
 

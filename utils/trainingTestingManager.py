@@ -9,7 +9,7 @@ from utils.dataframeManager import load_dataframe_from_path
 file = 'config.ini'
 config = ConfigParser()
 config.read(file)
-index = config.getint("system", "TRAINING_FILES")
+index = config.getint("system", "training_files")
 
 def get_data_for_training(m_type, speaker_ids, feature_type):
     y = []

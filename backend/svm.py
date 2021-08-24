@@ -23,24 +23,24 @@ class SVM(object):
         config = ConfigParser()
         config.read(file)
 
-        self.feature_type = config.get('features', 'FEATURE_TYPE')
+        self.feature_type = config.get('features', 'feature_type')
 
-        C = np.arange(config.getfloat('svm', 'C.lower'), config.getfloat('svm', 'C.upper'), 0.1)
+        C = np.arange(config.getfloat('svm', 'C.lower'), config.getfloat('svm', 'c.upper'), 0.1)
         C = [round(x, 2) for x in C]
 
         self.param_grid = [{
-            'kernel': json.loads(config.get('svm', 'KERNELS')),
+            'kernel': json.loads(config.get('svm', 'kernels')),
             'C': C,
-            'gamma': json.loads(config.get('svm', 'GAMMA'))
+            'gamma': json.loads(config.get('svm', 'gamma'))
         }]
 
-        self.CV = config.getint('modelconfig', 'CV')
-        self.REFIT = config.getboolean('modelconfig', 'REFIT')
-        self.N_JOBS = config.getint('modelconfig', 'N_JOBS')
-        self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
+        self.CV = config.getint('modelconfig', 'cv')
+        self.REFIT = config.getboolean('modelconfig', 'refit')
+        self.N_JOBS = config.getint('modelconfig', 'n_jobs')
+        self.VERBOSE = config.getint('modelconfig', 'verbose')
 
-        self.PROCESSES = config.getint("system", "PROCESSES")
-        self.FEATURE_THRESHOLD = config.getfloat("svm", "SVM_THRESHOLD")
+        self.PROCESSES = config.getint("system", "processes")
+        self.FEATURE_THRESHOLD = config.getfloat("svm", "svm_threshold")
 
     """
     # Training part

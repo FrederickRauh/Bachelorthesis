@@ -27,26 +27,26 @@ class GMMUBM(object):
         file = rf'{dm.get_project_path()}/config.ini'
         config = ConfigParser()
         config.read(file)
-        self.feature_type = config.get('features', 'FEATURE_TYPE')
+        self.feature_type = config.get('features', 'feature_type')
         self.ubm_param_grid = [{
-            'n_components': json.loads(config.get('gmm-ubm', 'UBM_N_COMPONENTS')),
-            'max_iter': json.loads(config.get('gmm-ubm', 'UBM_MAX_ITER')),
-            'covariance_type': json.loads(config.get('gmm-ubm', 'UBM_COVARIANCE_TYPE')),
-            'n_init': json.loads(config.get('gmm-ubm', 'UBM_N_INIT'))
+            'n_components': json.loads(config.get('gmm-ubm', 'ubm_n_components')),
+            'max_iter': json.loads(config.get('gmm-ubm', 'ubm_max_iter')),
+            'covariance_type': json.loads(config.get('gmm-ubm', 'ubm_covariance_type')),
+            'n_init': json.loads(config.get('gmm-ubm', 'ubm_n_init'))
         }]
         self.gmm_param_grid = [{
-            'n_components': json.loads(config.get('gmm-ubm', 'GMM_N_COMPONENTS')),
-            'max_iter': json.loads(config.get('gmm-ubm', 'GMM_MAX_ITER')),
-            'covariance_type': json.loads(config.get('gmm-ubm', 'GMM_COVARIANCE_TYPE')),
-            'n_init': json.loads(config.get('gmm-ubm', 'GMM_N_INIT'))
+            'n_components': json.loads(config.get('gmm-ubm', 'gmm_n_components')),
+            'max_iter': json.loads(config.get('gmm-ubm', 'gmm_max_iter')),
+            'covariance_type': json.loads(config.get('gmm-ubm', 'gmm_covariance_type')),
+            'n_init': json.loads(config.get('gmm-ubm', 'gmm_n_init'))
         }]
-        self.CV = config.getint('modelconfig', 'CV')
-        self.REFIT = config.getboolean('modelconfig', 'REFIT')
-        self.N_JOBS = config.getint('modelconfig', 'N_JOBS')
-        self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
+        self.CV = config.getint('modelconfig', 'cv')
+        self.REFIT = config.getboolean('modelconfig', 'refit')
+        self.N_JOBS = config.getint('modelconfig', 'n_jobs')
+        self.VERBOSE = config.getint('modelconfig', 'verbose')
 
-        self.PROCESSES = config.getint("system", "PROCESSES")
-        self.FEATURE_THRESHOLD = config.getfloat("gmm-ubm", "THRESHOLD")
+        self.PROCESSES = config.getint("system", "processes")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm-ubm", "threshold")
 
     """
     # Training phase

@@ -20,42 +20,42 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.read(file)
 
-    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-attack.log', level=attackConfig.getint('system', 'LOGLEVEL'))
+    logging.basicConfig(filename=rf'{dm.get_project_path()}/info-attack.log', level=attackConfig.getint('system', 'loglevel'))
     logger = logging.getLogger()
-    logger.disabled = not attackConfig.getboolean('system', 'LOG')
+    logger.disabled = not attackConfig.getboolean('system', 'log')
 
-    new_file_ids = json.loads(attackConfig.get('system', 'NEW_FILE_IDS'))
+    new_file_ids = json.loads(attackConfig.get('system', 'new_file_ids'))
 
-    if attackConfig.getboolean('system', 'MAKE_NEW_FILES'):
+    if attackConfig.getboolean('system', 'make_new_files'):
         for id in new_file_ids:
             time.sleep(10)
-            frontend.get_voice_input_stream(4, 16000, attackConfig.getint('system', 'NEW_FILE_COUNT'), id, 'replay')
+            frontend.get_voice_input_stream(4, 16000, attackConfig.getint('system', 'new_file_count'), id, 'replay')
 
     speaker_ids = dm.get_all_ids()
     test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
     test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids)
 
-    version = config.get('system', 'VERSION')
+    version = config.get('system', 'version')
 
-    config.set('system', 'VERSION', 'dirty')
+    config.set('system', 'version', 'dirty')
     with open('config.ini', "w") as f:
         config.write(f)
 
-    if attackConfig.getboolean('system', 'PREDICT_SPEAKER'):
-        if attackConfig.getboolean("system", "GMM"):
+    if attackConfig.getboolean('system', 'predict_speaker'):
+        if attackConfig.getboolean("system", "gmm"):
             start_time = datetime.now()
             logging.info(f"predicting speaker, gmm model...")
             gmm = GMM()
             gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
-        if attackConfig.getboolean("system", "GMM_UBM"):
+        if attackConfig.getboolean("system", "gmm_ubm"):
             start_time = datetime.now()
             logging.info(f"predicting speaker, gmm-ubm model...")
             gmm_ubm = GMMUBM()
             gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
-        if attackConfig.getboolean("system", "SVM"):
+        if attackConfig.getboolean("system", "svm"):
             start_time = datetime.now()
             logging.info(f"predicting speaker, svm model...")
             svm = SVM()
@@ -63,6 +63,6 @@ if __name__ == '__main__':
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     time.sleep(10)
-    config.set('system', 'VERSION', version)
+    config.set('system', 'version', version)
     with open('config.ini', "w") as f:
         config.write(f)

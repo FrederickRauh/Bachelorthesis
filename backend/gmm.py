@@ -25,26 +25,26 @@ class GMM(object):
         config = ConfigParser()
         config.read(file)
 
-        # log_to_stderr()
-        # logger = get_logger()
-        # logger.disabled = not config.getboolean('system', 'LOG')
+        log_to_stderr()
+        logger = get_logger()
+        logger.disabled = not config.getboolean('system', 'log')
 
-        self.feature_type = config.get('features', 'FEATURE_TYPE')
+        self.feature_type = config.get('features', 'feature_type')
         self.param_grid = [{
-            'n_components': json.loads(config.get('gmm', 'G_N_COMPONENTS')),
-            'max_iter': json.loads(config.get('gmm', 'G_MAX_ITER')),
-            'covariance_type': json.loads(config.get('gmm', 'G_COVARIANCE_TYPE')),
-            'n_init': json.loads(config.get('gmm', 'G_N_INIT'))
+            'n_components': json.loads(config.get('gmm', 'g_n_components')),
+            'max_iter': json.loads(config.get('gmm', 'g_max_iter')),
+            'covariance_type': json.loads(config.get('gmm', 'g_covariance_type')),
+            'n_init': json.loads(config.get('gmm', 'g_n_init'))
         }]
 
-        self.CV = config.getint('modelconfig', 'CV')
-        self.REFIT = config.getboolean('modelconfig', 'REFIT')
-        self.N_JOBS = config.getint('modelconfig', 'N_JOBS')
-        self.VERBOSE = config.getint('modelconfig', 'VERBOSE')
+        self.CV = config.getint('modelconfig', 'cv')
+        self.REFIT = config.getboolean('modelconfig', 'refit')
+        self.N_JOBS = config.getint('modelconfig', 'n_jobs')
+        self.VERBOSE = config.getint('modelconfig', 'verbose')
 
-        self.PROCESSES = config.getint("system", "PROCESSES")
-        self.THRESHOLD = config.getfloat("gmm", "THRESHOLD")
-        self.FEATURE_THRESHOLD = config.getfloat("gmm", "G_THRESHOLD")
+        self.PROCESSES = config.getint("system", "processes")
+        self.THRESHOLD = config.getfloat("gmm", "threshold")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm", "g_threshold")
 
     """
     # Training phase
