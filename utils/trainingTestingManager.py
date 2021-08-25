@@ -19,6 +19,7 @@ def get_data_for_training(m_type, speaker_ids, feature_type):
         files = get_gmm_data_for_training(speaker_ids, feature_type)
     if m_type.__contains__('gmm-ubm'):
         files = get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type)
+
     return np.asarray(files), y
 
 
@@ -70,7 +71,7 @@ def get_svm_data_for_training(speaker_id, feature_type):
             is_speaker = 1 if id == speaker_id else 0
             for x in range(399):
                 y_new.append(is_speaker)
-            y.append(is_speaker)
+            # y.append(is_speaker)
 
     training_files = []
     training_features = []
@@ -86,6 +87,7 @@ def get_svm_data_for_training(speaker_id, feature_type):
         features = np.array(features)
         for vector in features:
             training_features.append(vector)
+
     return training_features, y_new
 
 
@@ -124,9 +126,10 @@ def get_test_files_and_extra_data(speaker_ids):
 
 
 def load_test_files(speaker_ids):
+    index = config.getint("system", 'testing_files') * (-1)
     files = []
     for speaker_id in speaker_ids:
-        wav_files = dm.get_wav_files(speaker_id)[-20:]
+        wav_files = dm.get_wav_files(speaker_id)[index:]
         for wav_file in wav_files:
             wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
             files.append(wav_file)

@@ -23,9 +23,7 @@ if __name__ == '__main__':
     if config.getboolean('system', 'log'):
         print("container running. logs can be found in info-{model_type}.log")
 
-    test_files = []
-    if config.getboolean('system', 'predict_speaker'):
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+
 
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
@@ -33,7 +31,13 @@ if __name__ == '__main__':
     # preparation phase
     if config.getboolean('system', 'extract_features'):
         logging.info(f"extracting features...")
-        frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
+        frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=speaker_ids, create_dataframe=True)
+
+    test_files = []
+    if config.getboolean('system', 'predict_speaker'):
+        start_time = datetime.now()
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
 
     """
     GMM

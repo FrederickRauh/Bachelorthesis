@@ -15,7 +15,7 @@ from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, plotter as p, util, \
+from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, util, \
     resultManager as rm, \
     trainingTestingManager as tt
 
@@ -167,14 +167,18 @@ class GMMUBM(object):
 
     def predict_file(self, ubm_model, gmm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
+        feature_count = len(features)
 
+        scores = []
         score_gmm = gmm_model.score_samples(features)
         score_ubm = ubm_model.score_samples(features)
+        length = len(score_gmm)
+        for x in range(length):
+            vector_score = score_gmm[x] - score_ubm[x]
+            scores.append(vector_score)
+        score = sum(scores) / feature_count
 
-        overall_score = (sum(score_gmm) / sum(score_ubm))
-
-
-        if overall_score < self.FEATURE_THRESHOLD:
+        if score >= self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0

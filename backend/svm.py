@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, plotter as p, util, \
+from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
     resultManager as rm, trainingTestingManager as tt
 
 
@@ -31,7 +31,8 @@ class SVM(object):
         self.param_grid = [{
             'kernel': json.loads(config.get('svm', 'kernels')),
             'C': C,
-            'gamma': json.loads(config.get('svm', 'gamma'))
+            'gamma': json.loads(config.get('svm', 'gamma')),
+            'class_weight': json.loads(config.get('svm', 'class_weight'))
         }]
 
         self.CV = config.getint('modelconfig', 'cv')
@@ -42,7 +43,6 @@ class SVM(object):
         self.PROCESSES = config.getint("system", "processes")
         self.FEATURE_THRESHOLD = config.getfloat("svm", "svm_threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
-
 
 
     """
@@ -84,12 +84,13 @@ class SVM(object):
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
+            print(split_speaker_ids)
             data = []
             for i in range(self.PROCESSES):
                 data.append((split_speaker_ids[i], split_models[i], test_files))
 
-            logging.info(f"starting multi process: {len(split_speaker_ids)}")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
+            logging.info(f"starting multi process: {len(split_speaker_ids)}")
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
@@ -113,6 +114,7 @@ class SVM(object):
         scores = svm_model.predict(features)
         score_sum = sum(scores)
         overall_score = score_sum / len(features)
+
         if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:
@@ -122,10 +124,14 @@ class SVM(object):
         start_time = datetime.now()
         speaker_object_result = {}
 
+        logging.info(f"starting prediction for speaker: {start_time}")
         score_of_files = []
+        count = 0
+        file_start_time = datetime.now()
         for file in test_files:
             score_of_files.append(self.predict_file(model, file))
 
+        logging.info(f"all scores collected: {util.get_duration(start_time)}")
         speaker_object_result.update(
             rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 

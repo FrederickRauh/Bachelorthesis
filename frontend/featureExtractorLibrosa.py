@@ -6,7 +6,7 @@ import numpy as np
 from scipy.stats import skew
 from sklearn import preprocessing
 
-from utils import audioManager as am, directoryManager as dm, jsonManager as jm, util, plotter as p
+from utils import audioManager as am, directoryManager as dm, jsonManager as jm, util
 
 file = rf'{dm.get_project_path()}/config.ini'
 config = ConfigParser()

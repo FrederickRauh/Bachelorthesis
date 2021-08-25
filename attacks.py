@@ -27,10 +27,9 @@ if __name__ == '__main__':
     if config.getboolean('system', 'log'):
         print("container running. logs can be found in info-{model_type}.log")
 
-    new_file_ids = json.loads(attackConfig.get('system', 'new_file_ids'))
-
     if attackConfig.getboolean('system', 'make_new_files'):
         print("STARTING")
+        new_file_ids = json.loads(attackConfig.get('system', 'new_file_ids'))
         for id in new_file_ids:
             print(f"switch")
             time.sleep(5)
@@ -48,7 +47,7 @@ if __name__ == '__main__':
     config.set("result", 'version', 'dirty')
     with open("config.ini", "w") as f:
         config.write(f)
-    time.sleep(10)
+    time.sleep(60)
 
     if attackConfig.getboolean('system', 'predict_speaker'):
         if attackConfig.getboolean("system", "gmm"):
@@ -74,6 +73,8 @@ if __name__ == '__main__':
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     time.sleep(10)
+    if prev_version == 'dirty':
+        prev_version = 'clean'
     config.set('result', 'version', prev_version)
     with open('config.ini', "w") as f:
         config.write(f)

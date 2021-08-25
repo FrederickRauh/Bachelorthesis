@@ -14,7 +14,7 @@ from sklearn.metrics import precision_recall_curve, plot_precision_recall_curve,
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, plotter as p, util, \
+from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
     resultManager as rm, trainingTestingManager as tt
 
 
@@ -43,8 +43,8 @@ class GMM(object):
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
         self.PROCESSES = config.getint("system", "processes")
-        self.THRESHOLD = config.getfloat("gmm", "threshold")
-        self.FEATURE_THRESHOLD = config.getfloat("gmm", "g_threshold")
+        # self.THRESHOLD = config.getfloat("gmm", "g_threshold")
+        self.FEATURE_THRESHOLD = config.getfloat("gmm", "threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
 
     """
@@ -130,18 +130,24 @@ class GMM(object):
     def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
         feature_count = len(features)
-        count = 0
-        feature_scores = model.score_samples(features)
-        # overall_score = sum(feature_scores) / feature_count
 
-        # scores = model.predict_proba(features)
+        scores = []
+        score_gmm = model.score_samples(features)
+        length = len(score_gmm)
+        for x in range(length):
+            scores.append(score_gmm[x])
+        score = (sum(scores) / feature_count) + 52
         #
-        for score in feature_scores:
-            if score >= self.THRESHOLD:
-                count += 1
-        overall_score = count / feature_count
 
-        if overall_score > self.FEATURE_THRESHOLD:
+        # count = 0
+        # feature_scores = model.score_samples(features)
+
+        # for score in feature_scores:
+        #     if score >= self.THRESHOLD:
+        #         count += 1
+        # overall_score = count / feature_count
+
+        if score >= self.FEATURE_THRESHOLD:
             return 1
         else:
             return 0
