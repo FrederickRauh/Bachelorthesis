@@ -91,12 +91,6 @@ class GMMUBM(object):
             }
 
         means = adaptive_values['means']
-        # print(len(means))
-        # means_list = []
-        # for mean in adaptive_values['means']:
-        #     means_list.append(np.ndarray.tolist(mean))
-        #
-        # self.gmm_param_grid[0].update({"means_init": means})
 
         gmm = BayesianGaussianMixture()
         gmm.means_init = means

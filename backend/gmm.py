@@ -156,8 +156,6 @@ class GMM(object):
         start_time = datetime.now()
         speaker_object_result = {}
 
-        print(f"--------------{speaker_id}-----------------")
-
         score_of_files = []
         for file in test_files:
             score_of_files.append(self.predict_file(model, file))

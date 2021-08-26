@@ -90,10 +90,8 @@ class SVM(object):
             data = []
             for i in range(self.PROCESSES):
                 data.append((split_speaker_ids[i], split_models[i], test_files))
-
             pool = multiprocessing.Pool(processes=(self.PROCESSES + 1))
             logging.info(f"starting multi process: {self.PROCESSES}")
-            print(split_speaker_ids)
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
