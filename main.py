@@ -1,3 +1,4 @@
+import json
 import logging
 from configparser import ConfigParser
 from datetime import datetime
@@ -23,11 +24,14 @@ if __name__ == '__main__':
     if config.getboolean('system', 'log'):
         print("container running. logs can be found in info-{model_type}.log")
 
-
-
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
-    # speaker_ids = speaker_ids[10:]
+    if config.getboolean("system", "train_model"):
+        ids = json.load(config.get("system", "ids"))
+        if len(ids) >= 0:
+            speaker_ids = ids
+        logging.info(f"ids to process: \n {speaker_ids}")
+
     # preparation phase
     if config.getboolean('system', 'extract_features'):
         logging.info(f"extracting features...")
