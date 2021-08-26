@@ -110,11 +110,17 @@ class SVM(object):
             part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
         return part_results
 
-    def predict_file(self, svm_model, file_path):
+    def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        scores = svm_model.predict(features)
+        scores = []
+        for vector in features:
+            scores.append(model.predict([vector]))
+
+        # scores = model.predict(features)
         score_sum = sum(scores)
         overall_score = score_sum / len(features)
+
+        # print(file_path, overall_score)
 
         if overall_score > self.FEATURE_THRESHOLD:
             return 1

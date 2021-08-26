@@ -27,7 +27,7 @@ if __name__ == '__main__':
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
     if config.getboolean("system", "train_model"):
-        ids = json.load(config.get("system", "ids"))
+        ids = json.loads(config.get("system", "ids"))
         if len(ids) >= 0:
             speaker_ids = ids
         logging.info(f"ids to process: \n {speaker_ids}")
