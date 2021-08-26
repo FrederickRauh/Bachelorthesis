@@ -12,7 +12,9 @@ from sklearn.svm import SVC
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
+from tqdm import tqdm
+
+from utils import audioManager as am, modelManager as m, util, \
     resultManager as rm, trainingTestingManager as tt
 
 
@@ -25,12 +27,13 @@ class SVM(object):
 
         self.feature_type = config.get('features', 'feature_type')
 
-        C = np.arange(config.getfloat('svm', 'C.lower'), config.getfloat('svm', 'c.upper'), 0.1)
-        C = [round(x, 2) for x in C]
+        # C = np.arange(config.getfloat('svm', 'C.lower'), config.getfloat('svm', 'c.upper'), 0.1)
+        # C = [round(x, 2) for x in C]
 
         self.param_grid = [{
             'kernel': json.loads(config.get('svm', 'kernels')),
-            'C': C,
+            # 'C': C,
+            'C': json.loads(config.get('svm', 'c')),
             'gamma': json.loads(config.get('svm', 'gamma')),
             'class_weight': json.loads(config.get('svm', 'class_weight'))
         }]
@@ -84,13 +87,13 @@ class SVM(object):
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
-            print(split_speaker_ids)
             data = []
             for i in range(self.PROCESSES):
                 data.append((split_speaker_ids[i], split_models[i], test_files))
 
-            pool = multiprocessing.Pool(processes=self.PROCESSES)
-            logging.info(f"starting multi process: {len(split_speaker_ids)}")
+            pool = multiprocessing.Pool(processes=(self.PROCESSES + 1))
+            logging.info(f"starting multi process: {self.PROCESSES}")
+            print(split_speaker_ids)
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
@@ -126,10 +129,13 @@ class SVM(object):
 
         logging.info(f"starting prediction for speaker: {start_time}")
         score_of_files = []
-        count = 0
-        file_start_time = datetime.now()
-        for file in test_files:
-            score_of_files.append(self.predict_file(model, file))
+
+        if self.PROCESSES <= 1:
+            for file in tqdm(test_files):
+                score_of_files.append(self.predict_file(model, file))
+        else:
+            for file in test_files:
+                score_of_files.append(self.predict_file(model, file))
 
         logging.info(f"all scores collected: {util.get_duration(start_time)}")
         speaker_object_result.update(

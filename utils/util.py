@@ -11,7 +11,6 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from utils import directoryManager as dm, modelManager as m
 
-
 # Turn 3Dim Array in 2D
 def get_correct_array_form(array):
     x = np.array(array)
@@ -27,6 +26,11 @@ def split_array_for_multiprocess(array, num):
     while last < len(array):
         output.append(array[int(last):int(last + avg)])
         last += avg
+    last_index = len(output)
+    while (last_index) > num:
+        output[last_index - 2] = output[last_index - 2] + output[last_index - 1]
+        output.pop()
+        last_index = len(output)
     return output
 
 

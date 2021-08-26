@@ -1,12 +1,7 @@
-import copy
 import json
 import logging
-import math
 import multiprocessing
 from datetime import datetime
-
-import numpy as np
-import pandas as pd
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
@@ -15,7 +10,7 @@ from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 
 from configparser import ConfigParser
 
-from utils import audioManager as am, directoryManager as dm, jsonManager as jm, modelManager as m, util, \
+from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
     resultManager as rm, \
     trainingTestingManager as tt
 

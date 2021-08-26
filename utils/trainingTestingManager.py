@@ -73,7 +73,6 @@ def get_svm_data_for_training(speaker_id, feature_type):
                 y_new.append(is_speaker)
             # y.append(is_speaker)
 
-    training_files = []
     training_features = []
 
     for element in t:
@@ -92,8 +91,6 @@ def get_svm_data_for_training(speaker_id, feature_type):
 
 
 def get_training_files(t, feature_type):
-    # training_files = []
-    length_of_file = 0
 
     training_features = np.asarray(())
 
@@ -106,8 +103,6 @@ def get_training_files(t, feature_type):
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
         features = np.asarray(features)
-
-        # training_files.append(features)
 
         for vector in features:
             if training_features.size == 0:

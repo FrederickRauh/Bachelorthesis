@@ -1,16 +1,13 @@
 import json
 import logging
+import math
 from multiprocessing import Pool
-from multiprocessing import log_to_stderr, get_logger
 from datetime import datetime
-
-import numpy as np
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import precision_recall_curve, plot_precision_recall_curve, average_precision_score
 
 from configparser import ConfigParser
 
@@ -24,10 +21,6 @@ class GMM(object):
         file = rf'{dm.get_project_path()}/config.ini'
         config = ConfigParser()
         config.read(file)
-
-        log_to_stderr()
-        logger = get_logger()
-        logger.disabled = not config.getboolean('system', 'log')
 
         self.feature_type = config.get('features', 'feature_type')
         self.param_grid = [{
@@ -133,12 +126,12 @@ class GMM(object):
 
         scores = []
         score_gmm = model.score_samples(features)
+
         length = len(score_gmm)
         for x in range(length):
             scores.append(score_gmm[x])
         score = (sum(scores) / feature_count) + 52
         #
-
         # count = 0
         # feature_scores = model.score_samples(features)
 
@@ -162,6 +155,8 @@ class GMM(object):
         """
         start_time = datetime.now()
         speaker_object_result = {}
+
+        print(f"--------------{speaker_id}-----------------")
 
         score_of_files = []
         for file in test_files:

@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
-    logging.info(f"IDS: {speaker_ids}")
+    # speaker_ids = speaker_ids[10:]
     # preparation phase
     if config.getboolean('system', 'extract_features'):
         logging.info(f"extracting features...")
