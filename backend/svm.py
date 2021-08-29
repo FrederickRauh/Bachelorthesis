@@ -90,6 +90,7 @@ class SVM(object):
             data = []
             for i in range(self.PROCESSES):
                 data.append((split_speaker_ids[i], split_models[i], test_files))
+
             pool = multiprocessing.Pool(processes=(self.PROCESSES + 1))
             logging.info(f"starting multi process: {self.PROCESSES}")
             results = pool.starmap(self.predict_mult, data)
@@ -119,9 +120,6 @@ class SVM(object):
         # scores = model.predict(features)
         score_sum = sum(scores)
         overall_score = score_sum / len(features)
-
-        # print(file_path, overall_score)
-
         if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:
@@ -134,12 +132,12 @@ class SVM(object):
         logging.info(f"starting prediction for speaker: {start_time}")
         score_of_files = []
 
-        if self.PROCESSES <= 1:
-            for file in tqdm(test_files):
-                score_of_files.append(self.predict_file(model, file))
-        else:
-            for file in test_files:
-                score_of_files.append(self.predict_file(model, file))
+        # if self.PROCESSES <= 1:
+        #     for file in tqdm(test_files):
+        #         score_of_files.append(self.predict_file(model, file))
+        # else:
+        for file in test_files:
+            score_of_files.append(self.predict_file(model, file))
 
         logging.info(f"all scores collected: {util.get_duration(start_time)}")
         speaker_object_result.update(

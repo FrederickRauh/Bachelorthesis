@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import pandas as pd
 
@@ -10,6 +12,7 @@ file = 'config.ini'
 config = ConfigParser()
 config.read(file)
 index = config.getint("system", "training_files")
+percent = config.getfloat("system", "training_files_per_cent")
 
 def get_data_for_training(m_type, speaker_ids, feature_type):
     y = []
@@ -28,7 +31,9 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         if index > 0:
-            adjusted_index = index * 6
+            # adjusted_index = index
+            amount = len(wav_files)
+            adjusted_index = int(math.floor(amount * percent))
             wav_files = wav_files[:int(adjusted_index)]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
@@ -42,8 +47,16 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         if index > 0:
-            adjusted_index = index * 10
-            ubm_index = (int(adjusted_index) / 10)
+            #get percentage of test files
+            amount = len(wav_files)
+            adjusted_index = int(math.floor(amount * percent))
+            wav_files = wav_files[:int(adjusted_index)]
+            #calculate 10 percent of remainder
+
+            length = float(len(wav_files))
+            # amount = len(wav_files)
+            # adjusted_index = index * 10
+            ubm_index = (length / 10)
             wav_files = wav_files[:int(adjusted_index)]
         if m_type == 'gmm-ubm-ubm':
             wav_files = wav_files[:int(ubm_index)]
@@ -121,10 +134,15 @@ def get_test_files_and_extra_data(speaker_ids):
 
 
 def load_test_files(speaker_ids):
-    index = config.getint("system", 'testing_files') * (-1)
+    test_index = config.getint("system", 'testing_files') * (-1)
+    test_percent = config.getfloat("system", "testing_files_per_cent")
     files = []
     for speaker_id in speaker_ids:
-        wav_files = dm.get_wav_files(speaker_id)[index:]
+        x_files = dm.get_wav_files(speaker_id)
+        length = len(x_files)
+        adjusted_index = (length - int(math.ceil(length * percent))) * (-1)
+        wav_files = x_files[adjusted_index:]
+        # wav_files = wav_files[index:]
         for wav_file in wav_files:
             wav_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{wav_file}'
             files.append(wav_file)

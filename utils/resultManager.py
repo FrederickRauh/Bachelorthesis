@@ -101,18 +101,28 @@ def create_speaker_object_with_confusion_mat(results):
         speaker_object.update({key: result[0][key]})
 
     false_accept_rate = 0
-    if not (fp + tn) == 0: false_accept_rate = fp / (fp + tn)
+    if not (fp + tn) == 0:
+        false_accept_rate = fp / (fp + tn)
     false_reject_rate = 0
-    if not (fn + tp) == 0: false_reject_rate = fn / (fn + tp)
+    if not (fn + tp) == 0:
+        false_reject_rate = fn / (fn + tp)
     equal_error_rate = (false_accept_rate + false_reject_rate) / 2
-    accuracy = 100 - equal_error_rate
+
+    accuracy = 0
+    if not (tp + tn) == 0:
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
     precision = 0
-    if not (tp + fp) == 0: precision = tp / (tp + fp)
+    if not (tp + fp) == 0:
+        precision = tp / (tp + fp)
+
     recall = -1
-    if not (tp + fn) == 0: recall = tp / (tp + fn)
+    if not (tp + fn) == 0:
+        recall = tp / (tp + fn)
 
     f1_score = 100
-    if not (recall + precision) == 0: f1_score = ((2 * recall * precision) / (recall + precision))
+    if not (recall + precision) == 0:
+        f1_score = 2*((precision * recall) / (precision + recall))
 
     confusion_mat.update({
         'accuracy': accuracy,

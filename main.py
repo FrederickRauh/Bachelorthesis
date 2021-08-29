@@ -1,3 +1,4 @@
+import configparser
 import json
 import logging
 from configparser import ConfigParser
@@ -11,7 +12,6 @@ from backend.svm import SVM
 from utils import directoryManager as dm, trainingTestingManager as tt, util
 
 if __name__ == '__main__':
-
     #############Config##############
     file = rf'{dm.get_project_path()}/config.ini'
     config = ConfigParser()
@@ -26,11 +26,6 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
-    if config.getboolean("system", "train_model"):
-        ids = json.loads(config.get("system", "ids"))
-        if len(ids) >= 0:
-            speaker_ids = ids
-        logging.info(f"ids to process: \n {speaker_ids}")
 
     # preparation phase
     if config.getboolean('system', 'extract_features'):
@@ -42,6 +37,15 @@ if __name__ == '__main__':
         start_time = datetime.now()
         test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
+
+    try:
+        ids = json.loads(config.get("system", "ids"))
+        if not ids == []:
+            # ids.reverse()
+            speaker_ids_gmm = ids
+            logging.info(f"ids to process: \n {speaker_ids_gmm}")
+    except ValueError:
+        logging.info(f"No ids specified, using all")
 
     """
     GMM
@@ -55,7 +59,7 @@ if __name__ == '__main__':
         # training phase
         if config.getboolean('system', 'train_model'):
             logging.info(f"train models...")
-            gmm.train(speaker_ids=speaker_ids)
+            gmm.train(speaker_ids=speaker_ids_gmm)
 
         # prediction phase
         if config.getboolean('system', 'predict_speaker'):
@@ -81,9 +85,8 @@ if __name__ == '__main__':
         # prediction phase
         if config.getboolean('system', 'predict_speaker'):
             logging.info(f"predicting speaker...")
-            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
-
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
+                                       extra_data_object=extra_data_object)
 
     """
     SVM
