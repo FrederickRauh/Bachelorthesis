@@ -22,7 +22,7 @@ def write_features_to_json_file(json_path, wav_path, features):
     json_path = json_path.replace('.wav', '.json')
     find_feature_json(json_path)
     entry = []
-    entry.append([wav_path, features, len(features)])
+    entry.append([wav_path, features, len(features[0])])
     json_file = pd.DataFrame(entry, columns=['wav_path', 'features', 'feature count'])
     dm.check_if_file_exists_then_remove(json_path)
     json_file.to_json(json_path)

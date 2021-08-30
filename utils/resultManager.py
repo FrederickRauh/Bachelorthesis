@@ -114,9 +114,9 @@ def create_speaker_object_with_confusion_mat(results):
 
     precision = 0
     if not (tn + fp) == 0:
-        precision = tn / (tn + fp)
+        precision = tp / (tp + fp )
 
-    recall = -1
+    recall = 0
     if not (tp + fn) == 0:
         recall = tp / (tp + fn)
 
@@ -126,8 +126,8 @@ def create_speaker_object_with_confusion_mat(results):
 
     confusion_mat.update({
         'accuracy': accuracy,
-        'recall': recall,
         'precision': precision,
+        'recall': recall,
         'false_accept_rate': false_accept_rate,
         'false_reject_rate': false_reject_rate,
         'equal_error_rate': equal_error_rate,
@@ -160,7 +160,8 @@ def create_overall_result_json(results, t, extra_data_object):
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
     system_version = config.get('result', 'version')
-    version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
+    # version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
+    version_path = dm.make_dir(rf'{directory_path}')
     path = rf'{version_path}/result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

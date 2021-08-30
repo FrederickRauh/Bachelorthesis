@@ -5,7 +5,7 @@ import pandas as pd
 
 from configparser import ConfigParser
 
-from utils import directoryManager as dm, util
+from utils import audioManager as am, directoryManager as dm, util
 from utils.dataframeManager import load_dataframe_from_path
 
 file = 'config.ini'
@@ -66,8 +66,36 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
     return get_training_files(t, feature_type)
 
 
+def get_training_files(t, feature_type):
+    training_features = np.asarray(())
+
+    print(len(t))
+
+    for element in t:
+        element = element.replace('\\', '/')
+        parts = element.split('/')
+        ending = parts[2].replace('.wav', '.json')
+        file_path = rf'{parts[0]}/{parts[1]}/{feature_type}/{ending}'
+        path = rf'{dm.get_all_wav_path()}/{file_path}'
+        file_features = load_dataframe_from_path(path)
+        features = file_features.features[0]
+        features = np.asarray(features)
+        for feature in features:
+            feature = np.asarray(feature)
+            for vector in feature:
+                if training_features.size == 0:
+                    training_features = vector
+                else:
+                    training_features = np.vstack((training_features, vector))
+    # return util.get_correct_array_form(training_files)
+
+    print(len(training_features))
+
+    return training_features
+
+
 def get_svm_data_for_training(speaker_id, feature_type):
-    t = []
+    total_files = []
     y = []
     y_new = []
     speaker_ids = dm.get_all_ids()
@@ -79,17 +107,17 @@ def get_svm_data_for_training(speaker_id, feature_type):
         else:
             adjusted_index = training_index
         wav_files = wav_files[:int(adjusted_index)]
+
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
-            t.append(file)
+            total_files.append(file)
             is_speaker = 1 if id == speaker_id else 0
-            for x in range(399):
-                y_new.append(is_speaker)
-            # y.append(is_speaker)
+            y.append(is_speaker)
 
     training_features = []
 
-    for element in t:
+    for x in range(len(total_files)):
+        element = total_files[x]
         element = element.replace('\\', '/')
         parts = element.split('/')
         ending = parts[2].replace('.wav', '.json')
@@ -98,32 +126,14 @@ def get_svm_data_for_training(speaker_id, feature_type):
         file_features = load_dataframe_from_path(path)
         features = file_features.features[0]
         features = np.array(features)
-        for vector in features:
-            training_features.append(vector)
+        for feature in features:
+            for i in range(399):
+                y_new.append(y[x])
+            feature = np.array(feature)
+            for vector in feature:
+                training_features.append(vector)
 
     return training_features, y_new
-
-
-def get_training_files(t, feature_type):
-    training_features = np.asarray(())
-
-    for element in t:
-        element = element.replace('\\', '/')
-        parts = element.split('/')
-        ending = parts[2].replace('.wav', '.json')
-        file_path = rf'{parts[0]}/{parts[1]}/{feature_type}/{ending}'
-        path = rf'{dm.get_all_wav_path()}/{file_path}'
-        file_features = load_dataframe_from_path(path)
-        features = file_features.features[0]
-        features = np.asarray(features)
-
-        for vector in features:
-            if training_features.size == 0:
-                training_features = vector
-            else:
-                training_features = np.vstack((training_features, vector))
-    # return util.get_correct_array_form(training_files)
-    return training_features
 
 
 def get_test_files_and_extra_data(speaker_ids):

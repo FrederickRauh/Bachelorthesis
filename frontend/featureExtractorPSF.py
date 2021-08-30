@@ -23,9 +23,14 @@ def extract_filterbank_energies_from_file(file_path):
 
 def extract_signal_from_file(file_path):
     sr, signal = wav.read(file_path)
-    sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'psf')
+    sr, signals = am.get_four_second_intervals_of_audio(sr, signal, 'psf')
     # if signal is stereo only take one channel
-    return signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
+    new_signals = []
+    for signal in signals:
+        new_signals.append(signal[:, 0] if isinstance(signal[0], np.ndarray) else signal)
+    return new_signals
+
+
 
 
 def extract_mfcc_from_signal(signal):
@@ -64,14 +69,17 @@ def extract_filter_banks_and_energies_from_signal(signal):
 
 
 def extract_processed_features_from_file(file_path):
-    signal = extract_signal_from_file(file_path)
-    mfcc = extract_mfcc_from_signal(signal)
-    # mfcc = preprocessing.scale(mfcc)
-    d_mfcc, dd_mfcc = get_delta_delta_from_signal(mfcc)
-    # ft1 = get_delta_delta_from_signal(signal)
-    # ft2, ft3 = extract_filter_banks_and_energies_from_signal(signal)
-    # processed_features = np.concatenate((mfcc, d_mfcc))
-    processed_features = np.hstack((mfcc, d_mfcc))
+    signals = extract_signal_from_file(file_path)
+    processed_features = []
+    for signal in signals:
+        mfcc = extract_mfcc_from_signal(signal)
+        # mfcc = preprocessing.scale(mfcc)
+        d_mfcc, dd_mfcc = get_delta_delta_from_signal(mfcc)
+        # ft1 = get_delta_delta_from_signal(signal)
+        # ft2, ft3 = extract_filter_banks_and_energies_from_signal(signal)
+        # processed_features = np.concatenate((mfcc, d_mfcc))
+        features = np.hstack((mfcc, d_mfcc))
+        processed_features.append(features)
     return processed_features
 
 

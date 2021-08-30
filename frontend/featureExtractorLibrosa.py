@@ -41,33 +41,30 @@ def extract_extra_features_from_signal(signal, mfcc, d_mfcc, dd_mfcc):
 
 def extract_processed_mfcc_from_file(file_path):
     signal, sr = librosa.load(file_path, sr=config.getint('features', 'sample_rate'))
-    sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
-    return extract_mfcc_from_signal(signal)
+    sr, signals = am.get_four_second_intervals_of_audio(sr, signal, 'librosa')
+    extraced_mfccs_from_signals = []
+    for signal in signals:
+        extraced_mfccs_from_signals.append(extract_mfcc_from_signal(signal))
+    return extraced_mfccs_from_signals
 
 
 def extract_processed_features_from_file(file_path):
     signal, sr = librosa.load(file_path, sr=config.getint('features', 'sample_rate'))
-    sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
-    signal = signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
-    mfcc = extract_mfcc_from_signal(signal)
-    d_mfcc = librosa.feature.delta(mfcc)
-    dd_mfcc = librosa.feature.delta(d_mfcc, order=2)
-    # return np.hstack((mfcc, d_mfcc))
-    #
-    x = -1 * (config.getint('features', 'n_mfcc') - 1)
-    features = np.concatenate((mfcc[x:], d_mfcc[x:], dd_mfcc[x:]))
-    features = np.hstack(features)
+    sr, signals = am.get_four_second_intervals_of_audio(sr, signal, 'librosa')
+    processed_features = []
+    for signal in signals:
+        signal = signal[:, 0] if isinstance(signal[0], np.ndarray) else signal
+        mfcc = extract_mfcc_from_signal(signal)
+        d_mfcc = librosa.feature.delta(mfcc)
+        dd_mfcc = librosa.feature.delta(d_mfcc, order=2)
+        # return np.hstack((mfcc, d_mfcc))
+        #
+        x = -1 * (config.getint('features', 'n_mfcc') - 1)
+        features = np.concatenate((mfcc[x:], d_mfcc[x:], dd_mfcc[x:]))
+        features = np.hstack(features)
+        processed_features.append(features)
     # feature = extract_extra_features_from_signal(signal, mfcc, d_mfcc, dd_mfcc)
-    return features
-
-
-# def extract_processed_features_from_file(file_path):
-#     signal, sr = librosa.load(file_path, sr=FEATURES.SAMPLE_RATE)
-#     sr, signal = am.get_four_seconds_frame_of_audio(sr, signal, 'librosa')
-#     mfcc = extract_mfcc_from_signal(signal)
-#     d_mfcc = librosa.feature.delta(mfcc)
-#     energy = librosa.feature.rms(S=signal)
-#     d_energy = librosa.feature.delta(energy)
+    return processed_features
 
 
 def get_right_format(ft):

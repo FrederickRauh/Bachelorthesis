@@ -123,6 +123,17 @@ def get_all_models_path():
 
 
 def get_model_path(speaker_id, t):
+    split_t = t.split('_')
+    number = split_t[0]
+    new_t = ''
+    for x in range(len(split_t) - 1):
+        x = x + 1
+        if x == (len(split_t) - 1):
+            new_t += split_t[x]
+        else:
+            new_t += split_t[x] + '_'
+    t = new_t
+
     path = get_all_models_path()
     if t.__contains__('svm'):
         path = rf'{path}/svm'
@@ -147,11 +158,11 @@ def get_model_path(speaker_id, t):
 
     for model in models:
         if model.__contains__(speaker_id) and model.__contains__(t):
-            return rf'{path}/{model}'
+            return rf'{path}/{number}/{model}'
     file_name = speaker_id + "_" + t + "_model.pickel"
     if t.__contains__('universal'):
         file_name = 'UBM_model.pickel'
-    path = rf'{path}/{file_name}'
+    path = rf'{path}/{number}/{file_name}'
     return path
 
 
