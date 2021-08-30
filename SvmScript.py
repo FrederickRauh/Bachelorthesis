@@ -40,11 +40,11 @@ if __name__ == '__main__':
     logging.info(f"Version SVM :{start_time}")
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
-    if config.getboolean('system', 'extract_features'):
+    if config.getboolean('stage', 'extract_features'):
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=speaker_ids, create_dataframe=True)
     # training phase
-    if config.getboolean('system', 'train_model'):
+    if config.getboolean('stage', 'train_model'):
         logging.info(f"retraining models...")
         retrain_ids = []
         t = "svm_" + config.getfloat("system", "feature_threshold")
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         print(retrain_ids)
         svm.train(speaker_ids=retrain_ids)
     # prediction phase
-    if config.getboolean('system', 'predict_speaker'):
+    if config.getboolean('stage', 'predict_speaker'):
         logging.info(f"predicting speaker...")
         svm.predict_n_speakers(speaker_ids=speaker_ids)
 

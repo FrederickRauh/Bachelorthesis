@@ -25,7 +25,26 @@ To change configuration (mfccs used, or loglevel in the software ) change in  ./
       - VERSION = local
       - ADD_EXTRA = False
       - DATASET_PATH = /dataset
-  
+
+- classifier
+  - 
+      - gmm (boolean) // use the gmm system
+      - gmm-ubm (boolean) // use the gmm-ubm system
+      - svm (boolean) // use the svm system
+      - // possible to use all   
+
+- stage
+  - 
+      - extract_features (boolean) // extract features and save in json files.
+      - train_model (boolean) // train models
+      - predict_speaker (boolean) // predict
+
+
+- training_testing
+  -
+      - training_files (float) // if < 1 take the percentage of files (0.5 == 50 % of files), otherwise take the amount defined
+      - testing_files  (float) // similar to training_files, except for testing
+
 - gmm:
   -
       - G_THRESHOLD (float)

@@ -113,8 +113,8 @@ def create_speaker_object_with_confusion_mat(results):
         accuracy = (tp + tn) / (tp + tn + fp + fn)
 
     precision = 0
-    if not (tp + fp) == 0:
-        precision = tp / (tp + fp)
+    if not (tn + fp) == 0:
+        precision = tn / (tn + fp)
 
     recall = -1
     if not (tp + fn) == 0:
@@ -126,8 +126,8 @@ def create_speaker_object_with_confusion_mat(results):
 
     confusion_mat.update({
         'accuracy': accuracy,
-        'precision': precision,
         'recall': recall,
+        'precision': precision,
         'false_accept_rate': false_accept_rate,
         'false_reject_rate': false_reject_rate,
         'equal_error_rate': equal_error_rate,

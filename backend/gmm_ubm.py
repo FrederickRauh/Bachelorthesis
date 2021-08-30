@@ -55,7 +55,7 @@ class GMMUBM(object):
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
         logging.info(f" ::: There are: {len(all_training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
-
+        start_time = datetime.now()
         ubm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(GaussianMixture(),
@@ -94,6 +94,8 @@ class GMMUBM(object):
 
         gmm = BayesianGaussianMixture()
         gmm.means_init = means
+
+        start_time = datetime.now()
 
         gmm_model = make_pipeline(
             StandardScaler(),

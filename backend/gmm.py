@@ -36,7 +36,7 @@ class GMM(object):
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
         self.PROCESSES = config.getint("system", "processes")
-        # self.THRESHOLD = config.getfloat("gmm", "g_threshold")
+        self.THRESHOLD = config.getfloat("gmm", "g_threshold")
         self.FEATURE_THRESHOLD = config.getfloat("gmm", "threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
 
@@ -48,8 +48,8 @@ class GMM(object):
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id}. Start at: {start_time}")
         training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
-        logging.info(f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
-
+        logging.info(f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} to get files.")
+        start_time = datetime.now()
         gmm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(GaussianMixture(),
@@ -131,14 +131,6 @@ class GMM(object):
         for x in range(length):
             scores.append(score_gmm[x])
         score = (sum(scores) / feature_count) + 52
-        #
-        # count = 0
-        # feature_scores = model.score_samples(features)
-
-        # for score in feature_scores:
-        #     if score >= self.THRESHOLD:
-        #         count += 1
-        # overall_score = count / feature_count
 
         if score >= self.FEATURE_THRESHOLD:
             return 1

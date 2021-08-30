@@ -30,15 +30,15 @@ if __name__ == '__main__':
     logging.info(f"Version GMM :{start_time}")
     logging.info(f"FEATURE_VERSION: {feature_type}")
     # preparation phase
-    if config.getboolean('system', 'extract_features'):
+    if config.getboolean('stage', 'extract_features'):
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=dm.get_all_ids(), create_dataframe=True)
     # training phase
-    if config.getboolean('system', 'train_model'):
+    if config.getboolean('stage', 'train_model'):
         logging.info(f"train models...")
         gmm.train(speaker_ids=dm.get_all_ids())
     # prediction phase
-    if config.getboolean('system', 'predict_speaker'):
+    if config.getboolean('stage', 'predict_speaker'):
         logging.info(f"predicting speaker...")
         gmm.predict_n_speakers(speaker_ids=dm.get_all_ids())
 

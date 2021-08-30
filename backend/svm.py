@@ -57,7 +57,7 @@ class SVM(object):
         start_time = datetime.now()
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
-
+        start_time = datetime.now()
         svm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(SVC(),
