@@ -5,15 +5,44 @@ import numpy as np
 import scipy.io.wavfile as wav
 from frontend import featureExtractorLibrosa as flib
 from frontend import featureExtractorPSF as fpsf
-from utils import util
+from utils import directoryManager as dm
 
 """
 AudioManager is used as util service for feature extraction and frontend classes. 
 This file should only contain methods used on a signal.
 """
 def get_audio_length(file_path):
+    """
+    calculates duration of an audio file in seconds
+    :param file_path:
+    :return:
+    """
     sr, signal = wav.read(file_path)
     return len(signal) / float(sr)
+
+
+def get_duration_of_files(wav_files):
+    duration = 0
+    for wav_file in wav_files:
+        duration += get_audio_length(wav_file)
+    return duration
+
+
+def get_length_of_minimal():
+    speaker_ids = dm.get_all_ids()
+    durations = []
+    for speaker_id in speaker_ids:
+        wav_files = dm.get_wav_files(speaker_id)
+        duration = 0
+        for wav_file in wav_files:
+            file = wav_file.replace('\\', '/')
+            parts = file.split('/')
+            ending = parts[1]
+            file_path = rf'{speaker_id}/{parts[0]}/{ending}'
+            path = rf'{dm.get_all_wav_path()}/{file_path}'
+            duration += get_audio_length(path)
+        durations.append(duration)
+    return min(durations)
 
 
 def get_four_seconds_frame_of_audio(sr, signal, t):
