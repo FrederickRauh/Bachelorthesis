@@ -133,12 +133,12 @@ class SVM(object):
         logging.info(f"starting prediction for speaker: {start_time}")
         score_of_files = []
 
-        # if self.PROCESSES <= 1:
-        #     for file in tqdm(test_files):
-        #         score_of_files.append(self.predict_file(model, file))
-        # else:
-        for file in test_files:
-            score_of_files.append(self.predict_file(model, file))
+        if self.PROCESSES <= 1:
+            for file in tqdm(test_files):
+                score_of_files.append(self.predict_file(model, file))
+        else:
+            for file in test_files:
+                score_of_files.append(self.predict_file(model, file))
 
         logging.info(f"all scores collected: {util.get_duration(start_time)}")
         speaker_object_result.update(

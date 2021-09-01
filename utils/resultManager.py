@@ -113,14 +113,14 @@ def create_speaker_object_with_confusion_mat(results):
         accuracy = (tp + tn) / (tp + tn + fp + fn)
 
     precision = 0
-    if not (tn + fp) == 0:
-        precision = tp / (tp + fp )
+    if not (tp + fp) == 0:
+        precision = tp / (tp + fp)
 
     recall = 0
     if not (tp + fn) == 0:
         recall = tp / (tp + fn)
 
-    f1_score = 100
+    f1_score = 0
     if not (recall + precision) == 0:
         f1_score = 2*((precision * recall) / (precision + recall))
 
@@ -162,7 +162,7 @@ def create_overall_result_json(results, t, extra_data_object):
     system_version = config.get('result', 'version')
     # version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
     version_path = dm.make_dir(rf'{directory_path}')
-    path = rf'{version_path}/result.json'
+    path = rf'{version_path}/{system_version}-result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)
 
@@ -174,7 +174,8 @@ def create_single_result_json(speaker_id, t, results):
     t = t.split('-')
     directory_path = dm.get_results_folder(t[0])
     system_version = config.get('result', 'version')
-    version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
+    # version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
+    version_path = dm.make_dir(rf'{directory_path}')
     path = rf'{version_path}/{speaker_id}-result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)

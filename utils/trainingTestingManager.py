@@ -11,8 +11,8 @@ from utils.dataframeManager import load_dataframe_from_path
 file = 'config.ini'
 config = ConfigParser()
 config.read(file)
-training_index = config.getint("training_testing", "training_files")
-test_index = config.getint("training_testing", "testing_files")
+training_index = config.getfloat("training_testing", "training_files")
+test_index = config.getfloat("training_testing", "testing_files")
 
 
 def get_data_for_training(m_type, speaker_ids, feature_type):
@@ -32,10 +32,10 @@ def get_gmm_data_for_training(speaker_ids, feature_type):
     for id in speaker_ids:
         wav_files = dm.get_wav_files(id)
         if training_index < 1:
-            adjusted_index = util.get_percent_index(len(wav_files), training_index, True)
+            adjusted_index = int(util.get_percent_index(len(wav_files), training_index, True))
         else:
-            adjusted_index = training_index
-        wav_files = wav_files[:int(adjusted_index)]
+            adjusted_index = int(training_index)
+        wav_files = wav_files[:adjusted_index]
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
             t.append(file)
@@ -49,10 +49,10 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
         wav_files = dm.get_wav_files(id)
         # get percentage of test files
         if training_index < 1:
-            adjusted_index = util.get_percent_index(len(wav_files), training_index, True)
+            adjusted_index = int(util.get_percent_index(len(wav_files), training_index, True))
         else:
-            adjusted_index = training_index
-        wav_files = wav_files[:int(adjusted_index)]
+            adjusted_index = int(training_index)
+        wav_files = wav_files[:adjusted_index]
         # divide into 2 parts, 10% of files for ubm, 90% for gmm
         length = float(len(wav_files))
         ubm_index = (length / 10)
@@ -68,8 +68,6 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
 
 def get_training_files(t, feature_type):
     training_features = np.asarray(())
-
-    print(len(t))
 
     for element in t:
         element = element.replace('\\', '/')
@@ -88,9 +86,6 @@ def get_training_files(t, feature_type):
                 else:
                     training_features = np.vstack((training_features, vector))
     # return util.get_correct_array_form(training_files)
-
-    print(len(training_features))
-
     return training_features
 
 
@@ -103,10 +98,10 @@ def get_svm_data_for_training(speaker_id, feature_type):
         wav_files = dm.get_wav_files(id)
         # only get at max 20 files from Speaker, to avoid to much training data
         if training_index < 1:
-            adjusted_index = util.get_percent_index(len(wav_files), training_index, True)
+            adjusted_index = int(util.get_percent_index(len(wav_files), training_index, True))
         else:
-            adjusted_index = training_index
-        wav_files = wav_files[:int(adjusted_index)]
+            adjusted_index = int(training_index)
+        wav_files = wav_files[:adjusted_index]
 
         for wav_file in wav_files:
             file = rf'{id}/{wav_file}'
@@ -148,9 +143,9 @@ def load_test_files(speaker_ids):
     for speaker_id in speaker_ids:
         x_files = dm.get_wav_files(speaker_id)
         if test_index < 1:
-            adjusted_index = util.get_percent_index(len(x_files), test_index, False)
+            adjusted_index = int(util.get_percent_index(len(x_files), test_index, False))
         else:
-            adjusted_index = test_index * (-1)
+            adjusted_index = int(test_index * (-1))
         wav_files = x_files[adjusted_index:]
 
         for wav_file in wav_files:

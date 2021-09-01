@@ -130,8 +130,8 @@ class GMMUBM(object):
 
     def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
         # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
-        ubm_model = m.load_model('', '_gmm_ubm_universal_background_model_' + self.feature_type)
-        gmm_models = [m.load_model(speaker_id, "_gmm_ubm_single_model_" + self.feature_type) for speaker_id in
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
+        gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type) for speaker_id in
                       speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
@@ -153,7 +153,7 @@ class GMMUBM(object):
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, '_gmmubm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'gmmubm-' + self.feature_type, extra_data_object)
 
     def predict_mult(self, speaker_ids, ubm_model, gmm_models, test_files):
         part_results = []
@@ -168,8 +168,8 @@ class GMMUBM(object):
         scores = []
         for feature in features:
             feature_length = len(feature)
-            score_gmm = gmm_model.score_samples(features)
-            score_ubm = ubm_model.score_samples(features)
+            score_gmm = gmm_model.score_samples(feature)
+            score_ubm = ubm_model.score_samples(feature)
             length = len(score_gmm)
             for x in range(length):
                 vector_score = score_gmm[x] - score_ubm[x]

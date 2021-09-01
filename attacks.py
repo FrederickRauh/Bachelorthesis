@@ -11,14 +11,21 @@ from frontend import frontend
 from utils import directoryManager as dm, trainingTestingManager as tt, util
 
 if __name__ == '__main__':
+    file = rf'{dm.get_project_path()}/config.ini'
+    config = ConfigParser()
+    config.read(file)
+
+    prev_version = config.get('result', 'version')
+
+    config.set("result", 'version', 'dirty')
+    with open("config.ini", "w") as f:
+        config.write(f)
+    time.sleep(60)
+
     #############Config##############
     attack_config_file = rf'{dm.get_project_path()}/attack-config.ini'
     attackConfig = ConfigParser()
     attackConfig.read(attack_config_file)
-
-    file = rf'{dm.get_project_path()}/config.ini'
-    config = ConfigParser()
-    config.read(file)
 
     logging.basicConfig(filename=rf'{dm.get_project_path()}/info-attack.log', level=attackConfig.getint('system', 'loglevel'))
     logger = logging.getLogger()
@@ -35,19 +42,13 @@ if __name__ == '__main__':
             time.sleep(5)
             print(f"Starting for:{id} in 5 seconds")
             time.sleep(5)
-            frontend.get_voice_input_stream(4, 16000, attackConfig.getint('testing_attacking', 'new_file_count'), id, 'replay-iphone')
+            frontend.get_voice_input_stream(40, 16000, attackConfig.getint('testing_attacking', 'new_file_count'), id, 'replay-bluetooth-speaker')
 
     speaker_ids = dm.get_all_ids()
     test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
     test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids)
 
-    prev_version = config.get('result', 'version')
-
-    config.set("result", 'version', 'dirty')
-    with open("config.ini", "w") as f:
-        config.write(f)
-    time.sleep(60)
 
     if attackConfig.getboolean('stage', 'predict_speaker'):
         if attackConfig.getboolean("classifier", "gmm"):
