@@ -6,9 +6,12 @@ Anaconda Environment:
 - pip install sounddevice
 - pip install playsound
 - pip install python_speech_features
+- pip install librosa  
 - pip install matplotlib
 - pip install pandas
 
+a simpler way is to use the environment file with:
+- conda env create -f environment.yml
 
 To change configuration (mfccs used, or loglevel in the software ) change in  ./config.ini:
  
