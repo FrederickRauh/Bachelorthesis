@@ -57,7 +57,7 @@ class SVM(object):
         start_time = datetime.now()
         logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
                      f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
-
+        start_time = datetime.now()
         svm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(SVC(),
@@ -113,13 +113,14 @@ class SVM(object):
 
     def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
+        feature_length = len(features[0])
+        amount_of_features = len(features)
         scores = []
-        for vector in features:
-            scores.append(model.predict([vector]))
+        for feature in features:
+            for vector in feature:
+                scores.append(model.predict([vector]))
 
-        # scores = model.predict(features)
-        score_sum = sum(scores)
-        overall_score = score_sum / len(features)
+        overall_score = sum(scores) / feature_length / amount_of_features
         if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:

@@ -1,3 +1,4 @@
+import math
 import os
 import random
 import string
@@ -32,6 +33,13 @@ def split_array_for_multiprocess(array, num):
         output.pop()
         last_index = len(output)
     return output
+
+
+def get_percent_index(length, percent, train):
+    if train:
+        return int(math.floor(length * percent))
+    else:
+        return (length - int(math.ceil(length * percent))) * (-1)
 
 
 def get_duration(start_time):

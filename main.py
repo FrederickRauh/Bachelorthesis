@@ -22,18 +22,18 @@ if __name__ == '__main__':
     logger.disabled = not config.getboolean('system', 'log')
 
     if config.getboolean('system', 'log'):
-        print("container running. logs can be found in info-{model_type}.log")
+        print("container running. logs can be found in info.log")
 
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
 
     # preparation phase
-    if config.getboolean('system', 'extract_features'):
+    if config.getboolean('stage', 'extract_features'):
         logging.info(f"extracting features...")
         frontend.frontend.feature_extraction_for_n_speaker(speaker_ids=speaker_ids, create_dataframe=True)
 
     test_files = []
-    if config.getboolean('system', 'predict_speaker'):
+    if config.getboolean('stage', 'predict_speaker'):
         start_time = datetime.now()
         test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
         logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
@@ -42,8 +42,8 @@ if __name__ == '__main__':
         ids = json.loads(config.get("system", "ids"))
         if not ids == []:
             # ids.reverse()
-            speaker_ids_gmm = ids
-            logging.info(f"ids to process: \n {speaker_ids_gmm}")
+            speaker_ids = ids
+            logging.info(f"ids to process: \n {speaker_ids}")
     except ValueError:
         logging.info(f"No ids specified, using all")
 
@@ -51,59 +51,63 @@ if __name__ == '__main__':
     GMM
     """
     gmm = GMM()
-    if config.getboolean("system", "gmm"):
-        start_time = datetime.now()
-        logging.info(f"Version GMM :{start_time}")
+    if config.getboolean("classifier", "gmm"):
+        logging.info(f"Version GMM")
         logging.info(f"FEATURE_VERSION: {feature_type}")
 
         # training phase
-        if config.getboolean('system', 'train_model'):
+        if config.getboolean('stage', 'train_model'):
             logging.info(f"train models...")
-            gmm.train(speaker_ids=speaker_ids_gmm)
+            gmm.train(speaker_ids=speaker_ids)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
         # prediction phase
-        if config.getboolean('system', 'predict_speaker'):
+        if config.getboolean('stage', 'predict_speaker'):
+            start_time = datetime.now()
             logging.info(f"predicting speaker...")
             gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
-
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     """
     GMM-UBM
     """
     gmm_ubm = GMMUBM()
-    if config.getboolean("system", "gmm_ubm"):
-        start_time = datetime.now()
-        logging.info(f"Version GMM-UBM :{start_time}")
+    if config.getboolean("classifier", "gmm_ubm"):
+        logging.info(f"Version GMM-UBM")
         logging.info(f"FEATURE_VERSION: {feature_type}")
 
         # training phase
-        if config.getboolean('system', 'train_model'):
+        if config.getboolean('stage', 'train_model'):
+            start_time = datetime.now()
             logging.info(f"train models...")
             gmm_ubm.train(speaker_ids=speaker_ids)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
         # prediction phase
-        if config.getboolean('system', 'predict_speaker'):
+        if config.getboolean('stage', 'predict_speaker'):
+            start_time = datetime.now()
             logging.info(f"predicting speaker...")
             gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
                                        extra_data_object=extra_data_object)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     """
     SVM
     """
     svm = SVM()
-    if config.getboolean("system", "svm"):
-        start_time = datetime.now()
-        logging.info(f"Version SVM :{start_time}")
+    if config.getboolean("classifier", "svm"):
+        logging.info(f"Version SVM")
         logging.info(f"FEATURE_VERSION: {feature_type}")
 
         # training phase
-        if config.getboolean('system', 'train_model'):
+        if config.getboolean('stage', 'train_model'):
+            start_time = datetime.now()
             logging.info(f"train models...")
             svm.train(speaker_ids=speaker_ids)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
         # prediction phase
-        if config.getboolean('system', 'predict_speaker'):
+        if config.getboolean('stage', 'predict_speaker'):
+            start_time = datetime.now()
             logging.info(f"predicting speaker...")
             svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object)
-
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

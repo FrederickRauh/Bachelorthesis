@@ -54,8 +54,9 @@ class GMMUBM(object):
         logging.info(f"Training ubm_model with {self.feature_type} features. Start at: {start_time}")
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
-        logging.info(f" ::: There are: {len(all_training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
-
+        logging.info(
+            f" ::: There are: {len(all_training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
+        start_time = datetime.now()
         ubm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(GaussianMixture(),
@@ -78,22 +79,26 @@ class GMMUBM(object):
         start_time = datetime.now()
         logging.info(f"Training gmm_model with {self.feature_type} features for: {speaker_id}. Start at: {start_time}")
         training_features, _ = tt.get_data_for_training('gmm-ubm-gmm', [speaker_id], self.feature_type)
-        logging.info(f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
+        logging.info(
+            f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
 
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)['gridsearchcv'].best_estimator_
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)[
+            'gridsearchcv'].best_estimator_
 
         adaptive_values = {
-                'covariances': ubm_model.covariances_,
-                'means': ubm_model.means_,
-                'weights': ubm_model.weights_,
-                'converged': ubm_model.converged_,
-                'threshold': ubm_model.tol
-            }
+            'covariances': ubm_model.covariances_,
+            'means': ubm_model.means_,
+            'weights': ubm_model.weights_,
+            'converged': ubm_model.converged_,
+            'threshold': ubm_model.tol
+        }
 
         means = adaptive_values['means']
 
         gmm = BayesianGaussianMixture()
         gmm.means_init = means
+
+        start_time = datetime.now()
 
         gmm_model = make_pipeline(
             StandardScaler(),
@@ -122,10 +127,12 @@ class GMMUBM(object):
     """
     # Prediction phase
     """
+
     def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
         # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
-        gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type) for speaker_id in speaker_ids]
+        ubm_model = m.load_model('', '_gmm_ubm_universal_background_model_' + self.feature_type)
+        gmm_models = [m.load_model(speaker_id, "_gmm_ubm_single_model_" + self.feature_type) for speaker_id in
+                      speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_gmm_models = util.split_array_for_multiprocess(gmm_models, self.PROCESSES)
@@ -146,7 +153,7 @@ class GMMUBM(object):
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, 'gmmubm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, '_gmmubm-' + self.feature_type, extra_data_object)
 
     def predict_mult(self, speaker_ids, ubm_model, gmm_models, test_files):
         part_results = []
@@ -156,16 +163,19 @@ class GMMUBM(object):
 
     def predict_file(self, ubm_model, gmm_model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
-        feature_count = len(features)
-
+        feature_length = len(features[0])
+        amount_of_features = len(features)
         scores = []
-        score_gmm = gmm_model.score_samples(features)
-        score_ubm = ubm_model.score_samples(features)
-        length = len(score_gmm)
-        for x in range(length):
-            vector_score = score_gmm[x] - score_ubm[x]
-            scores.append(vector_score)
-        score = sum(scores) / feature_count
+        for feature in features:
+            feature_length = len(feature)
+            score_gmm = gmm_model.score_samples(features)
+            score_ubm = ubm_model.score_samples(features)
+            length = len(score_gmm)
+            for x in range(length):
+                vector_score = score_gmm[x] - score_ubm[x]
+                scores.append(vector_score)
+
+        score = sum(scores) / feature_length / amount_of_features
 
         if score >= self.FEATURE_THRESHOLD:
             return 1
@@ -178,14 +188,15 @@ class GMMUBM(object):
 
         score_of_files = []
         for file in test_files:
-                score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
+            score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
 
         speaker_object_result.update(
-                rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
+            rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
 
         if self.CREATE_SINGLE_RESULT:
-            rm.create_single_result_json(speaker_id, 'gmmubm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
+            rm.create_single_result_json(speaker_id, 'gmmubm-' + self.feature_type,
+                                         [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}

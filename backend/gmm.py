@@ -36,20 +36,22 @@ class GMM(object):
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
         self.PROCESSES = config.getint("system", "processes")
-        # self.THRESHOLD = config.getfloat("gmm", "g_threshold")
+        self.THRESHOLD = config.getfloat("gmm", "g_threshold")
         self.FEATURE_THRESHOLD = config.getfloat("gmm", "threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
 
     """
     # Training phase
     """
+
     def create_model(self, speaker_id):
         start_time = datetime.now()
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id}. Start at: {start_time}")
         training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
-        logging.info(f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
-
+        logging.info(
+            f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} to get files.")
+        start_time = datetime.now()
         gmm_model = make_pipeline(
             StandardScaler(),
             GridSearchCV(GaussianMixture(),
@@ -74,6 +76,7 @@ class GMM(object):
     """
     # Prediction phase
     """
+
     def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
         """
         Used to predict for n speakers. Test files are loaded from speaker folders (/dataset/wav/{id}/) last 10 files are taken
@@ -85,11 +88,7 @@ class GMM(object):
         # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
 
         # model loading and feature extraction done outside of potential threads to minimise file access, leading to speed improvement.
-        models = [m.load_model(speaker_id, "gmm_" + self.feature_type) for speaker_id in speaker_ids]
-        test_features = []
-        for test_file in test_files:
-            vector = am.get_features_for_prediction(test_file, self.feature_type)
-            test_features.append(vector)
+        models = [m.load_model(speaker_id, "_gmm_" + self.feature_type) for speaker_id in speaker_ids]
 
         # if defined in config.ini (SYSTEM, PROCESSES) > 1 multiple processes are started
         if self.PROCESSES > 1:
@@ -112,60 +111,57 @@ class GMM(object):
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, '_gmm-' + self.feature_type, extra_data_object)
 
-    def predict_mult(self, speaker_ids, models, test_files):
-        part_results = []
-        for i in range(len(speaker_ids)):
-            part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
-        return part_results
 
-    def predict_file(self, model, file_path):
-        features = am.get_features_for_prediction(file_path, self.feature_type)
-        feature_count = len(features)
+def predict_mult(self, speaker_ids, models, test_files):
+    part_results = []
+    for i in range(len(speaker_ids)):
+        part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
+    return part_results
 
-        scores = []
-        score_gmm = model.score_samples(features)
+
+def predict_file(self, model, file_path):
+    features = am.get_features_for_prediction(file_path, self.feature_type)
+    feature_length = len(features[0])
+    amount_of_features = len(features)
+    scores = []
+    for feature in features:
+
+        score_gmm = model.score_samples(feature)
 
         length = len(score_gmm)
         for x in range(length):
             scores.append(score_gmm[x])
-        score = (sum(scores) / feature_count) + 52
-        #
-        # count = 0
-        # feature_scores = model.score_samples(features)
+    score = (sum(scores) / feature_length / amount_of_features) + 52
 
-        # for score in feature_scores:
-        #     if score >= self.THRESHOLD:
-        #         count += 1
-        # overall_score = count / feature_count
+    if score >= self.FEATURE_THRESHOLD:
+        return 1
+    else:
+        return 0
 
-        if score >= self.FEATURE_THRESHOLD:
-            return 1
-        else:
-            return 0
 
-    def predict_speaker(self, speaker_id, model, test_files):
-        """
-        used to predict all given test_features, from test_files for one specific defined id
-        :param speaker_id:
-        :param model:
-        :param test_files:
-        :return: Speakerobject in dict object {id: speaker_object}
-        """
-        start_time = datetime.now()
-        speaker_object_result = {}
+def predict_speaker(self, speaker_id, model, test_files):
+    """
+    used to predict all given test_features, from test_files for one specific defined id
+    :param speaker_id:
+    :param model:
+    :param test_files:
+    :return: Speakerobject in dict object {id: speaker_object}
+    """
+    start_time = datetime.now()
+    speaker_object_result = {}
 
-        score_of_files = []
-        for file in test_files:
-            score_of_files.append(self.predict_file(model, file))
+    score_of_files = []
+    for file in test_files:
+        score_of_files.append(self.predict_file(model, file))
 
-        speaker_object_result.update(
-            rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
+    speaker_object_result.update(
+        rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
-        logging.info(f"{util.get_duration(start_time)}")
+    logging.info(f"{util.get_duration(start_time)}")
 
-        if self.CREATE_SINGLE_RESULT:
-            rm.create_single_result_json(speaker_id, 'gmm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
+    if self.CREATE_SINGLE_RESULT:
+        rm.create_single_result_json(speaker_id, 'gmm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
 
-        return {speaker_id: speaker_object_result}
+    return {speaker_id: speaker_object_result}
