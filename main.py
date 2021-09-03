@@ -26,6 +26,7 @@ if __name__ == '__main__':
 
     feature_type = config.get('features', 'feature_type')
     speaker_ids = dm.get_all_ids()
+    # speaker_ids.reverse()
 
     # preparation phase
     if config.getboolean('stage', 'extract_features'):
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     try:
         ids = json.loads(config.get("system", "ids"))
         if not ids == []:
-            # ids.reverse()
+            ids.reverse()
             speaker_ids = ids
             logging.info(f"ids to process: \n {speaker_ids}")
     except ValueError:

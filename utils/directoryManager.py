@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 
 from os.path import join as pjoin
-
+# from utils import audioManager as am
 
 """
 This file contains all methods used to create dirs, read content von dirs, direct file accessing methods should not be 
@@ -89,7 +89,7 @@ def create_feature_json_dir(file_path):
     make_dir(new_dir_path)
 
 
-#ids
+# ids
 def get_all_ids():
     ids = os.listdir(get_all_wav_path())
     ids.sort()
@@ -114,7 +114,7 @@ def get_id_of_path(path):
     return "no id in path"
 
 
-#models
+# models
 def get_all_models_path():
     path = rf'{get_data_path()}/models'
     if not os.path.exists(path):
@@ -123,7 +123,6 @@ def get_all_models_path():
 
 
 def get_model_path(speaker_id, t):
-
     path = get_all_models_path()
     if t.__contains__('svm'):
         path = rf'{path}/svm'

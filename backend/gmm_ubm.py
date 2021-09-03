@@ -3,6 +3,7 @@ import logging
 import multiprocessing
 from datetime import datetime
 
+import numpy as np
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -55,7 +56,7 @@ class GMMUBM(object):
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
                                                             feature_type=self.feature_type)
         logging.info(
-            f" ::: There are: {len(all_training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
+            f" ::: There are: {len(all_training_features)} trainingvectors of length: {len(all_training_features[0])}. It took {util.get_duration(start_time)} to get files.")
         start_time = datetime.now()
         ubm_model = make_pipeline(
             StandardScaler(),
