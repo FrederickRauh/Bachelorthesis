@@ -28,7 +28,7 @@ def get_duration_of_files(wav_files):
     return duration
 
 
-def get_length_of_minimal():
+def get_length_of_least_audio():
     speaker_ids = dm.get_all_ids()
     durations = []
     for speaker_id in speaker_ids:
