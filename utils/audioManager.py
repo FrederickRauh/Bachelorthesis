@@ -11,6 +11,8 @@ from utils import directoryManager as dm
 AudioManager is used as util service for feature extraction and frontend classes. 
 This file should only contain methods used on a signal.
 """
+
+
 def get_audio_length(file_path):
     """
     calculates duration of an audio file in seconds
@@ -46,6 +48,13 @@ def get_length_of_least_audio():
 
 
 def get_four_seconds_frame_of_audio(sr, signal, t):
+    """
+    extracts the middle 4 seconds of an audio file
+    :param sr:
+    :param signal:
+    :param t:
+    :return:
+    """
     duration = len(signal) / float(sr)
     # four seconds of data from .wav if > 4sec
     if duration >= 4:
@@ -63,13 +72,21 @@ def get_four_seconds_frame_of_audio(sr, signal, t):
 
 
 def get_four_second_intervals_of_audio(sr, signal, t):
+    """
+    extracts four second intervals of an audio signal. If shorter a buffer is added,
+    otherwise extract four seconds until time remaining < 4sec
+    :param sr:
+    :param signal:
+    :param t:
+    :return:
+    """
     duration = len(signal) / float(sr)
     signals = []
     if duration >= 4:
         frame_amount = int(math.floor(duration / 4))
         for x in range(frame_amount):
             frame_start = x * 63999
-            frame_end = (x+1) * 63999
+            frame_end = (x + 1) * 63999
             frame = signal[frame_start:frame_end]
             sr, cut_signal = get_four_seconds_frame_of_audio(sr, frame, t)
             signals.append(cut_signal)
