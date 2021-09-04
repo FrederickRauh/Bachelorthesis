@@ -102,7 +102,7 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
         training_features = np.asarray(())
         ubm_index = 0
         for id in speaker_ids:
-            temp_ = get_equal_percentage(id, training_index, feature_type)
+            temp_ = get_equal_percentage(id, training_index*2, feature_type)
             length = len(temp_)
             if ubm_index == 0:
                 ubm_index = (math.ceil(math.floor(length * ubm_percentage) / 399) * 399) - 1

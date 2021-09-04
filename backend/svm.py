@@ -47,7 +47,6 @@ class SVM(object):
         self.FEATURE_THRESHOLD = config.getfloat("svm", "svm_threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
 
-
     """
     # Training part
     """
@@ -81,6 +80,7 @@ class SVM(object):
     """
     # Prediction part
     """
+
     def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
         # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
         models = [m.load_model(speaker_id, "svm_" + self.feature_type) for speaker_id in speaker_ids]
@@ -117,10 +117,12 @@ class SVM(object):
         amount_of_features = len(features)
         scores = []
         for feature in features:
-            for vector in feature:
-                scores.append(model.predict([vector]))
+            scores.append(sum(model.predict(feature)))
 
         overall_score = sum(scores) / feature_length / amount_of_features
+
+        print(file_path, overall_score)
+
         if overall_score > self.FEATURE_THRESHOLD:
             return 1
         else:
@@ -147,6 +149,7 @@ class SVM(object):
         logging.info(f"{util.get_duration(start_time)}")
 
         if self.CREATE_SINGLE_RESULT:
-            rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
+            rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type,
+                                         [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}
