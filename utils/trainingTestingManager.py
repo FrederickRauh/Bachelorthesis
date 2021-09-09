@@ -1,6 +1,4 @@
-import logging
 import math
-import random
 
 import numpy as np
 import pandas as pd
@@ -13,13 +11,16 @@ from utils.dataframeManager import load_dataframe_from_path
 file = 'config.ini'
 config = ConfigParser()
 config.read(file)
+global training_index
 training_index = config.getfloat("training_testing", "training_files")
 ubm_percentage = config.getfloat("training_testing", "ubm_amount")
 test_index = config.getfloat("training_testing", "testing_files")
 equal_percentage = config.getboolean("training_testing", "equal_percentage")
 min_amount = 0
 if equal_percentage and training_index < 1:
-    min_amount = am.get_length_of_least_audio()
+    min_amount = math.floor(am.get_length_of_least_audio())
+    min_amount = 305
+    # print(min_amount)
 
 
 def get_percentage_of_audio_signal(speaker_id, wav_files, length, feature_type):
@@ -34,7 +35,8 @@ def get_percentage_of_audio_signal(speaker_id, wav_files, length, feature_type):
 
     training_features = np.asarray(())
 
-    vector_amount = length / 4 * 399
+    vector_amount = (length / 4) * 399
+
     for temp_file in temp_files:
         temp_file = temp_file.replace('\\', '/').replace('.wav', '.json')
         parts = temp_file.split('/')
@@ -64,7 +66,10 @@ def get_equal_percentage(speaker_id, percentage, feature_type):
     return get_percentage_of_audio_signal(speaker_id, dm.get_wav_files(speaker_id), length, feature_type)
 
 
-def get_data_for_training(m_type, speaker_ids, feature_type):
+def get_data_for_training(m_type, speaker_ids, feature_type, training_files=None):
+    if training_files:
+        global training_index
+        training_index=float(training_files)
     y = []
     if m_type == 'svm':
         files, y = get_svm_data_for_training(speaker_ids[0], feature_type)
@@ -105,12 +110,13 @@ def get_gmm_ubm_data_for_training(speaker_ids, m_type, feature_type):
             temp_ = get_equal_percentage(id, training_index*2, feature_type)
             length = len(temp_)
             if ubm_index == 0:
-                ubm_index = (math.ceil(math.floor(length * ubm_percentage) / 399) * 399) - 1
+                ubm_index = math.floor(length * ubm_percentage)
+                ubm_index = (ubm_index) - (ubm_index % 399)
             # random.shuffle(temp_)
             if m_type == 'gmm-ubm-ubm':
                 temp_ = temp_[:ubm_index]
             else:
-                temp_ = temp_[ubm_index:]
+                temp_ = temp_[ubm_index:(2*ubm_index)]
             if training_features.size == 0:
                 training_features = temp_
             else:
@@ -245,13 +251,14 @@ def load_test_files(speaker_ids):
     return np.asarray(files)
 
 
-def get_attack_files_and_extra_data(speaker_ids):
+def get_attack_files_and_extra_data(speaker_ids, replay_type):
     files = []
     for speaker_id in speaker_ids:
         attack_files = dm.get_attack_files(speaker_id)
         for attack_file in attack_files:
-            attack_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{attack_file}'
-            files.append(attack_file)
+            if attack_file.__contains__(replay_type):
+                attack_file = rf'{dm.get_all_wav_path()}/{speaker_id}/{attack_file}'
+                files.append(attack_file)
     test_files = np.asarray(files)
     extra_data = [[test_files]]
     extra_data_object = pd.DataFrame(extra_data, columns=['overall_test_files'])

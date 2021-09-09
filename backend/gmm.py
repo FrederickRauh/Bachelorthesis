@@ -35,6 +35,7 @@ class GMM(object):
         self.N_JOBS = config.getint('modelconfig', 'n_jobs')
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
+        self.TRAINING_FILES = config.getfloat("training_testing", "training_files")
         self.PROCESSES = config.getint("system", "processes")
         self.THRESHOLD = config.getfloat("gmm", "g_threshold")
         self.FEATURE_THRESHOLD = config.getfloat("gmm", "threshold")
@@ -47,8 +48,9 @@ class GMM(object):
     def create_model(self, speaker_id):
         start_time = datetime.now()
         logging.info(
-            f"Training gmm_model with {self.feature_type} features for: {speaker_id}. Start at: {start_time}")
-        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
+            f"Training gmm_model with {self.feature_type} features for: {speaker_id}, with {self.TRAINING_FILES}. Start at: {start_time}")
+        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type, training_files=self.TRAINING_FILES)
+
         logging.info(
             f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} to get files.")
         start_time = datetime.now()
@@ -65,11 +67,14 @@ class GMM(object):
         logging.info(f"{gmm_model['gridsearchcv'].best_params_}")
 
         t = 'gmm_' + self.feature_type
-        m.save_model(speaker_id, t, gmm_model)
+        sub_path = str(int(100 * self.TRAINING_FILES))
+        m.save_model(speaker_id, t, gmm_model, sub_path=sub_path)
         # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def train(self, speaker_ids):
+    def train(self, speaker_ids,  training_files=None):
+        if training_files:
+            self.TRAINING_FILES = training_files
         for speaker_id in speaker_ids:
             self.create_model(speaker_id=speaker_id)
 
@@ -77,7 +82,7 @@ class GMM(object):
     # Prediction phase
     """
 
-    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object, extra_info=None):
         """
         Used to predict for n speakers. Test files are loaded from speaker folders (/dataset/wav/{id}/) last 10 files are taken
         :param speaker_ids:
@@ -85,10 +90,11 @@ class GMM(object):
         :param extra_data_object
         :return: outputs overall results into one big result.json, containing overview over all models and their performance.
         """
-        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
+        if extra_info:
+            extra_info = str(int(extra_info * 100))
 
         # model loading and feature extraction done outside of potential threads to minimise file access, leading to speed improvement.
-        models = [m.load_model(speaker_id, "gmm_" + self.feature_type) for speaker_id in speaker_ids]
+        models = [m.load_model(speaker_id, "gmm_" + self.feature_type, sub_path=extra_info) for speaker_id in speaker_ids]
 
         # if defined in config.ini (SYSTEM, PROCESSES) > 1 multiple processes are started
         if self.PROCESSES > 1:
@@ -111,7 +117,7 @@ class GMM(object):
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object, extra_name=extra_info)
 
 
     def predict_mult(self, speaker_ids, models, test_files):

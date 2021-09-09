@@ -3,8 +3,6 @@ import logging
 import multiprocessing
 from datetime import datetime
 
-import numpy as np
-
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -27,12 +25,8 @@ class SVM(object):
 
         self.feature_type = config.get('features', 'feature_type')
 
-        # C = np.arange(config.getfloat('svm', 'C.lower'), config.getfloat('svm', 'c.upper'), 0.1)
-        # C = [round(x, 2) for x in C]
-
         self.param_grid = [{
             'kernel': json.loads(config.get('svm', 'kernels')),
-            # 'C': C,
             'C': json.loads(config.get('svm', 'c')),
             'gamma': json.loads(config.get('svm', 'gamma')),
             'class_weight': json.loads(config.get('svm', 'class_weight'))
@@ -43,6 +37,7 @@ class SVM(object):
         self.N_JOBS = config.getint('modelconfig', 'n_jobs')
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
+        self.TRAINING_FILES = config.getfloat("training_testing", "training_files")
         self.PROCESSES = config.getint("system", "processes")
         self.FEATURE_THRESHOLD = config.getfloat("svm", "svm_threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
@@ -51,11 +46,17 @@ class SVM(object):
     # Training part
     """
 
-    def create_model(self, speaker_id, ):
-        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type)
+    def create_model(self, speaker_id):
         start_time = datetime.now()
-        logging.info(f"Training svm_model with: {self.feature_type} features for: {speaker_id} :: "
-                     f"There are: {len(training_features)} trainingfiles. Start at: {start_time}")
+        logging.info(f"Training svm_model with {self.feature_type} features for: {speaker_id}, "
+                     f"with {self.TRAINING_FILES}. Start at: {start_time}")
+
+        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type,
+                                                                 training_files=self.TRAINING_FILES)
+
+        logging.info(f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} "
+                     f"to get files.")
+
         start_time = datetime.now()
         svm_model = make_pipeline(
             StandardScaler(),
@@ -69,11 +70,13 @@ class SVM(object):
 
         logging.info(f"{svm_model['gridsearchcv'].best_params_}")
         t = 'svm_' + self.feature_type
-        m.save_model(speaker_id, t, svm_model)
-        # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
+        sub_path = str(int(100 * self.TRAINING_FILES))
+        m.save_model(speaker_id, t, svm_model, sub_path=sub_path)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def train(self, speaker_ids):
+    def train(self, speaker_ids, training_files=None):
+        if training_files:
+            self.TRAINING_FILES = training_files
         for speaker_id in speaker_ids:
             self.create_model(speaker_id=speaker_id)
 
@@ -81,9 +84,19 @@ class SVM(object):
     # Prediction part
     """
 
-    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
-        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
-        models = [m.load_model(speaker_id, "svm_" + self.feature_type) for speaker_id in speaker_ids]
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object, extra_info=None):
+        """
+
+        :param speaker_ids:
+        :param test_files:
+        :param extra_data_object:
+        :param extra_info:
+        :return:
+        """
+        if extra_info:
+            extra_info = str(int(extra_info * 100))
+
+        models = [m.load_model(speaker_id, "svm_" + self.feature_type, sub_path=extra_info) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
@@ -103,7 +116,7 @@ class SVM(object):
         overall_results = []
         for result in results:
             overall_results += result
-        rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object, extra_name=extra_info)
 
     def predict_mult(self, speaker_ids, models, test_files):
         part_results = []
@@ -120,8 +133,6 @@ class SVM(object):
             scores.append(sum(model.predict(feature)))
 
         overall_score = sum(scores) / feature_length / amount_of_features
-
-        print(file_path, overall_score)
 
         if overall_score > self.FEATURE_THRESHOLD:
             return 1

@@ -138,7 +138,7 @@ def create_speaker_object_with_confusion_mat(results):
     return speaker_object, confusion_mat
 
 
-def create_overall_result_json(results, t, extra_data_object):
+def create_overall_result_json(results, t, extra_data_object, extra_name=None):
     sorted_results = []
     ids = []
     for result in results:
@@ -162,7 +162,10 @@ def create_overall_result_json(results, t, extra_data_object):
     system_version = config.get('result', 'version')
     # version_path = dm.make_dir(rf'{directory_path}/version-{system_version}')
     version_path = dm.make_dir(rf'{directory_path}')
-    path = rf'{version_path}/{system_version}-result.json'
+    if extra_name:
+        path = rf'{version_path}/{extra_name}-result.json'
+    else:
+        path = rf'{version_path}/{system_version}-result.json'
     dm.check_if_file_exists_then_remove(path)
     result_file.to_json(path)
 

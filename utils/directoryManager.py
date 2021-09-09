@@ -122,8 +122,13 @@ def get_all_models_path():
     return path
 
 
-def get_model_path(speaker_id, t):
+def get_model_path(speaker_id, t, sub_path=None):
     path = get_all_models_path()
+    if sub_path:
+        path += rf'/{sub_path}'
+        if not os.path.exists(path):
+            make_dir(path)
+
     if t.__contains__('svm'):
         path = rf'{path}/svm'
     if t.__contains__('gmm'):

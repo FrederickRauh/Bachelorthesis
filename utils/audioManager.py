@@ -43,6 +43,10 @@ def get_length_of_least_audio():
             file_path = rf'{speaker_id}/{parts[0]}/{ending}'
             path = rf'{dm.get_all_wav_path()}/{file_path}'
             duration += get_audio_length(path)
+            # length_of_file = get_audio_length(path)
+            # while length_of_file >= 4:
+            #     duration += 4
+            #     length_of_file -= 4
         durations.append(duration)
     return min(durations)
 

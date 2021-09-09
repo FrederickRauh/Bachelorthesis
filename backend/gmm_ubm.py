@@ -3,13 +3,14 @@ import logging
 import multiprocessing
 from datetime import datetime
 
-import numpy as np
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 
 from configparser import ConfigParser
+
+from tqdm import tqdm
 
 from utils import audioManager as am, directoryManager as dm, modelManager as m, util, \
     resultManager as rm, \
@@ -41,6 +42,7 @@ class GMMUBM(object):
         self.N_JOBS = config.getint('modelconfig', 'n_jobs')
         self.VERBOSE = config.getint('modelconfig', 'verbose')
 
+        self.TRAINING_FILES = config.getfloat("training_testing", "training_files")
         self.PROCESSES = config.getint("system", "processes")
         self.FEATURE_THRESHOLD = config.getfloat("gmm-ubm", "threshold")
         self.CREATE_SINGLE_RESULT = config.getboolean("result", "create_single_results")
@@ -52,9 +54,9 @@ class GMMUBM(object):
 
     def create_ubm(self, speaker_ids):
         start_time = datetime.now()
-        logging.info(f"Training ubm_model with {self.feature_type} features. Start at: {start_time}")
+        logging.info(f"Training ubm_model with {self.feature_type} features, with {self.TRAINING_FILES}. Start at: {start_time}")
         all_training_features, _ = tt.get_data_for_training('gmm-ubm-ubm', speaker_ids=speaker_ids,
-                                                            feature_type=self.feature_type)
+                                                            feature_type=self.feature_type, training_files=self.TRAINING_FILES)
         logging.info(
             f" ::: There are: {len(all_training_features)} trainingvectors of length: {len(all_training_features[0])}. It took {util.get_duration(start_time)} to get files.")
         start_time = datetime.now()
@@ -71,9 +73,8 @@ class GMMUBM(object):
         logging.info(f"{ubm_model['gridsearchcv'].best_params_}")
 
         t = 'gmm_ubm_universal_background_model_' + self.feature_type
-        m.save_model('', t, ubm_model)
-        # p.draw_plt(files=all_training_features, model_path=t,
-        #               name='', type=t)
+        sub_path = str(int(100 * self.TRAINING_FILES))
+        m.save_model('', t, ubm_model, sub_path=sub_path)
         logging.info(f"{util.get_duration(start_time)}")
 
     def create_speaker_model(self, speaker_id):
@@ -83,7 +84,9 @@ class GMMUBM(object):
         logging.info(
             f" ::: There are: {len(training_features)} trainingfiles. It took {util.get_duration(start_time)} to get files.")
 
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)[
+        sub_path = str(int(100*self.TRAINING_FILES))
+
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type, sub_path=sub_path)[
             'gridsearchcv'].best_estimator_
 
         adaptive_values = {
@@ -114,12 +117,14 @@ class GMMUBM(object):
         ).fit(training_features)
         logging.info(f"{gmm_model['gridsearchcv'].best_params_}")
 
-        t = 'gmm_ubm_single_model_' + self.feature_type
-        m.save_model(speaker_id, t, gmm_model)
+        t = 'gmm_ubm_single_model_' + self.feature_type + '--' + str(int(100*self.TRAINING_FILES))
+        m.save_model(speaker_id, t, gmm_model, sub_path=sub_path)
         # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def train(self, speaker_ids):
+    def train(self, speaker_ids, training_files=None):
+        if training_files:
+            self.TRAINING_FILES = training_files
         self.create_ubm(speaker_ids=speaker_ids)
 
         for speaker_id in speaker_ids:
@@ -129,11 +134,21 @@ class GMMUBM(object):
     # Prediction phase
     """
 
-    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object):
-        # _, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
-        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type)
-        gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type) for speaker_id in
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object, extra_info=None):
+        """
+
+        :param speaker_ids:
+        :param test_files:
+        :param extra_data_object:
+        :param extra_info:
+        :return:
+        """
+        if extra_info:
+            extra_info = str(int(extra_info * 100))
+        ubm_model = m.load_model('', 'gmm_ubm_universal_background_model_' + self.feature_type, sub_path=extra_info)
+        gmm_models = [m.load_model(speaker_id, "gmm_ubm_single_model_" + self.feature_type, sub_path=extra_info) for speaker_id in
                       speaker_ids]
+
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_gmm_models = util.split_array_for_multiprocess(gmm_models, self.PROCESSES)
@@ -141,20 +156,20 @@ class GMMUBM(object):
             for i in range(self.PROCESSES):
                 data.append((split_speaker_ids[i], ubm_model, split_gmm_models[i], test_files))
 
-            logging.info(f"starting multi process:{len(split_speaker_ids)}")
+            logging.info(f"starting multi process:{len(split_speaker_ids)}, for ")
             pool = multiprocessing.Pool(processes=self.PROCESSES)
             results = pool.starmap(self.predict_mult, data)
             pool.close()
             pool.join()
         else:
-            logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
+            logging.info(f"Starting single thread with: {len(speaker_ids)} ids, for {self.TRAINING_FILES}")
             results = [self.predict_mult(speaker_ids, ubm_model, gmm_models, test_files)]
 
         overall_results = []
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, 'gmmubm-' + self.feature_type, extra_data_object)
+        rm.create_overall_result_json(overall_results, 'gmmubm-' + self.feature_type, extra_data_object, extra_name=extra_info)
 
     def predict_mult(self, speaker_ids, ubm_model, gmm_models, test_files):
         part_results = []
@@ -188,8 +203,12 @@ class GMMUBM(object):
         speaker_object_result = {}
 
         score_of_files = []
-        for file in test_files:
-            score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
+        if self.PROCESSES <= 1:
+            for file in tqdm(test_files):
+                score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
+        else:
+            for file in test_files:
+                score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
 
         speaker_object_result.update(
             rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
