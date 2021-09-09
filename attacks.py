@@ -50,9 +50,9 @@ if __name__ == '__main__':
         logging.info(f"No ids specified, using all")
     test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
-    test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids, replay_type="iphone")
+    test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids, replay_type=attackConfig.get("testing_attacking", "attack_type"))
 
-    trainings_length = [0.1, 0.2, 0.4]
+    trainings_length = [0.4]
 
     for length in trainings_length:
         if attackConfig.getboolean('stage', 'predict_speaker'):

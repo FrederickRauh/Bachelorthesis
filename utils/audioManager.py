@@ -37,18 +37,17 @@ def get_length_of_least_audio():
         wav_files = dm.get_wav_files(speaker_id)
         duration = 0
         for wav_file in wav_files:
-            file = wav_file.replace('\\', '/')
-            parts = file.split('/')
-            ending = parts[1]
-            file_path = rf'{speaker_id}/{parts[0]}/{ending}'
-            path = rf'{dm.get_all_wav_path()}/{file_path}'
+            path = get_wav_file_path(speaker_id, wav_file)
             duration += get_audio_length(path)
-            # length_of_file = get_audio_length(path)
-            # while length_of_file >= 4:
-            #     duration += 4
-            #     length_of_file -= 4
         durations.append(duration)
     return min(durations)
+
+
+def get_wav_file_path(speaker_id, wav_file):
+    file = wav_file.replace('\\', '/')
+    parts = file.split('/')
+    ending = parts[1]
+    return rf'{dm.get_all_wav_path()}/{speaker_id}/{parts[0]}/{ending}'
 
 
 def get_four_seconds_frame_of_audio(sr, signal, t):

@@ -56,18 +56,21 @@ if __name__ == '__main__':
     start_time = datetime.now()
     logging.info(f"Starting version GMM-UBM :{start_time}")
 
-    # training phase
-    if config.getboolean('stage', 'train_model'):
-        start_time = datetime.now()
-        logging.info(f"started training models...")
-        gmm_ubm.train(speaker_ids=speaker_ids)
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
-    # prediction phase
-    if config.getboolean('stage', 'predict_speaker'):
-        start_time = datetime.now()
-        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
-        logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
-        logging.info(f"predicting speaker...")
-        gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
-                                   extra_data_object=extra_data_object)
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+    lengths = [0.1, 0.2, 0.4, 0.6, 0.8]
+    for length in lengths:
+        # training phase
+        if config.getboolean('stage', 'train_model'):
+            start_time = datetime.now()
+            logging.info(f"started training models...")
+            gmm_ubm.train(speaker_ids=speaker_ids, extra=length)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+        # prediction phase
+        if config.getboolean('stage', 'predict_speaker'):
+            start_time = datetime.now()
+            test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+            logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}\n" +
+                         f"predicting speaker...")
+            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids,
+                                       test_files=test_files,
+                                       extra_data_object=extra_data_object, extra_info=length)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

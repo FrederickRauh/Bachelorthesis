@@ -49,7 +49,7 @@ class GMM(object):
         start_time = datetime.now()
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id}, with {self.TRAINING_FILES}. Start at: {start_time}")
-        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type, training_files=self.TRAINING_FILES)
+        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
 
         logging.info(
             f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} to get files.")

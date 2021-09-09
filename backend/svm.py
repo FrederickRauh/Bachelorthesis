@@ -51,8 +51,7 @@ class SVM(object):
         logging.info(f"Training svm_model with {self.feature_type} features for: {speaker_id}, "
                      f"with {self.TRAINING_FILES}. Start at: {start_time}")
 
-        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type,
-                                                                 training_files=self.TRAINING_FILES)
+        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type)
 
         logging.info(f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} "
                      f"to get files.")
