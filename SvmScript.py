@@ -55,22 +55,20 @@ if __name__ == '__main__':
     start_time = datetime.now()
     logging.info(f"Starting version SVM :{start_time}")
 
-    trainings_files = [0.1, 0.2, 0.4, 0.6, 0.8]
-    for training_files in trainings_files:
     # training phase
-        if config.getboolean('stage', 'train_model'):
-            start_time = datetime.now()
-            logging.info(f"started training models...")
-            svm.train(speaker_ids=speaker_ids, training_files=training_files)
-            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+    if config.getboolean('stage', 'train_model'):
+        start_time = datetime.now()
+        logging.info(f"started training models...")
+        svm.train(speaker_ids=speaker_ids)
+        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
-        # prediction phase
-        test_files = []
-        if config.getboolean('stage', 'predict_speaker'):
-            start_time = datetime.now()
-            test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
-            logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
-            logging.info(f"predicting speaker...")
-            svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
-                                       extra_data_object=extra_data_object, extra_info=training_files)
-            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+    # prediction phase
+    test_files = []
+    if config.getboolean('stage', 'predict_speaker'):
+        start_time = datetime.now()
+        test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+        logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}")
+        logging.info(f"predicting speaker...")
+        svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
+                               extra_data_object=extra_data_object)
+        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
