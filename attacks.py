@@ -28,7 +28,7 @@ if __name__ == '__main__':
     logger.disabled = not attackConfig.getboolean('system', 'log')
 
     if config.getboolean('system', 'log'):
-        print("container running. logs can be found in info-{model_type}.log")
+        print("container running. logs can be found in info-attack.log")
 
     if attackConfig.getboolean('stage', 'make_new_files'):
         print("STARTING")
@@ -50,30 +50,40 @@ if __name__ == '__main__':
         logging.info(f"No ids specified, using all")
     test_files, _ = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
 
-    test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids, replay_type=attackConfig.get("testing_attacking", "attack_type"))
+    attack_type = attackConfig.get("testing_attacking", "attack_type")
+    test_files, extra_data_object = tt.get_attack_files_and_extra_data(speaker_ids=speaker_ids, replay_type=attack_type)
 
-    trainings_length = [0.4]
-
-    for length in trainings_length:
+    # lengths = [60, 120, 180, 240, 300]
+    lengths = [28, 60, 120]
+    for length in lengths:
         if attackConfig.getboolean('stage', 'predict_speaker'):
             if attackConfig.getboolean("classifier", "gmm"):
                 start_time = datetime.now()
                 logging.info(f"Version GMM :{start_time}")
                 logging.info(f"predicting speaker, gmm model, with {length}...")
                 gmm = GMM()
-                gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object, extra_info=length)
+                gmm.predict_n_speakers(speaker_ids=speaker_ids,
+                                       test_files=test_files,
+                                       extra=length,
+                                       attack_type=attack_type)
                 logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
             if attackConfig.getboolean("classifier", "gmm_ubm"):
                 start_time = datetime.now()
                 logging.info(f"Version GMM-UBM :{start_time}")
                 logging.info(f"predicting speaker, gmm-ubm model...")
                 gmm_ubm = GMMUBM()
-                gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object, extra_info=length)
+                gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids,
+                                           test_files=test_files,
+                                           extra=length,
+                                           attack_type=attack_type)
                 logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
             if attackConfig.getboolean("classifier", "svm"):
                 start_time = datetime.now()
                 logging.info(f"Version SVM :{start_time}")
                 logging.info(f"predicting speaker, svm model...")
                 svm = SVM()
-                svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files, extra_data_object=extra_data_object, extra_info=length)
+                svm.predict_n_speakers(speaker_ids=speaker_ids,
+                                       test_files=test_files,
+                                       extra=length,
+                                       attack_type=attack_type)
                 logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

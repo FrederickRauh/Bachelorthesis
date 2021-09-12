@@ -51,7 +51,7 @@ class SVM(object):
         logging.info(f"Training svm_model with {self.feature_type} features for: {speaker_id}, "
                      f"with {self.TRAINING_FILES}. Start at: {start_time}")
 
-        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type)
+        training_features, is_speaker = tt.get_data_for_training('svm', [speaker_id], self.feature_type, length=self.TRAINING_FILES)
 
         logging.info(f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} "
                      f"to get files.")
@@ -69,13 +69,13 @@ class SVM(object):
 
         logging.info(f"{svm_model['gridsearchcv'].best_params_}")
         t = 'svm_' + self.feature_type
-        sub_path = str(int(100 * self.TRAINING_FILES))
+        sub_path = str(self.TRAINING_FILES)
         m.save_model(speaker_id, t, svm_model, sub_path=sub_path)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def train(self, speaker_ids, training_files=None):
-        if training_files:
-            self.TRAINING_FILES = training_files
+    def train(self, speaker_ids, extra=None):
+        if extra:
+            self.TRAINING_FILES = extra
         for speaker_id in speaker_ids:
             self.create_model(speaker_id=speaker_id)
 
@@ -83,25 +83,23 @@ class SVM(object):
     # Prediction part
     """
 
-    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object, extra_info=None):
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object=None, extra=None, attack_type=None):
         """
 
         :param speaker_ids:
         :param test_files:
         :param extra_data_object:
         :param extra_info:
+        :param attack_type:
         :return:
         """
-        if extra_info:
-            extra_info = str(int(extra_info * 100))
-
-        models = [m.load_model(speaker_id, "svm_" + self.feature_type, sub_path=extra_info) for speaker_id in speaker_ids]
+        models = [m.load_model(speaker_id, "svm_" + self.feature_type, sub_path=extra) for speaker_id in speaker_ids]
         if self.PROCESSES > 1:
             split_speaker_ids = util.split_array_for_multiprocess(speaker_ids, self.PROCESSES)
             split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
             data = []
             for i in range(self.PROCESSES):
-                data.append((split_speaker_ids[i], split_models[i], test_files))
+                data.append((split_speaker_ids[i], split_models[i], test_files, attack_type))
 
             pool = multiprocessing.Pool(processes=(self.PROCESSES + 1))
             logging.info(f"starting multi process: {self.PROCESSES}")
@@ -110,17 +108,22 @@ class SVM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = [self.predict_mult(speaker_ids=speaker_ids, models=models, test_files=test_files)]
+            results = [self.predict_mult(speaker_ids=speaker_ids, models=models, test_files=test_files, attack_type=attack_type)]
 
         overall_results = []
         for result in results:
             overall_results += result
-        rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object, extra_name=extra_info)
+        rm.create_overall_result_json(overall_results, 'svm-' + self.feature_type, extra_data_object, extra_name=extra)
 
-    def predict_mult(self, speaker_ids, models, test_files):
+    def predict_mult(self, speaker_ids, models, test_files, attack_type=None):
         part_results = []
         for i in range(len(speaker_ids)):
-            part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
+            speaker_object = self.predict_speaker(speaker_ids[i], models[i], test_files)
+            part_results.append([speaker_object])
+
+            if self.CREATE_SINGLE_RESULT:
+                rm.create_single_result_json(speaker_ids[i], [[speaker_object]], 'svm-' + self.feature_type, attack_type)
+
         return part_results
 
     def predict_file(self, model, file_path):
@@ -152,14 +155,9 @@ class SVM(object):
             for file in test_files:
                 score_of_files.append(self.predict_file(model, file))
 
-        logging.info(f"all scores collected: {util.get_duration(start_time)}")
         speaker_object_result.update(
             rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
-
-        if self.CREATE_SINGLE_RESULT:
-            rm.create_single_result_json(speaker_id, 'svm-' + self.feature_type,
-                                         [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}

@@ -37,7 +37,6 @@ if __name__ == '__main__':
     try:
         ids = json.loads(config.get("system", "ids"))
         if not ids == []:
-            ids.reverse()
             speaker_ids = ids
             logging.info(f"ids to process: \n {speaker_ids}")
     except configparser.NoOptionError:
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     start_time = datetime.now()
     logging.info(f"Starting version GMM-UBM :{start_time}")
 
-    lengths = [0.1, 0.2, 0.4, 0.6, 0.8]
+    lengths = [28, 60, 120, 180, 240, 300]
     for length in lengths:
         # training phase
         if config.getboolean('stage', 'train_model'):
@@ -64,13 +63,18 @@ if __name__ == '__main__':
             logging.info(f"started training models...")
             gmm_ubm.train(speaker_ids=speaker_ids, extra=length)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+
+    # models = [0.28, 0.6, 1.2, 1.8, 2.4, 3]
+    # , 2.4, 3, 3.6, 4.2]
+    for length in lengths:
         # prediction phase
         if config.getboolean('stage', 'predict_speaker'):
             start_time = datetime.now()
-            test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)
+            test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=dm.get_all_ids())
             logging.info(f"loaded {len(test_files)} testing files, time spent: {util.get_duration(start_time)}\n" +
                          f"predicting speaker...")
             gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids,
                                        test_files=test_files,
-                                       extra_data_object=extra_data_object, extra_info=length)
+                                       extra_data_object=extra_data_object,
+                                       extra=length)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

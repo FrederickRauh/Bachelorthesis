@@ -36,7 +36,6 @@ if __name__ == '__main__':
     try:
         ids = json.loads(config.get("system", "ids"))
         if not ids == []:
-            ids.reverse()
             speaker_ids = ids
             logging.info(f"ids to process: \n {speaker_ids}")
     except configparser.NoOptionError:
@@ -55,15 +54,16 @@ if __name__ == '__main__':
     start_time = datetime.now()
     logging.info(f"Starting version GMM :{start_time}")
 
-    # training phase
-    if config.getboolean('stage', 'train_model'):
-        start_time = datetime.now()
-        logging.info(f"started training models...")
-        gmm.train(speaker_ids=speaker_ids)
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+    lengths = [28, 60, 120, 180, 240, 300]
+    for length in lengths:
+        # training phase
+        if config.getboolean('stage', 'train_model'):
+            start_time = datetime.now()
+            logging.info(f"started training models...")
+            gmm.train(speaker_ids=speaker_ids, extra=length)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     # prediction phase
-    test_files = []
     if config.getboolean('stage', 'predict_speaker'):
         start_time = datetime.now()
         test_files, extra_data_object = tt.get_test_files_and_extra_data(speaker_ids=speaker_ids)

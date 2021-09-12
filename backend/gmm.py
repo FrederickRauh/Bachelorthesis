@@ -49,7 +49,7 @@ class GMM(object):
         start_time = datetime.now()
         logging.info(
             f"Training gmm_model with {self.feature_type} features for: {speaker_id}, with {self.TRAINING_FILES}. Start at: {start_time}")
-        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type)
+        training_features, _ = tt.get_data_for_training('gmm', [speaker_id], self.feature_type, length=self.TRAINING_FILES)
 
         logging.info(
             f" ::: There are: {len(training_features)} trainingvectors. It took {util.get_duration(start_time)} to get files.")
@@ -67,14 +67,12 @@ class GMM(object):
         logging.info(f"{gmm_model['gridsearchcv'].best_params_}")
 
         t = 'gmm_' + self.feature_type
-        sub_path = str(int(100 * self.TRAINING_FILES))
+        sub_path = str(self.TRAINING_FILES)
         m.save_model(speaker_id, t, gmm_model, sub_path=sub_path)
-        # p.draw_plt(files=training_features, model_path=t, name=speaker_id, type=t)
         logging.info(f"{util.get_duration(start_time)}")
 
-    def train(self, speaker_ids,  training_files=None):
-        if training_files:
-            self.TRAINING_FILES = training_files
+    def train(self, speaker_ids, extra=None):
+        self.TRAINING_FILES = extra
         for speaker_id in speaker_ids:
             self.create_model(speaker_id=speaker_id)
 
@@ -82,19 +80,17 @@ class GMM(object):
     # Prediction phase
     """
 
-    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object, extra_info=None):
+    def predict_n_speakers(self, speaker_ids, test_files, extra_data_object=None, extra=None, attack_type=None):
         """
         Used to predict for n speakers. Test files are loaded from speaker folders (/dataset/wav/{id}/) last 10 files are taken
         :param speaker_ids:
         :param test_files
         :param extra_data_object
         :return: outputs overall results into one big result.json, containing overview over all models and their performance.
+        :param attack_type:
         """
-        if extra_info:
-            extra_info = str(int(extra_info * 100))
-
         # model loading and feature extraction done outside of potential threads to minimise file access, leading to speed improvement.
-        models = [m.load_model(speaker_id, "gmm_" + self.feature_type, sub_path=extra_info) for speaker_id in speaker_ids]
+        models = [m.load_model(speaker_id, "gmm_" + self.feature_type, sub_path=extra) for speaker_id in speaker_ids]
 
         # if defined in config.ini (SYSTEM, PROCESSES) > 1 multiple processes are started
         if self.PROCESSES > 1:
@@ -102,7 +98,7 @@ class GMM(object):
             split_models = util.split_array_for_multiprocess(models, self.PROCESSES)
             data = []
             for i in range(self.PROCESSES):
-                data.append((split_speaker_ids[i], split_models[i], test_files))
+                data.append((split_speaker_ids[i], split_models[i], test_files, attack_type))
 
             logging.info(f"starting multi process:{len(split_speaker_ids)}")
             pool = Pool(processes=self.PROCESSES)
@@ -111,21 +107,24 @@ class GMM(object):
             pool.join()
         else:
             logging.info(f"Starting single thread with: {len(speaker_ids)} ids")
-            results = [self.predict_mult(speaker_ids, models, test_files)]
+            results = [self.predict_mult(speaker_ids, models, test_files, attack_type)]
 
         overall_results = []
         for result in results:
             overall_results += result
 
-        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object, extra_name=extra_info)
+        rm.create_overall_result_json(overall_results, 'gmm-' + self.feature_type, extra_data_object, extra_name=extra)
 
-
-    def predict_mult(self, speaker_ids, models, test_files):
+    def predict_mult(self, speaker_ids, models, test_files, attack_type=None):
         part_results = []
         for i in range(len(speaker_ids)):
-            part_results.append([self.predict_speaker(speaker_ids[i], models[i], test_files)])
-        return part_results
+            speaker_object = self.predict_speaker(speaker_ids[i], models[i], test_files)
+            part_results.append([speaker_object])
 
+            if self.CREATE_SINGLE_RESULT:
+                rm.create_single_result_json(speaker_ids[i], [[speaker_object]], 'gmm-' + self.feature_type, attack_type)
+
+        return part_results
 
     def predict_file(self, model, file_path):
         features = am.get_features_for_prediction(file_path, self.feature_type)
@@ -146,7 +145,6 @@ class GMM(object):
         else:
             return 0
 
-
     def predict_speaker(self, speaker_id, model, test_files):
         """
         used to predict all given test_features, from test_files for one specific defined id
@@ -166,8 +164,5 @@ class GMM(object):
             rm.sort_results_and_create_speaker_object(speaker_id, test_files, score_of_files))
 
         logging.info(f"{util.get_duration(start_time)}")
-
-        if self.CREATE_SINGLE_RESULT:
-            rm.create_single_result_json(speaker_id, 'gmm-' + self.feature_type, [[{speaker_id: speaker_object_result}]])
 
         return {speaker_id: speaker_object_result}

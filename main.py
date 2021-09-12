@@ -42,7 +42,6 @@ if __name__ == '__main__':
     try:
         ids = json.loads(config.get("system", "ids"))
         if not ids == []:
-            ids.reverse()
             speaker_ids = ids
             logging.info(f"ids to process: \n {speaker_ids}")
     except configparser.NoOptionError:
@@ -68,7 +67,8 @@ if __name__ == '__main__':
         if config.getboolean('stage', 'predict_speaker'):
             start_time = datetime.now()
             logging.info(f"predicting speaker..., {start_time}")
-            gmm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
+            gmm.predict_n_speakers(speaker_ids=speaker_ids,
+                                   test_files=test_files,
                                    extra_data_object=extra_data_object)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -92,7 +92,8 @@ if __name__ == '__main__':
         if config.getboolean('stage', 'predict_speaker'):
             start_time = datetime.now()
             logging.info(f"predicting speaker..., {start_time}")
-            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
+            gmm_ubm.predict_n_speakers(speaker_ids=speaker_ids,
+                                       test_files=test_files,
                                        extra_data_object=extra_data_object)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
@@ -114,6 +115,7 @@ if __name__ == '__main__':
         if config.getboolean('stage', 'predict_speaker'):
             start_time = datetime.now()
             logging.info(f"predicting speaker..., {start_time}")
-            svm.predict_n_speakers(speaker_ids=speaker_ids, test_files=test_files,
+            svm.predict_n_speakers(speaker_ids=speaker_ids,
+                                   test_files=test_files,
                                    extra_data_object=extra_data_object)
             logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")

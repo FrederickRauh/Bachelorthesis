@@ -51,16 +51,19 @@ if __name__ == '__main__':
     except configparser.NoOptionError:
         logging.info(f"No finished_ids specified, removing none")
 
-    #training_phase
+    # training_phase
     start_time = datetime.now()
     logging.info(f"Starting version SVM :{start_time}")
 
-    # training phase
-    if config.getboolean('stage', 'train_model'):
-        start_time = datetime.now()
-        logging.info(f"started training models...")
-        svm.train(speaker_ids=speaker_ids)
-        logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
+    lengths = [28, 60, 120, 180, 240]
+
+    for length in lengths:
+        # training phase
+        if config.getboolean('stage', 'train_model'):
+            start_time = datetime.now()
+            logging.info(f"started training models...")
+            svm.train(speaker_ids=speaker_ids, extra=length)
+            logging.info(f"----------------------------------------------------------{util.get_duration(start_time)}")
 
     # prediction phase
     test_files = []
