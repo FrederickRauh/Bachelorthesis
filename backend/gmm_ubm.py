@@ -216,7 +216,7 @@ class GMMUBM(object):
         speaker_object_result = {}
 
         score_of_files = []
-        if self.PROCESSES <= 1:
+        if self.PROCESSES <= 0:
             for file in tqdm(test_files):
                 score_of_files.append(self.predict_file(ubm_model, gmm_model, file))
         else:

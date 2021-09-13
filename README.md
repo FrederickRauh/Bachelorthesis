@@ -1,3 +1,4 @@
+**Setup**:
 Anaconda Environment: 
 - conda create -n bachelorthesis python=3.9
 - pip install tensorflow
@@ -13,44 +14,55 @@ Anaconda Environment:
 a simpler way is to use the environment file with:
 - conda env create -f environment.yml
 
+or to create a docker container using the docker-compose.
+
+_**structure**_:
+The data of the speakers and the models have to be in file named data, this can however be changed within the compose.yml.
+Inside of the data folder should be a structure following (an example can be seen on the provided usbstick):
+- wav
+  - idOfSpeaker
+    - folder_containing files
+      - files (.wav)
+
+      
+
+_**Configuration**_
 To change configuration (mfccs used, or loglevel in the software ) change in  ./config.ini:
  
 - system:
-  -
-      - EXTRACT_FEATURES (boolean) 
-      - TRAIN_MODEL (boolean)
-      - PREDICT_SPEAKER (boolean)
-      - TRAINING_FILES = 10
-      - FEATURE_THRESHOLD = 0.15
-      - PROCESSES = 8
-      - LOGLEVEL = 20
-      - LOG = True
-      - VERSION = local
-      - ADD_EXTRA = False
-      - DATASET_PATH = /dataset
+
+  - dataset_path = path to the files
+  - processes = Processes used(useful for multiprocessing)
+  - loglevel (default 20)
+  - log (default true)
 
 - classifier
-  - 
-      - gmm (boolean) // use the gmm system
-      - gmm-ubm (boolean) // use the gmm-ubm system
-      - svm (boolean) // use the svm system
-      - // possible to use all   
+  - gmm (boolean) // use the gmm system
+  - gmm-ubm (boolean) // use the gmm-ubm system
+  - svm (boolean) // use the svm system
+        - // possible to use all   
 
 - stage
-  - 
-      - extract_features (boolean) // extract features and save in json files.
-      - train_model (boolean) // train models
-      - predict_speaker (boolean) // predict
+  - extract_features (boolean) // extract features and save in json files.
+  - train_model (boolean) // train models
+  - predict_speaker (boolean) // predict
 
 
 - training_testing
   -
-      - training_files (float) // if < 1 take the percentage of files (0.5 == 50 % of files), otherwise take the amount defined
-      - testing_files  (float) // similar to training_files, except for testing
+      - training_files (float) // indicate how long the trainings data should be ! gets overwritten by training_length
+      - training_lengt: actuall does what training_files should do.
+      - testing_files  (float) // indicate how many files should be selected per speaker for testing. The last files per speaker are selected, to avoid training files
+
+- result:
+  - 
+      - version: name added before the result files
+      - add_extra: add additional info to result.json, (testing file names and amount of files etc.)
+      - create_single_results: create a result.json for each tested model.  
 
 - gmm:
   -
-      - G_THRESHOLD (float)
+      - THRESHOLD (float): percentage of vectors that have to be positive for a file to be accepted.
       - G_N_COMPONENTS (list of ints)   
       - G_MAX_ITER (list of ints)
       - G_COVARIANCE_TYPE (list of string)
@@ -58,6 +70,7 @@ To change configuration (mfccs used, or loglevel in the software ) change in  ./
 
 - gmm-ubm:
   -
+      - threshold = (default of 0.8 to avoid a natural offset) 
       - UBM_N_COMPONENTS (float)
       - UBM_MAX_ITER (list of ints)   
       - UBM_COVARIANCE_TYPE (list of ints)
@@ -71,6 +84,7 @@ To change configuration (mfccs used, or loglevel in the software ) change in  ./
 
 - svm:
   -
+      - svm_threshold: percentage of vectors that have to be positive for a file to be accepted.
       - KERNELS (list of strings)
       - C.upper (float)   
       - C.lower (float)
@@ -95,7 +109,7 @@ To change configuration (mfccs used, or loglevel in the software ) change in  ./
 
 - MODELCONFIG:
   - 
-      - CV (int)
+      - CV (int) number of crossvalidation splits
       - Refit (boolean)  
       - VERBOSE: loglevel of gridsearch cv. 
       - N_JOBS: 
