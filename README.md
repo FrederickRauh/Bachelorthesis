@@ -17,7 +17,7 @@ a simpler way is to use the environment file with:
 or to create a docker container using the docker-compose.
 
 _**structure**_:
-The data of the speakers and the models have to be in file named data, this can however be changed within the compose.yml.
+The data of the speakers and the models has to be in a folder named data, this can however be changed within the compose.yml.
 Inside of the data folder should be a structure following (an example can be seen on the provided usbstick):
 - wav
   - idOfSpeaker
